@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DevKëf — Dashboard</title>
+<meta name="description" content="Suis ta progression, tes récompenses et ton classement sur DevKëf."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<aside class="sidebar">
+  <a class="sidebar-logo" href="../index.html">
+    <img src="../image/logo-mark.png" alt="logo" class="logo-mark" />
+    <div class="logo-name">Dev<span>Këf</span></div>
+  </a>
+  <nav class="sidebar-nav">
+    <a class="nav-item active" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</a>
+    <a class="nav-item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5a2 2 0 0 1 2-2h12v18H6a2 2 0 0 1-2-2Z"/><path d="M8 7h7"/></svg>Parcours</a>
+    <a class="nav-item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 21h8M12 17v4"/><path d="M6 4h12v5a6 6 0 0 1-12 0V4Z"/></svg>Classement</a>
+    <a class="nav-item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Profil</a>
+  </nav>
+  <div class="sidebar-foot">
+    <div class="avatar">AK</div>
+    <div>
+      <div class="foot-name">Amine K.</div>
+      <div class="foot-rank">Niveau 4</div>
+    </div>
+  </div>
+</aside>
+
+<main class="main">
+  <header class="head">
+    <div>
+      <h1 class="hello">Salut <span>Amine</span> 👋</h1>
+      <p class="sub">Tu es à 3 objectifs de terminer ton projet.</p>
+    </div>
+    <div class="streak">🔥 <b>5 jours</b> d'affilée</div>
+  </header>
+
+  <!-- 1. Progression XP -->
+  <section class="card">
+    <div class="xp-top">
+      <div class="xp-level">Niveau 4 — <span style="color:var(--muted);font-weight:400">Flexbox &amp; mise en page</span></div>
+      <div class="xp-num"><b>1 240</b> / 1 600 XP</div>
+    </div>
+    <div class="bar"><i style="width:77.5%"></i></div>
+  </section>
+
+  <div class="grid">
+    <!-- colonne gauche -->
+    <div>
+      <!-- 2. Projet en cours -->
+      <section class="card">
+        <span class="proj-tag">Projet en cours</span>
+        <h2 class="proj-title">Carte de profil responsive</h2>
+        <p class="proj-desc">Reproduis la maquette avec Flexbox. 3 objectifs sur 5 validés.</p>
+        <ul class="goals">
+          <li class="ok"><span class="tick"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg></span>Conteneur en <code>display:flex</code></li>
+          <li class="ok"><span class="tick"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg></span>Avatar arrondi de 80px</li>
+          <li class="ok"><span class="tick"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg></span>Titre et sous-titre alignés</li>
+          <li><span class="tick"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg></span>Bouton aligné en bas à droite</li>
+          <li><span class="tick"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg></span>Passage en colonne sous 600px</li>
+        </ul>
+        <a class="btn" href="#">Continuer le projet →</a>
+      </section>
+
+      <!-- 3. Parcours -->
+      <section class="card" style="margin-top:1.25rem">
+        <h3 class="section-title">Ton parcours <a href="#">Voir tout</a></h3>
+        <div class="path">
+          <div class="node done"><div class="dot">✓</div><small>HTML<br>de base</small></div>
+          <div class="link done"></div>
+          <div class="node done"><div class="dot">✓</div><small>Texte<br>&amp; liens</small></div>
+          <div class="link done"></div>
+          <div class="node done"><div class="dot">✓</div><small>CSS<br>couleurs</small></div>
+          <div class="link done"></div>
+          <div class="node current"><div class="dot">4</div><small>Flexbox</small></div>
+          <div class="link"></div>
+          <div class="node"><div class="dot">5</div><small>Grid</small></div>
+          <div class="link"></div>
+          <div class="node"><div class="dot">6</div><small>Responsive</small></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- colonne droite -->
+    <div>
+      <!-- 4. Mini-classement -->
+      <section class="card">
+        <h3 class="section-title">Classement <a href="#">Voir tout</a></h3>
+        <div class="rank-row"><span class="rank-pos">1</span><span class="rank-av">SM</span><span class="rank-name">Sara M.</span><span class="rank-xp">3 420</span></div>
+        <div class="rank-row"><span class="rank-pos">2</span><span class="rank-av">YB</span><span class="rank-name">Youssef B.</span><span class="rank-xp">2 980</span></div>
+        <div class="rank-row"><span class="rank-pos">3</span><span class="rank-av">LT</span><span class="rank-name">Lina T.</span><span class="rank-xp">2 110</span></div>
+        <div class="rank-row me"><span class="rank-pos">4</span><span class="rank-av">AK</span><span class="rank-name">Toi</span><span class="rank-xp">1 240</span></div>
+        <div class="rank-row"><span class="rank-pos">5</span><span class="rank-av">OD</span><span class="rank-name">Omar D.</span><span class="rank-xp">1 090</span></div>
+      </section>
+
+      <!-- 5. Récompenses -->
+      <section class="card" style="margin-top:1.25rem">
+        <h3 class="section-title">Récompenses <a href="#">3 / 12</a></h3>
+        <p style="font-size:.82rem;color:var(--muted)">Débloque des badges en terminant des projets.</p>
+        <div class="badges">
+          <div class="badge got">🚀</div>
+          <div class="badge got">🔥</div>
+          <div class="badge got">🎯</div>
+          <div class="badge locked">🏆</div>
+          <div class="badge locked">💎</div>
+          <div class="badge locked">⚡</div>
+          <div class="badge locked">🧩</div>
+          <div class="badge locked">👑</div>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+
+</body>
+</html>

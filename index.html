@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DevKëf — Apprendre à coder en construisant de vrais projets</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+
+  <link rel="stylesheet" href="style.css">
+  
+</head>
+<body>
+
+<!-- ══ HEADER ══ -->
+<header class="header" id="header">
+  <a href="#" class="logo">
+    <img src="image/logo-mark.png" alt="logo" class="logo-mark">
+    <span class="logo-name">Dev<span>Këf</span></span>
+  </a>
+  <input type="checkbox" id="nav-toggle" class="nav-toggle-input"/>
+  <label for="nav-toggle" class="nav-toggle" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </label>
+  <nav class="nav">
+    <a href="#comment">Comment ça marche</a>
+    <a href="#parcours">Parcours</a>
+    <a href="#editeur">Éditeur</a>
+    <a href="#">Blog</a>
+    <a href="dashboard/index.html" class="nav-cta">Commencer gratuitement</a>
+  </nav>
+</header>
+
+<main>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-glow glow-a"></div>
+  <div class="hero-glow glow-b"></div>
+  <div class="hero-inner">
+
+    <!-- Texte -->
+    <div>
+      <div class="hero-eyebrow">
+        <span class="eyebrow-dot"></span>
+        Apprendre · Coder · Construire
+      </div>
+      <h1 class="hero-title">
+        Apprends à coder<br>
+        en construisant<br>
+        de <span class="accent">vrais</span> <span class="accent-green">projets.</span>
+      </h1>
+      <p class="hero-sub">
+        DevKëf, c'est la plateforme d'apprentissage où chaque niveau est un projet concret à construire — pas des QCM, pas des exercices abstraits. Du code réel, des sites réels, des compétences réelles.
+      </p>
+      <div class="hero-actions">
+        <a href="dashboard/index.html" class="btn-primary">
+          Commencer gratuitement
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a href="#editeur" class="btn-ghost">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Voir une démo
+        </a>
+      </div>
+      <div class="trust-row">
+        <div class="trust-item">
+          <div class="trust-check">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          Gratuit pour commencer
+        </div>
+        <div class="trust-item">
+          <div class="trust-check">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          Zéro installation
+        </div>
+        <div class="trust-item">
+          <div class="trust-check">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          En français & wolof
+        </div>
+      </div>
+    </div>
+
+    <!-- Terminal décoratif -->
+    <div class="hero-terminal">
+      <div class="terminal-bar">
+        <span class="t-dot r"></span>
+        <span class="t-dot y"></span>
+        <span class="t-dot g"></span>
+        <span class="terminal-path">këf@dev:~/projets/portfolio $</span>
+      </div>
+      <div class="terminal-body">
+        <div class="t-line">
+          <span class="t-prompt">këf@dev:~$</span>
+          <span class="t-cmd">devkef</span>
+          <span class="t-arg">start</span>
+          <span class="t-flag">--niveau débutant</span>
+        </div>
+        <div class="t-line t-out">→ Chargement du projet : <span style="color:#F0F4FF">Page personnelle</span></div>
+        <div class="t-line t-out">→ HTML · CSS · 3 objectifs</div>
+        <div class="t-line" style="height:8px"></div>
+        <div class="t-line">
+          <span class="t-prompt">këf@dev:~$</span>
+          <span class="t-cmd">git</span>
+          <span class="t-arg">commit</span>
+          <span class="t-flag">-m "feat: navbar responsive"</span>
+        </div>
+        <div class="t-line t-success">✓ Objectif 1/3 validé — +120 XP</div>
+        <div class="t-bar-wrap">
+          <div class="t-bar"><div class="t-bar-fill orange"></div></div>
+          <span class="t-bar-pct">60%</span>
+        </div>
+        <div class="t-line" style="height:8px"></div>
+        <div class="t-line">
+          <span class="t-prompt">këf@dev:~$</span>
+          <span class="t-cmd">devkef</span>
+          <span class="t-arg">score</span>
+        </div>
+        <div class="t-line t-score">★ Niveau 3 · 840 XP · Rang : Junior Dev</div>
+        <div class="t-line t-out">→ Prochain niveau : <span style="color:var(--violet)">Portfolio complet</span></div>
+        <div class="t-line" style="height:8px"></div>
+        <div class="t-line">
+          <span class="t-prompt">këf@dev:~$</span>
+          <span class="t-cursor"></span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ══ COMMENT ÇA MARCHE ══ -->
+<section class="section how-section" id="comment">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">// comment ça marche</div>
+      <h2 class="section-title">Pas de quiz.<br><span>Des projets réels.</span></h2>
+      <p class="section-sub">Sur DevKëf, chaque niveau = un site à construire. Tu codes, tu vois le résultat en direct, et tu débloque le niveau suivant quand c'est validé.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card reveal">
+        <div class="step-num">01</div>
+        <div class="step-icon si-orange">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><polyline points="9 11 11 13 15 9"/></svg>
+        </div>
+        <div class="step-title">Choisis un projet</div>
+        <div class="step-desc">Chaque niveau propose un projet concret — une page perso, une navbar, un portfolio, un site d'entreprise. Du simple vers le complexe.</div>
+      </div>
+      <div class="step-card reveal">
+        <div class="step-num">02</div>
+        <div class="step-icon si-green">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        </div>
+        <div class="step-title">Code dans l'éditeur</div>
+        <div class="step-desc">Un éditeur intégré avec coloration syntaxique et prévisualisation en temps réel. Tu vois ton code prendre vie à chaque ligne que tu écris.</div>
+      </div>
+      <div class="step-card reveal">
+        <div class="step-num">03</div>
+        <div class="step-icon si-violet">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <div class="step-title">Valide et progresse</div>
+        <div class="step-desc">Le projet est validé, tu gagnes des XP, tu débloque le niveau suivant et un badge. Ta progression est sauvegardée automatiquement.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ══ PARCOURS ══ -->
+<section class="section" id="parcours">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">// les parcours</div>
+      <h2 class="section-title">Deux chemins.<br><span>Des dizaines de projets.</span></h2>
+      <p class="section-sub">Commence par le développement web ou plonge directement dans Python — chaque parcours avance à ton rythme et s'aligne avec tes objectifs.</p>
+    </div>
+    <div class="path-grid">
+
+      <!-- Web -->
+      <div class="path-card web reveal">
+        <div class="path-header">
+          <div class="path-icon pi-web">🌐</div>
+          <div>
+            <div class="path-name">Développement Web</div>
+            <span class="path-tag pt-web">HTML · CSS · JavaScript</span>
+          </div>
+        </div>
+        <p class="path-desc">Du titre HTML à l'application interactive — construis de vrais sites à chaque niveau. Chaque projet enseigne une compétence concrète du web.</p>
+        <div class="levels-row">
+          <div class="level-chip">
+            <span class="level-dot ld-beginner"></span>Débutant
+          </div>
+          <div class="level-chip">
+            <span class="level-dot ld-intermediate"></span>Intermédiaire
+          </div>
+          <div class="level-chip">
+            <span class="level-dot ld-advanced"></span>Avancé
+          </div>
+        </div>
+        <div style="margin:14px 0;font-size:.82rem;color:var(--muted)">
+          Exemple de projets : page perso · navbar animée · portfolio · site vitrine · landing page
+        </div>
+        <a href="#" class="path-link">
+          Voir les niveaux
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+
+      <!-- Python -->
+      <div class="path-card python reveal">
+        <div class="path-header">
+          <div class="path-icon pi-python">🐍</div>
+          <div>
+            <div class="path-name">Python</div>
+            <span class="path-tag pt-python">Data · IA · Cybersec · Automatisation</span>
+          </div>
+        </div>
+        <p class="path-desc">Maîtrise Python puis choisis ta spécialisation. Chaque domaine a ses propres projets pratiques alignés avec les métiers réels de la tech.</p>
+        <div class="python-domains">
+          <span class="domain-tag">Machine Learning</span>
+          <span class="domain-tag">Data Science</span>
+          <span class="domain-tag">Cybersécurité</span>
+          <span class="domain-tag">Intelligence Artificielle</span>
+          <span class="domain-tag">Automatisation</span>
+          <span class="domain-tag">Backend / Flask</span>
+        </div>
+        <a href="#" class="path-link" style="color:var(--green)">
+          Explorer Python
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ══ ÉDITEUR DÉMO ══ -->
+<section class="section editor-section" id="editeur">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">// éditeur intégré</div>
+      <h2 class="section-title">Tout dans le<br><span>navigateur.</span></h2>
+      <p class="section-sub">Aucune installation. L'éditeur DevKëf supporte la coloration syntaxique, l'autocomplétion et la prévisualisation en direct — exactement comme VS Code.</p>
+    </div>
+    <div class="editor-demo reveal">
+      <div class="editor-top">
+        <!-- HTML -->
+        <div class="editor-pane">
+          <div class="pane-bar">
+            <span class="pane-dot pd-html"></span>
+            <span class="pane-label">index.html</span>
+          </div>
+          <div class="pane-content"><span class="c-cm">&lt;!-- Niveau 4 : Carte de profil --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-attr">class</span>=<span class="c-val">"card"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;h2&gt;</span>Aminata Diallo<span class="c-tag">&lt;/h2&gt;</span>
+  <span class="c-tag">&lt;p&gt;</span>Développeuse Web<span class="c-tag">&lt;/p&gt;</span>
+  <span class="c-tag">&lt;button</span> <span class="c-attr">class</span>=<span class="c-val">"btn"</span><span class="c-tag">&gt;</span>
+    Me contacter
+  <span class="c-tag">&lt;/button&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span></div>
+        </div>
+        <!-- Prévisualisation -->
+        <div class="preview-pane">
+          <div class="pane-bar">
+            <span class="pane-dot pd-preview"></span>
+            <span class="pane-label" style="color:#374151">Prévisualisation — en direct</span>
+          </div>
+          <div class="preview-content">
+            <div class="prev-card">
+              <h2>Aminata Diallo</h2>
+              <p>Développeuse Web</p>
+            </div>
+            <button class="prev-btn">Me contacter</button>
+          </div>
+        </div>
+      </div>
+      <div class="editor-bottom">
+        <div class="score-display">
+          <div class="score-item">
+            <span class="score-dot sd-xp"></span>
+            <span class="score-val">840</span>
+            <span class="score-label">XP</span>
+          </div>
+          <div class="score-item">
+            <span class="score-dot sd-lvl"></span>
+            <span class="score-val">Niveau 4</span>
+            <span class="score-label">sur 12</span>
+          </div>
+          <div class="score-item" style="font-family:var(--mono);font-size:.72rem;color:var(--muted)">
+            2/3 objectifs ✓
+          </div>
+        </div>
+        <button class="validate-btn">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+          Valider le projet
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ══ STATS ══ -->
+<section class="section stats-section">
+  <div class="section-inner">
+    <div class="stats-grid">
+      <div class="stat-card reveal">
+        <div class="stat-num sn-orange">30+</div>
+        <div class="stat-label">Projets à construire dès<br>le lancement</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-num sn-green">4</div>
+        <div class="stat-label">Langages couverts :<br>HTML · CSS · JS · Python</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-num sn-violet">0</div>
+        <div class="stat-label">QCM. Uniquement des<br>projets concrets.</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-num sn-text">100%</div>
+        <div class="stat-label">Dans le navigateur.<br>Zéro installation.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ══ TÉMOIGNAGES ══ -->
+<section class="section testimonials-section">
+  <div class="section-inner">
+    <div class="reveal" style="text-align:center;max-width:520px;margin:0 auto 0">
+      <div class="section-label" style="text-align:center">// ils apprennent sur devkëf</div>
+      <h2 class="section-title" style="text-align:center">Ce qu'ils <span>construisent.</span></h2>
+    </div>
+    <div class="testimonials-grid">
+
+      <div class="testi-card reveal">
+        <div class="testi-quote">"</div>
+        <p class="testi-text">J'avais essayé d'autres plateformes mais je finissais toujours par m'ennuyer. Sur DevKëf j'ai construit mon premier vrai site en une semaine. Voir le résultat en direct ça change tout.</p>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:var(--orange);">AD</div>
+          <div>
+            <div class="testi-name">Aminata D.</div>
+            <div class="testi-role">Étudiante · Dakar</div>
+          </div>
+          <span class="testi-level">Niveau 6</span>
+        </div>
+      </div>
+
+      <div class="testi-card reveal">
+        <div class="testi-quote">"</div>
+        <p class="testi-text">Le parcours Python est exactement ce qu'il me fallait. Je fais du machine learning maintenant et chaque projet me fait progresser concrètement. La plateforme est bien pensée.</p>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:var(--violet);">MB</div>
+          <div>
+            <div class="testi-name">Mamadou B.</div>
+            <div class="testi-role">Lycéen · Thiès</div>
+          </div>
+          <span class="testi-level">Niveau 9</span>
+        </div>
+      </div>
+
+      <div class="testi-card reveal">
+        <div class="testi-quote">"</div>
+        <p class="testi-text">Ce que j'aime c'est que les projets ressemblent à de vrais sites qu'on voit tous les jours. J'ai même décroché ma première mission freelance grâce au portfolio que j'ai construit ici.</p>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:var(--green);color:var(--ink);">FK</div>
+          <div>
+            <div class="testi-name">Fatou K.</div>
+            <div class="testi-role">Freelance · Ziguinchor</div>
+          </div>
+          <span class="testi-level">Niveau 11</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ══ CTA FINAL ══ -->
+<section class="cta-section">
+  <div class="cta-inner">
+    <div class="cta-badge reveal">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      Commence dès aujourd'hui — c'est gratuit
+    </div>
+    <h2 class="cta-title reveal">Ton premier projet<br><span>t'attend.</span></h2>
+    <p class="cta-sub reveal">Rejoins DevKëf, choisis ton parcours et lance ton premier projet en moins de 5 minutes. Pas de carte bancaire, pas d'installation.</p>
+    <div class="cta-btn-group reveal">
+      <a href="dashboard/index.html" class="btn-primary btn-large">
+        Créer mon compte gratuit
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <a href="#parcours" class="btn-ghost btn-large">Voir les parcours</a>
+    </div>
+    <div class="cta-small reveal">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Aucune carte requise · Accessible sur mobile · En français
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ══ FOOTER ══ -->
+<footer class="footer">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="logo">
+        <span class="logo-name">Dev<span>Këf</span></span>
+      </div>
+      <p>La plateforme d'apprentissage par les projets pour les développeurs africains et francophones. Apprends en construisant.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Parcours</h4>
+      <ul>
+        <li><a href="#">Développement Web</a></li>
+        <li><a href="#">Python · IA</a></li>
+        <li><a href="#">Data Science</a></li>
+        <li><a href="#">Cybersécurité</a></li>
+        <li><a href="#">Automatisation</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Plateforme</h4>
+      <ul>
+        <li><a href="#">Éditeur de code</a></li>
+        <li><a href="#">Projets</a></li>
+        <li><a href="#">Classement</a></li>
+        <li><a href="#">Communauté</a></li>
+        <li><a href="#">Blog tech</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>À propos</h4>
+      <ul>
+        <li><a href="#">Notre histoire</a></li>
+        <li><a href="#">Contribuer</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Mentions légales</a></li>
+        <li><a href="#">Confidentialité</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 DevKëf. Tous droits réservés.</span>
+    <div class="footer-made">
+      Fait avec 💙 au Sénégal <span class="flag">🇸🇳</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Header scroll
+  window.addEventListener('scroll', () => {
+    document.getElementById('header')
+      .classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  // Scroll reveal
+  const obs = new IntersectionObserver(
+    entries => entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('visible');
+    }),
+    { threshold: 0.12 }
+  );
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+
+</body>
+</html>
