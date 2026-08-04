@@ -1,0 +1,1505 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DevKëf — Parcours Développement Web</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+:root {
+  --ink:    #0A0E1A;
+  --ink2:   #111827;
+  --ink3:   #1C2333;
+  --surface:#1A2236;
+  --border: #1E2D45;
+  --borderL:#243450;
+  --orange: #FF6B35;
+  --o-dim:  rgba(255,107,53,.12);
+  --o-glow: rgba(255,107,53,.22);
+  --green:  #00C896;
+  --g-dim:  rgba(0,200,150,.1);
+  --violet: #7C3AED;
+  --v-dim:  rgba(124,58,237,.12);
+  --yellow: #FFD60A;
+  --y-dim:  rgba(255,214,10,.1);
+  --red:    #FF4757;
+  --text:   #F0F4FF;
+  --muted:  #7A8BAD;
+  --muted2: #4A5C78;
+  --mono:   'Fira Code', monospace;
+  --display:'Space Grotesk', sans-serif;
+  --body:   'Inter', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--ink);
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 15px;
+  line-height: 1.65;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+a { text-decoration: none; color: inherit; }
+
+/* ══ TOPBAR ══ */
+.topbar {
+  height: 58px;
+  background: var(--ink2);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 clamp(14px,4vw,48px);
+  position: sticky;
+  top: 0;
+  z-index: 60;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1rem;
+}
+.logo img { width: 32px; height: 32px; }
+.logo span { color: var(--orange); }
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.xp-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: .72rem;
+  color: var(--orange);
+  background: var(--o-dim);
+  border: 1px solid rgba(255,107,53,.2);
+  padding: 5px 12px;
+  border-radius: 100px;
+}
+.streak-pill {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--mono);
+  font-size: .72rem;
+  color: var(--yellow);
+  background: var(--y-dim);
+  border: 1px solid rgba(255,214,10,.2);
+  padding: 5px 12px;
+  border-radius: 100px;
+}
+.btn-dash {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--ink3);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  padding: 7px 14px;
+  border-radius: 8px;
+  font-size: .78rem;
+  font-weight: 600;
+  font-family: var(--display);
+  transition: color .2s, border-color .2s;
+  cursor: pointer;
+}
+.btn-dash:hover { color: var(--text); border-color: var(--borderL); }
+
+/* ══ HERO SECTION ══ */
+.hero {
+  padding: clamp(32px,5vw,64px) clamp(14px,4vw,48px) 0;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.hero-crumb {
+  font-family: var(--mono);
+  font-size: .68rem;
+  color: var(--muted2);
+  margin-bottom: 10px;
+  letter-spacing: .5px;
+}
+.hero-title {
+  font-family: var(--display);
+  font-size: clamp(1.7rem,4vw,2.6rem);
+  font-weight: 700;
+  letter-spacing: -.03em;
+  line-height: 1.15;
+  margin-bottom: 10px;
+}
+.hero-title span { color: var(--orange); }
+.hero-sub {
+  font-size: .95rem;
+  color: var(--muted);
+  max-width: 56ch;
+  line-height: 1.7;
+}
+
+/* Stats globales */
+.global-stats {
+  display: flex;
+  gap: 28px;
+  flex-wrap: wrap;
+  margin: 24px 0 0;
+  padding: 20px 24px;
+  background: var(--ink2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+.gstat { display: flex; flex-direction: column; gap: 2px; }
+.gstat-num {
+  font-family: var(--display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1;
+}
+.gn-orange { color: var(--orange); }
+.gn-green  { color: var(--green); }
+.gn-violet { color: var(--violet); }
+.gn-yellow { color: var(--yellow); }
+.gstat-label { font-size: .72rem; color: var(--muted); }
+.gstat-sep { width: 1px; background: var(--border); align-self: stretch; margin: 2px 0; }
+
+/* XP Total progress */
+.xp-total-bar {
+  flex: 1;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  border-left: 1px solid var(--border);
+  padding-left: 24px;
+  margin-left: 4px;
+}
+.xp-bar-label {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--mono);
+  font-size: .68rem;
+  color: var(--muted);
+}
+.xp-bar-label span { color: var(--orange); }
+.xp-bar-track {
+  height: 6px;
+  background: var(--border);
+  border-radius: 100px;
+  overflow: hidden;
+}
+.xp-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--orange), #FF9A6C);
+  border-radius: 100px;
+  transition: width 1.2s cubic-bezier(.34,1.56,.64,1);
+}
+
+/* ══ CONTENU PRINCIPAL ══ */
+.main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 36px clamp(14px,4vw,48px) 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+/* ══ MONDE ══ */
+.monde {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.monde-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.monde-badge {
+  font-family: var(--mono);
+  font-size: .68rem;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 100px;
+  border: 1px solid;
+  white-space: nowrap;
+}
+.mb-green  { background: var(--g-dim); color: var(--green);  border-color: rgba(0,200,150,.25); }
+.mb-orange { background: var(--o-dim); color: var(--orange); border-color: rgba(255,107,53,.25); }
+.mb-violet { background: var(--v-dim); color: #A78BFA;       border-color: rgba(124,58,237,.25); }
+
+.monde-title {
+  font-family: var(--display);
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+.monde-sub { font-size: .8rem; color: var(--muted); margin-top: 1px; }
+.monde-progress-wrap {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.monde-prog-bar {
+  width: 110px;
+  height: 5px;
+  background: var(--border);
+  border-radius: 100px;
+  overflow: hidden;
+}
+.monde-prog-fill { height: 100%; border-radius: 100px; }
+.mpf-green  { background: var(--green); }
+.mpf-orange { background: var(--orange); }
+.mpf-violet { background: var(--violet); }
+.monde-prog-txt {
+  font-family: var(--mono);
+  font-size: .68rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+/* Grille de niveaux */
+.levels-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+}
+
+/* ══ CARTE DE NIVEAU ══ */
+.level-card {
+  background: var(--ink2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+  transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+/* États */
+.level-card.done {
+  border-color: rgba(0,200,150,.3);
+}
+.level-card.done:hover {
+  transform: translateY(-3px);
+  border-color: var(--green);
+  box-shadow: 0 8px 28px rgba(0,200,150,.1);
+}
+.level-card.current {
+  border-color: var(--orange);
+  box-shadow: 0 0 0 1px rgba(255,107,53,.15), 0 8px 28px var(--o-glow);
+}
+.level-card.current:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 0 1px rgba(255,107,53,.3), 0 12px 36px var(--o-glow);
+}
+.level-card.locked {
+  opacity: .48;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Bande couleur en haut */
+.card-stripe {
+  height: 3px;
+  width: 100%;
+}
+.cs-green  { background: var(--green); }
+.cs-orange { background: linear-gradient(90deg, var(--orange), #FF9A6C); }
+.cs-violet { background: var(--violet); }
+.cs-lock   { background: var(--border); }
+
+/* Corps carte */
+.card-body { padding: 16px; flex: 1; display: flex; flex-direction: column; gap: 10px; }
+
+.card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+.card-icon {
+  width: 42px; height: 42px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+.ci-green  { background: var(--g-dim); }
+.ci-orange { background: var(--o-dim); }
+.ci-violet { background: var(--v-dim); }
+.ci-lock   { background: var(--surface); }
+
+.card-num {
+  font-family: var(--mono);
+  font-size: .65rem;
+  color: var(--muted2);
+  letter-spacing: 1px;
+}
+.card-status-badge {
+  font-family: var(--mono);
+  font-size: .62rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 100px;
+  white-space: nowrap;
+}
+.csb-done    { background: var(--g-dim);   color: var(--green); border: 1px solid rgba(0,200,150,.2); }
+.csb-current { background: var(--o-dim);   color: var(--orange); border: 1px solid rgba(255,107,53,.2); }
+.csb-lock    { background: var(--surface); color: var(--muted2); border: 1px solid var(--border); }
+.csb-new     { background: var(--v-dim);   color: #A78BFA; border: 1px solid rgba(124,58,237,.2); }
+
+.card-title {
+  font-family: var(--display);
+  font-size: .95rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+.card-desc {
+  font-size: .8rem;
+  color: var(--muted);
+  line-height: 1.6;
+  flex: 1;
+}
+
+/* Tags de compétences */
+.card-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+.ctag {
+  font-family: var(--mono);
+  font-size: .65rem;
+  padding: 3px 7px;
+  border-radius: 5px;
+  background: var(--ink3);
+  border: 1px solid var(--border);
+  color: var(--muted);
+}
+
+/* Footer carte */
+.card-footer {
+  padding: 12px 16px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  background: var(--ink);
+}
+.card-xp {
+  font-family: var(--mono);
+  font-size: .72rem;
+  color: var(--orange);
+}
+.level-card.done .card-xp { color: var(--green); }
+.level-card.locked .card-xp { color: var(--muted2); }
+
+.btn-level {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--display);
+  font-size: .75rem;
+  font-weight: 700;
+  padding: 7px 14px;
+  border-radius: 7px;
+  border: none;
+  cursor: pointer;
+  transition: transform .18s, box-shadow .18s;
+  white-space: nowrap;
+}
+.btn-level:hover { transform: translateY(-1px); }
+.btn-start-lvl {
+  background: var(--orange);
+  color: var(--ink);
+}
+.btn-start-lvl:hover { box-shadow: 0 5px 14px var(--o-glow); }
+.btn-redo {
+  background: var(--g-dim);
+  color: var(--green);
+  border: 1px solid rgba(0,200,150,.2) !important;
+}
+.btn-redo:hover { box-shadow: 0 5px 14px rgba(0,200,150,.2); }
+.btn-locked {
+  background: var(--surface);
+  color: var(--muted2);
+  cursor: not-allowed;
+  border: 1px solid var(--border) !important;
+}
+
+/* Badge complétion sur la carte */
+.done-overlay {
+  position: absolute;
+  top: 12px; right: 12px;
+  width: 26px; height: 26px;
+  background: var(--green);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .75rem;
+  color: var(--ink);
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(0,200,150,.35);
+}
+.lock-overlay {
+  position: absolute;
+  top: 12px; right: 12px;
+  font-size: .95rem;
+  opacity: .5;
+}
+.current-pulse {
+  position: absolute;
+  top: 12px; right: 12px;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--orange);
+  animation: cpulse 2s ease-in-out infinite;
+}
+@keyframes cpulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(255,107,53,.5); }
+  50%     { box-shadow: 0 0 0 6px rgba(255,107,53,0); }
+}
+
+/* ══ BARRE MONDE VERROUILLÉE ══ */
+.locked-monde-banner {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  background: var(--ink2);
+  border: 1px dashed var(--border);
+  border-radius: 14px;
+  opacity: .6;
+}
+.lmb-icon { font-size: 1.4rem; flex-shrink: 0; }
+.lmb-title {
+  font-family: var(--display);
+  font-size: .9rem;
+  font-weight: 700;
+  margin-bottom: 3px;
+  color: var(--muted);
+}
+.lmb-sub { font-size: .78rem; color: var(--muted2); }
+.lmb-req {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: .68rem;
+  color: var(--muted2);
+  white-space: nowrap;
+  text-align: right;
+}
+
+/* ══ MODAL NIVEAU COMPLÉTÉ ══ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.7);
+  backdrop-filter: blur(8px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .3s ease;
+  padding: 16px;
+}
+.modal-overlay.show {
+  opacity: 1;
+  pointer-events: all;
+}
+.modal {
+  background: var(--ink2);
+  border: 1px solid var(--borderL);
+  border-radius: 20px;
+  padding: 32px;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  transform: scale(.92) translateY(16px);
+  transition: transform .35s cubic-bezier(.34,1.56,.64,1);
+  box-shadow: 0 24px 60px rgba(0,0,0,.5);
+  position: relative;
+}
+.modal-overlay.show .modal { transform: scale(1) translateY(0); }
+.modal-emoji { font-size: 3.2rem; margin-bottom: 14px; }
+.modal-title {
+  font-family: var(--display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.modal-title span { color: var(--orange); }
+.modal-sub { font-size: .88rem; color: var(--muted); line-height: 1.65; margin-bottom: 20px; }
+.modal-xp {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--orange);
+  background: var(--o-dim);
+  border: 1px solid rgba(255,107,53,.2);
+  padding: 8px 20px;
+  border-radius: 100px;
+  margin-bottom: 24px;
+}
+.modal-btns { display: flex; gap: 10px; }
+.modal-btn-next {
+  flex: 1;
+  background: var(--orange);
+  color: var(--ink);
+  border: none;
+  padding: 12px;
+  border-radius: 10px;
+  font-family: var(--display);
+  font-size: .9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s;
+}
+.modal-btn-next:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px var(--o-glow);
+}
+.modal-btn-close {
+  background: var(--ink3);
+  color: var(--muted);
+  border: 1px solid var(--border);
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-family: var(--display);
+  font-size: .88rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ══ CONFETTI ══ */
+.confetti-wrap {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 300;
+}
+.confetti-piece {
+  position: absolute;
+  border-radius: 2px;
+  animation: fall linear forwards;
+}
+@keyframes fall {
+  0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+/* ══ TOAST ══ */
+.toast {
+  position: fixed;
+  bottom: 24px; right: 24px;
+  background: var(--ink3);
+  border: 1px solid var(--borderL);
+  border-radius: 12px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 260px;
+  max-width: 340px;
+  box-shadow: 0 12px 32px rgba(0,0,0,.4);
+  z-index: 100;
+  transform: translateY(80px);
+  opacity: 0;
+  transition: transform .35s cubic-bezier(.34,1.56,.64,1), opacity .3s;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast-icon { font-size: 1.2rem; flex-shrink: 0; }
+.toast-title { font-family: var(--display); font-size: .85rem; font-weight: 700; }
+.toast-msg   { font-size: .75rem; color: var(--muted); margin-top: 2px; }
+
+/* ══ RESPONSIVE ══ */
+@media (max-width: 768px) {
+  .topbar { padding: 0 14px; }
+  .xp-pill, .streak-pill { display: none; }
+  .monde-progress-wrap { display: none; }
+  .levels-grid { grid-template-columns: 1fr; }
+  .global-stats { gap: 16px; }
+  .xp-total-bar { display: none; }
+}
+@media (max-width: 480px) {
+  .gstat-sep { display: none; }
+  .modal { padding: 24px 16px; }
+}
+  </style>
+</head>
+<body>
+
+<!-- ══ TOPBAR ══ -->
+<header class="topbar">
+  <a href="../index.html" class="logo">
+    <img src="../image/logo-mark.png" alt="DevKëf logo"/>
+    Dev<span>Këf</span>
+  </a>
+  <div class="topbar-right">
+    <div class="xp-pill">★ <span id="total-xp">0</span> XP</div>
+    <div class="streak-pill">🔥 <span id="streak">0</span> jours</div>
+    <a href="../dashboard.html" class="btn-dash">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      Dashboard
+    </a>
+  </div>
+</header>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-crumb">// Développement Web · HTML · CSS · JavaScript</div>
+  <h1 class="hero-title">Ton parcours <span>Développement Web</span></h1>
+  <p class="hero-sub">12 niveaux, 3 mondes, 1 840 XP disponibles. Chaque niveau est un projet réel à construire — complète-le pour débloquer le suivant.</p>
+
+  <div class="global-stats">
+    <div class="gstat">
+      <div class="gstat-num gn-orange" id="stat-completed">0</div>
+      <div class="gstat-label">Niveaux complétés</div>
+    </div>
+    <div class="gstat-sep"></div>
+    <div class="gstat">
+      <div class="gstat-num gn-green" id="stat-xp">0</div>
+      <div class="gstat-label">XP gagnés</div>
+    </div>
+    <div class="gstat-sep"></div>
+    <div class="gstat">
+      <div class="gstat-num gn-violet">12</div>
+      <div class="gstat-label">Projets au total</div>
+    </div>
+    <div class="gstat-sep"></div>
+    <div class="gstat">
+      <div class="gstat-num gn-yellow">1 840</div>
+      <div class="gstat-label">XP disponibles</div>
+    </div>
+    <div class="xp-total-bar">
+      <div class="xp-bar-label">
+        <span>Progression totale</span>
+        <span id="xp-pct-label">0 / 1 840 XP</span>
+      </div>
+      <div class="xp-bar-track">
+        <div class="xp-bar-fill" id="xp-bar-fill" style="width:0%"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ MAIN ══ -->
+<main class="main">
+
+  <!-- ══════════════════════════
+       MONDE 1 — Fondations HTML
+  ══════════════════════════ -->
+  <div class="monde" id="monde-1">
+    <div class="monde-header">
+      <div class="monde-badge mb-green">🌱 Monde 1</div>
+      <div>
+        <div class="monde-title">Les fondations HTML</div>
+        <div class="monde-sub">4 niveaux · 480 XP disponibles</div>
+      </div>
+      <div class="monde-progress-wrap">
+        <div class="monde-prog-bar">
+          <div class="monde-prog-fill mpf-green" id="m1-prog" style="width:0%"></div>
+        </div>
+        <span class="monde-prog-txt" id="m1-txt">0 / 4</span>
+      </div>
+    </div>
+
+    <div class="levels-grid">
+
+      <!-- Niveau 1 -->
+      <div class="level-card" id="card-1" data-level="1" data-xp="80" data-next="2">
+        <div class="card-stripe cs-lock" id="stripe-1"></div>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-icon ci-lock" id="icon-1">📄</div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+              <div class="card-num">NIVEAU 01</div>
+              <div class="card-status-badge csb-lock" id="badge-1">Verrouillé</div>
+            </div>
+          </div>
+          <div class="card-title">Ma première page</div>
+          <div class="card-desc">Crée une page de présentation personnelle avec titre, paragraphe et liste. Ta toute première page HTML réelle.</div>
+          <div class="card-tags">
+            <span class="ctag">h1 · h2</span>
+            <span class="ctag">p</span>
+            <span class="ctag">ul · li</span>
+            <span class="ctag">structure HTML</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="card-xp" id="xp-1">★ 80 XP</div>
+          <button class="btn-level btn-locked" id="btn-1" onclick="goToLevel(1)">Verrouillé 🔒</button>
+        </div>
+      </div>
+
+      <!-- Niveau 2 -->
+      <div class="level-card locked" id="card-2" data-level="2" data-xp="100" data-next="3">
+        <div class="card-stripe cs-lock" id="stripe-2"></div>
+        <span class="lock-overlay" id="lock-2">🔒</span>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-icon ci-lock" id="icon-2">🔗</div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+              <div class="card-num">NIVEAU 02</div>
+              <div class="card-status-badge csb-lock" id="badge-2">Verrouillé</div>
+            </div>
+          </div>
+          <div class="card-title">Ma carte de visite</div>
+          <div class="card-desc">Nom, photo, liens réseaux sociaux et email. Premier usage des liens hypertextes et des images.</div>
+          <div class="card-tags">
+            <span class="ctag">a href</span>
+            <span class="ctag">img</span>
+            <span class="ctag">section</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="card-xp" id="xp-2">🔒 100 XP</div>
+          <button class="btn-level btn-locked" id="btn-2" onclick="goToLevel(2)">Verrouillé 🔒</button>
+        </div>
+      </div>
+
+      <!-- Niveau 3 -->
+      <div class="level-card locked" id="card-3" data-level="3" data-xp="120" data-next="4">
+        <div class="card-stripe cs-lock" id="stripe-3"></div>
+        <span class="lock-overlay" id="lock-3">🔒</span>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-icon ci-lock" id="icon-3">🍽️</div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+              <div class="card-num">NIVEAU 03</div>
+              <div class="card-status-badge csb-lock" id="badge-3">Verrouillé</div>
+            </div>
+          </div>
+          <div class="card-title">Menu de restaurant</div>
+          <div class="card-desc">Tableau de plats avec noms, descriptions et prix. Concret, local, idéal pour apprendre les tableaux HTML.</div>
+          <div class="card-tags">
+            <span class="ctag">table</span>
+            <span class="ctag">thead</span>
+            <span class="ctag">tr · td</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="card-xp" id="xp-3">🔒 120 XP</div>
+          <button class="btn-level btn-locked" id="btn-3" onclick="goToLevel(3)">Verrouillé 🔒</button>
+        </div>
+      </div>
+
+      <!-- Niveau 4 -->
+      <div class="level-card locked" id="card-4" data-level="4" data-xp="180" data-next="5">
+        <div class="card-stripe cs-lock" id="stripe-4"></div>
+        <span class="lock-overlay" id="lock-4">🔒</span>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-icon ci-lock" id="icon-4">📝</div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+              <div class="card-num">NIVEAU 04</div>
+              <div class="card-status-badge csb-lock" id="badge-4">Verrouillé</div>
+            </div>
+          </div>
+          <div class="card-title">Formulaire de contact</div>
+          <div class="card-desc">Nom, email, message, bouton envoyer. Premier formulaire HTML complet avec validation des champs.</div>
+          <div class="card-tags">
+            <span class="ctag">form</span>
+            <span class="ctag">input</span>
+            <span class="ctag">textarea</span>
+            <span class="ctag">button</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="card-xp" id="xp-4">🔒 180 XP</div>
+          <button class="btn-level btn-locked" id="btn-4" onclick="goToLevel(4)">Verrouillé 🔒</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════
+       MONDE 2 — CSS & Mise en page
+  ══════════════════════════ -->
+  <div class="monde" id="monde-2">
+    <div class="monde-header">
+      <div class="monde-badge mb-orange">🎨 Monde 2</div>
+      <div>
+        <div class="monde-title">CSS & Mise en page</div>
+        <div class="monde-sub">5 niveaux · 700 XP disponibles</div>
+      </div>
+      <div class="monde-progress-wrap">
+        <div class="monde-prog-bar">
+          <div class="monde-prog-fill mpf-orange" id="m2-prog" style="width:0%"></div>
+        </div>
+        <span class="monde-prog-txt" id="m2-txt">0 / 5</span>
+      </div>
+    </div>
+
+    <!-- Bannière verrouillée (cachée quand le monde est débloqué) -->
+    <div class="locked-monde-banner" id="m2-banner">
+      <div class="lmb-icon">🔒</div>
+      <div>
+        <div class="lmb-title">Monde 2 verrouillé</div>
+        <div class="lmb-sub">Complète les 4 niveaux du Monde 1 pour débloquer le CSS</div>
+      </div>
+      <div class="lmb-req">Requis : 4/4 niveaux</div>
+    </div>
+
+    <div class="levels-grid" id="m2-grid" style="display:none">
+
+      <!-- Niveau 5 -->
+      <div class="level-card locked" id="card-5" data-level="5" data-xp="100" data-next="6">
+        <div class="card-stripe cs-lock" id="stripe-5"></div>
+        <span class="lock-overlay" id="lock-5">🔒</span>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-icon ci-lock" id="icon-5">🎨</div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+              <div class="card-num">NIVEAU 05</div>
+              <div class="card-status-badge csb-lock" id="badge-5">Verrouillé</div>
+            </div>
+          </div>
+          <div class="card-title">Carte de profil stylisée</div>
+          <div class="card-desc">Première carte CSS avec couleurs, polices Google Fonts, border-radius et transition hover sur le bouton.</div>
+          <div class="card-tags">
+            <span class="ctag">color</span>
+            <span class="ctag">font-family</span>
+            <span class="ctag">transition</span>
+            <span class="ctag">:hover</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="card-xp" id="xp-5">🔒 100 XP</div>
+          <button class="btn-level btn-locked" id="btn-5" onclick="goToLevel(5)">Verrouillé 🔒</button>
+        </div>
+      </div>
+
+      <!-- Niveau 6 -->
+      <div class="level-card locked" id="card-6" data-level="6" data-xp="120" data-next="7">
+        <div class="card-stripe cs-lock" id="stripe-6"></div>
+        <span class="lock-overlay" id="lock-6">🔒</span>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-icon ci-lock" id="icon-6">🧭</div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+              <div class="card-num">NIVEAU 06</div>
+              <div class="card-status-badge csb-lock" id="badge-6">Verrouillé</div>
+            </div>
+          </div>
+          <div class="card-title">Navbar responsive</div>
+          <div class="card-desc">Barre de navigation fixe avec logo et liens. Hamburger CSS pur sur mobile avec la technique checkbox.</div>
+          <div class="card-tags">
+            <span class="ctag">flexbox</span>
+            <span class="ctag">position: fixed</span>
+            <span class="ctag">media query</span>
+            <span class="ctag">:checked</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="card-xp" id="xp-6">🔒 120 XP</div>
+          <button class="btn-level btn-locked" id="btn-6" onclick="goToLevel(6)">Verrouillé 🔒</button>
+        </div>
+      </div>
+
+      <!-- Niveau 7 -->
+      <div class="level-card locked" id="card-7" data-level="7" data-xp="140" data-next="8">
+        <div class="card-stripe cs-lock" id="stripe-7"></div>
+        <span class="lock-overlay" id="lock-7">🔒</span>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-icon ci-lock" id="icon-7">🛍️</div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+              <div class="card-num">NIVEAU 07</div>
+              <div class="card-status-badge csb-lock" id="badge-7">Verrouillé</div>
+            </div>
+          </div>
+          <div class="card-title">Galerie de produits</div>
+          <div class="card-desc">Grille de 6 cartes produits avec image, nom, prix et bouton. Effet de zoom au hover sur les images.</div>
+          <div class="card-tags">
+            <span class="ctag">CSS Grid</span>
+            <span class="ctag">aspect-ratio</span>
+            <span class="ctag">object-fit</span>
+            <span class="ctag">transform</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="card-xp" id="xp-7">🔒 140 XP</div>
+          <button class="btn-level btn-locked" id="btn-7" onclick="goToLevel(7)">Verrouillé 🔒</button>
+        </div>
+      </div>
+
+      <!-- Niveau 8 -->
+      <div class="level-card locked" id="card-8" data-level="8" data-xp="160" data-next="9">
+        <div class="card-stripe cs-lock" id="stripe-8"></div>
+        <span class="lock-overlay" id="lock-8">🔒</span>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-icon ci-lock" id="icon-8">🌅</div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+              <div class="card-num">NIVEAU 08</div>
+              <div class="card-status-badge csb-lock" id="badge-8">Verrouillé</div>
+            </div>
+          </div>
+          <div class="card-title">Hero section animée</div>
+          <div class="card-desc">Grande section d'accueil avec image de fond, titre, sous-titre et bouton. Animation d'entrée fade-up au chargement.</div>
+          <div class="card-tags">
+            <span class="ctag">@keyframes</span>
+            <span class="ctag">animation</span>
+            <span class="ctag">clamp()</span>
+            <span class="ctag">linear-gradient</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="card-xp" id="xp-8">🔒 160 XP</div>
+          <button class="btn-level btn-locked" id="btn-8" onclick="goToLevel(8)">Verrouillé 🔒</button>
+        </div>
+      </div>
+
+      <!-- Niveau 9 -->
+      <div class="level-card locked" id="card-9" data-level="9" data-xp="180" data-next="10">
+        <div class="card-stripe cs-lock" id="stripe-9"></div>
+        <span class="lock-overlay" id="lock-9">🔒</span>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-icon ci-lock" id="icon-9">🏪</div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+              <div class="card-num">NIVEAU 09</div>
+              <div class="card-status-badge csb-lock" id="badge-9">Verrouillé</div>
+            </div>
+          </div>
+          <div class="card-title">Page de boutique</div>
+          <div class="card-desc">Mini-site complet : hero + navbar + grille produits + footer. Premier site responsive avec variables CSS.</div>
+          <div class="card-tags">
+            <span class="ctag">var() · :root</span>
+            <span class="ctag">mobile-first</span>
+            <span class="ctag">overflow</span>
+            <span class="ctag">box-shadow</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="card-xp" id="xp-9">🔒 180 XP</div>
+          <button class="btn-level btn-locked" id="btn-9" onclick="goToLevel(9)">Verrouillé 🔒</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════
+       MONDE 3 — Projets complets
+  ══════════════════════════ -->
+  <div class="monde" id="monde-3">
+    <div class="monde-header">
+      <div class="monde-badge mb-violet">🚀 Monde 3</div>
+      <div>
+        <div class="monde-title">Projets complets</div>
+        <div class="monde-sub">3 niveaux · 660 XP disponibles</div>
+      </div>
+      <div class="monde-progress-wrap">
+        <div class="monde-prog-bar">
+          <div class="monde-prog-fill mpf-violet" id="m3-prog" style="width:0%"></div>
+        </div>
+        <span class="monde-prog-txt" id="m3-txt">0 / 3</span>
+      </div>
+    </div>
+
+    <div class="locked-monde-banner" id="m3-banner">
+      <div class="lmb-icon">🔒</div>
+      <div>
+        <div class="lmb-title">Monde 3 verrouillé</div>
+        <div class="lmb-sub">Complète les 9 premiers niveaux pour accéder aux projets complets</div>
+      </div>
+      <div class="lmb-req">Requis : 9/9 niveaux</div>
+    </div>
+
+    <div class="levels-grid" id="m3-grid" style="display:none">
+
+      <!-- Niveau 10 -->
+      <div class="level-card locked" id="card-10" data-level="10" data-xp="180" data-next="11">
+        <div class="card-stripe cs-lock" id="stripe-10"></div>
+        <span class="lock-overlay" id="lock-10">🔒</span>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-icon ci-lock" id="icon-10">💼</div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+              <div class="card-num">NIVEAU 10</div>
+              <div class="card-status-badge csb-lock" id="badge-10">Verrouillé</div>
+            </div>
+          </div>
+          <div class="card-title">Portfolio personnel</div>
+          <div class="card-desc">Site complet : hero, projets, compétences, contact. Ton vrai premier portfolio à montrer aux clients.</div>
+          <div class="card-tags">
+            <span class="ctag">multi-sections</span>
+            <span class="ctag">scroll-behavior</span>
+            <span class="ctag">backdrop-filter</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="card-xp" id="xp-10">🔒 180 XP</div>
+          <button class="btn-level btn-locked" id="btn-10" onclick="goToLevel(10)">Verrouillé 🔒</button>
+        </div>
+      </div>
+
+      <!-- Niveau 11 -->
+      <div class="level-card locked" id="card-11" data-level="11" data-xp="220" data-next="12">
+        <div class="card-stripe cs-lock" id="stripe-11"></div>
+        <span class="lock-overlay" id="lock-11">🔒</span>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-icon ci-lock" id="icon-11">🏢</div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+              <div class="card-num">NIVEAU 11</div>
+              <div class="card-status-badge csb-lock" id="badge-11">Verrouillé</div>
+            </div>
+          </div>
+          <div class="card-title">Site d'entreprise</div>
+          <div class="card-desc">Site vitrine 3 pages : accueil, services, contact. Exactement ce que demandent les petites entreprises locales.</div>
+          <div class="card-tags">
+            <span class="ctag">multi-pages</span>
+            <span class="ctag">:is() · :has()</span>
+            <span class="ctag">clip-path</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="card-xp" id="xp-11">🔒 220 XP</div>
+          <button class="btn-level btn-locked" id="btn-11" onclick="goToLevel(11)">Verrouillé 🔒</button>
+        </div>
+      </div>
+
+      <!-- Niveau 12 -->
+      <div class="level-card locked" id="card-12" data-level="12" data-xp="260" data-next="null">
+        <div class="card-stripe cs-lock" id="stripe-12"></div>
+        <span class="lock-overlay" id="lock-12">🔒</span>
+        <div class="card-body">
+          <div class="card-top">
+            <div class="card-icon ci-lock" id="icon-12">🚀</div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+              <div class="card-num">NIVEAU 12</div>
+              <div class="card-status-badge csb-lock" id="badge-12">Verrouillé</div>
+            </div>
+          </div>
+          <div class="card-title">Landing page moderne</div>
+          <div class="card-desc">Hero animé, témoignages, section tarifs, CTA final. Niveau final — proche de XLauto en complexité.</div>
+          <div class="card-tags">
+            <span class="ctag">CSS avancé</span>
+            <span class="ctag">scroll-reveal</span>
+            <span class="ctag">glassmorphism</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="card-xp" id="xp-12">🔒 260 XP</div>
+          <button class="btn-level btn-locked" id="btn-12" onclick="goToLevel(12)">Verrouillé 🔒</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<!-- ══ MODAL SUCCÈS ══ -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-emoji" id="modal-emoji">🎉</div>
+    <div class="modal-title" id="modal-title">Niveau <span id="modal-num">1</span> complété !</div>
+    <div class="modal-sub" id="modal-sub">Tu as maîtrisé les bases HTML. Continue sur ta lancée !</div>
+    <div class="modal-xp" id="modal-xp">★ +80 XP gagnés</div>
+    <div class="modal-btns">
+      <button class="modal-btn-close" onclick="closeModal()">Rester ici</button>
+      <button class="modal-btn-next" id="modal-next-btn" onclick="goToNextLevel()">
+        Niveau suivant →
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ CONFETTI ══ -->
+<div class="confetti-wrap" id="confetti"></div>
+
+<!-- ══ TOAST ══ -->
+<div class="toast" id="toast">
+  <div class="toast-icon" id="toast-icon">🔒</div>
+  <div>
+    <div class="toast-title" id="toast-title"></div>
+    <div class="toast-msg"   id="toast-msg"></div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════
+   DONNÉES DES 12 NIVEAUX
+══════════════════════════════════════════════ */
+const LEVELS = {
+  1:  { xp: 80,  monde: 1, path: 'niveau-1/index.html',  stripe: 'cs-green',  icon: 'ci-green',  next: 2   },
+  2:  { xp: 100, monde: 1, path: 'niveau-2/index.html',  stripe: 'cs-green',  icon: 'ci-green',  next: 3   },
+  3:  { xp: 120, monde: 1, path: 'niveau-3/index.html',  stripe: 'cs-green',  icon: 'ci-green',  next: 4   },
+  4:  { xp: 180, monde: 1, path: 'niveau-4/index.html',  stripe: 'cs-green',  icon: 'ci-green',  next: 5   },
+  5:  { xp: 100, monde: 2, path: 'niveau-5/index.html',  stripe: 'cs-orange', icon: 'ci-orange', next: 6   },
+  6:  { xp: 120, monde: 2, path: 'niveau-6/index.html',  stripe: 'cs-orange', icon: 'ci-orange', next: 7   },
+  7:  { xp: 140, monde: 2, path: 'niveau-7/index.html',  stripe: 'cs-orange', icon: 'ci-orange', next: 8   },
+  8:  { xp: 160, monde: 2, path: 'niveau-8/index.html',  stripe: 'cs-orange', icon: 'ci-orange', next: 9   },
+  9:  { xp: 180, monde: 2, path: 'niveau-9/index.html',  stripe: 'cs-orange', icon: 'ci-orange', next: 10  },
+  10: { xp: 180, monde: 3, path: 'niveau-10/index.html', stripe: 'cs-violet', icon: 'ci-violet', next: 11  },
+  11: { xp: 220, monde: 3, path: 'niveau-11/index.html', stripe: 'cs-violet', icon: 'ci-violet', next: 12  },
+  12: { xp: 260, monde: 3, path: 'niveau-12/index.html', stripe: 'cs-violet', icon: 'ci-violet', next: null },
+};
+
+const MONDE_SIZES = { 1: 4, 2: 5, 3: 3 };
+const MONDE_UNLOCK = { 1: 0, 2: 4, 3: 9 }; // nb niveaux requis pour débloquer
+
+/* ══════════════════════════════════════════════
+   ÉTAT — localStorage
+   Structure : { completed: [1,2,...], xp: 240, streak: 3 }
+══════════════════════════════════════════════ */
+function loadState() {
+  try {
+    const raw = localStorage.getItem('devkef_progress');
+    if (raw) return JSON.parse(raw);
+  } catch(e) {}
+  return { completed: [], xp: 0, streak: 0 };
+}
+
+function saveState(state) {
+  localStorage.setItem('devkef_progress', JSON.stringify(state));
+}
+
+let STATE = loadState();
+
+/* ══════════════════════════════════════════════
+   RENDU — Mise à jour de toutes les cartes
+══════════════════════════════════════════════ */
+function render() {
+  const completed = STATE.completed;
+  const totalDone = completed.length;
+
+  // Stats en haut
+  document.getElementById('total-xp').textContent   = STATE.xp.toLocaleString();
+  document.getElementById('streak').textContent      = STATE.streak;
+  document.getElementById('stat-completed').textContent = totalDone;
+  document.getElementById('stat-xp').textContent     = STATE.xp.toLocaleString();
+
+  // Barre XP totale
+  const totalAvailable = 1840;
+  const pct = Math.min((STATE.xp / totalAvailable) * 100, 100);
+  document.getElementById('xp-bar-fill').style.width = pct + '%';
+  document.getElementById('xp-pct-label').textContent =
+    STATE.xp.toLocaleString() + ' / ' + totalAvailable.toLocaleString() + ' XP';
+
+  // Prochain niveau disponible
+  const nextAvailable = getNextAvailable();
+
+  // Progression des mondes
+  for (let m = 1; m <= 3; m++) {
+    const size  = MONDE_SIZES[m];
+    const done  = completed.filter(n => LEVELS[n].monde === m).length;
+    const pctM  = (done / size) * 100;
+    const prog  = document.getElementById('m' + m + '-prog');
+    const txt   = document.getElementById('m' + m + '-txt');
+    if (prog) prog.style.width = pctM + '%';
+    if (txt)  txt.textContent  = done + ' / ' + size;
+
+    // Débloquer le monde si requis
+    const unlockReq = MONDE_UNLOCK[m];
+    if (totalDone >= unlockReq && m > 1) {
+      unlockMonde(m);
+    }
+  }
+
+  // Chaque carte
+  for (let n = 1; n <= 12; n++) {
+    const isDone    = completed.includes(n);
+    const isCurrent = n === nextAvailable;
+    const isFirst   = n === 1; // Niveau 1 toujours accessible
+    const prevDone  = n === 1 || completed.includes(n - 1);
+    const mondeUnlocked = totalDone >= MONDE_UNLOCK[LEVELS[n].monde];
+    const canAccess = (isDone || isCurrent || isFirst) && mondeUnlocked;
+
+    updateCard(n, isDone, isCurrent, canAccess);
+  }
+}
+
+function getNextAvailable() {
+  // Le premier niveau non complété accessible
+  for (let n = 1; n <= 12; n++) {
+    if (!STATE.completed.includes(n)) {
+      const mondeUnlocked = STATE.completed.length >= MONDE_UNLOCK[LEVELS[n].monde];
+      if (mondeUnlocked || n <= 4) return n;
+    }
+  }
+  return null; // Tout complété
+}
+
+function unlockMonde(mondeNum) {
+  const banner = document.getElementById('m' + mondeNum + '-banner');
+  const grid   = document.getElementById('m' + mondeNum + '-grid');
+  if (banner) banner.style.display = 'none';
+  if (grid)   grid.style.display   = 'grid';
+}
+
+function updateCard(n, isDone, isCurrent, canAccess) {
+  const card   = document.getElementById('card-' + n);
+  const stripe = document.getElementById('stripe-' + n);
+  const icon   = document.getElementById('icon-' + n);
+  const badge  = document.getElementById('badge-' + n);
+  const btn    = document.getElementById('btn-' + n);
+  const xpEl   = document.getElementById('xp-' + n);
+  const lockEl = document.getElementById('lock-' + n);
+  const lvl    = LEVELS[n];
+
+  if (!card) return;
+
+  // Reset classes
+  card.classList.remove('done', 'current', 'locked');
+
+  // Supprimer overlays dynamiques
+  const existDone = card.querySelector('.done-overlay');
+  const existPulse = card.querySelector('.current-pulse');
+  if (existDone)  existDone.remove();
+  if (existPulse) existPulse.remove();
+
+  if (isDone) {
+    // ── COMPLÉTÉ ──
+    card.classList.add('done');
+    stripe.className = 'card-stripe ' + lvl.stripe;
+    icon.className   = 'card-icon ' + lvl.icon;
+    badge.className  = 'card-status-badge csb-done';
+    badge.textContent = 'Complété ✓';
+    btn.className    = 'btn-level btn-redo';
+    btn.textContent  = 'Refaire';
+    xpEl.textContent = '★ +' + lvl.xp + ' XP ✓';
+    if (lockEl) lockEl.remove();
+    // Ajouter badge ✓
+    const doneEl = document.createElement('div');
+    doneEl.className = 'done-overlay';
+    doneEl.textContent = '✓';
+    card.appendChild(doneEl);
+
+  } else if (isCurrent || (n === 1 && !isDone)) {
+    // ── EN COURS / DISPONIBLE ──
+    card.classList.add('current');
+    stripe.className = 'card-stripe ' + lvl.stripe;
+    icon.className   = 'card-icon ' + lvl.icon;
+    badge.className  = 'card-status-badge csb-current';
+    badge.textContent = n === 1 && STATE.completed.length === 0 ? 'Commencer' : 'Disponible';
+    btn.className    = 'btn-level btn-start-lvl';
+    btn.textContent  = 'Commencer';
+    xpEl.textContent = '★ ' + lvl.xp + ' XP';
+    if (lockEl) lockEl.remove();
+    // Ajouter pulse
+    const pulseEl = document.createElement('div');
+    pulseEl.className = 'current-pulse';
+    card.appendChild(pulseEl);
+
+  } else {
+    // ── VERROUILLÉ ──
+    card.classList.add('locked');
+    stripe.className = 'card-stripe cs-lock';
+    icon.className   = 'card-icon ci-lock';
+    badge.className  = 'card-status-badge csb-lock';
+    badge.textContent = 'Verrouillé';
+    btn.className    = 'btn-level btn-locked';
+    btn.textContent  = 'Verrouillé 🔒';
+    xpEl.textContent = '🔒 ' + lvl.xp + ' XP';
+  }
+}
+
+/* ══════════════════════════════════════════════
+   NAVIGATION
+══════════════════════════════════════════════ */
+function goToLevel(n) {
+  const lvl = LEVELS[n];
+  const isDone = STATE.completed.includes(n);
+  const next   = getNextAvailable();
+  const isAccessible = isDone || n === next || (n === 1 && STATE.completed.length === 0);
+  const mondeUnlocked = STATE.completed.length >= MONDE_UNLOCK[lvl.monde];
+
+  if (!isAccessible || !mondeUnlocked) {
+    const missing = MONDE_UNLOCK[lvl.monde] - STATE.completed.length;
+    showToast('🔒',
+      'Niveau verrouillé',
+      missing > 0
+        ? `Complète encore ${missing} niveau(x) pour débloquer ce monde`
+        : `Complète le niveau ${n - 1} d'abord`
+    );
+    return;
+  }
+  window.location.href = lvl.path;
+}
+
+/* ══════════════════════════════════════════════
+   ÉCOUTER LES COMPLETIONS DEPUIS L'ÉDITEUR
+   L'éditeur appelle : window.parent.completeLevel(n)
+   Ou via localStorage event
+══════════════════════════════════════════════ */
+function completeLevel(n) {
+  const lvl = LEVELS[n];
+  if (!lvl) return;
+
+  // Ajouter si pas déjà là
+  if (!STATE.completed.includes(n)) {
+    STATE.completed.push(n);
+    STATE.xp += lvl.xp;
+  }
+  saveState(STATE);
+  render();
+
+  // Afficher la modal
+  showCompletionModal(n);
+  launchConfetti();
+}
+
+// Écouter les changements localStorage (depuis l'éditeur dans un onglet différent)
+window.addEventListener('storage', (e) => {
+  if (e.key === 'devkef_progress') {
+    STATE = loadState();
+    render();
+  }
+});
+
+// Vérifier si on revient de l'éditeur avec un niveau complété
+function checkReturnFromEditor() {
+  const justCompleted = sessionStorage.getItem('devkef_just_completed');
+  if (justCompleted) {
+    sessionStorage.removeItem('devkef_just_completed');
+    const n = parseInt(justCompleted);
+    if (n && !STATE.completed.includes(n)) {
+      completeLevel(n);
+    } else if (n) {
+      // Déjà enregistré, juste montrer la modal
+      showCompletionModal(n);
+    }
+  }
+}
+
+/* ══════════════════════════════════════════════
+   MODAL SUCCÈS
+══════════════════════════════════════════════ */
+let pendingNextLevel = null;
+
+function showCompletionModal(n) {
+  const lvl = LEVELS[n];
+  const emojis = ['🎉','🏆','⭐','🔥','💪','🚀','🎯','✨'];
+  document.getElementById('modal-emoji').textContent  = emojis[n % emojis.length];
+  document.getElementById('modal-num').textContent    = n;
+  document.getElementById('modal-xp').textContent     = '★ +' + lvl.xp + ' XP gagnés';
+
+  const subtitles = {
+    1:  'Tu connais maintenant les bases du HTML. La structure de toute page web n\'a plus de secret pour toi.',
+    2:  'Liens et images maîtrisés. Ton contenu commence à prendre vie.',
+    3:  'Tableaux compris. Les données se structurent proprement dans tes pages.',
+    4:  'Premier formulaire réussi. Tu sais maintenant créer des interactions avec l\'utilisateur.',
+    5:  'Le CSS commence à parler. Tes pages ont maintenant du style et du caractère.',
+    6:  'Navigation responsive sans JavaScript — la technique CSS pur est dans ta boîte à outils.',
+    7:  'CSS Grid maîtrisé. Tu peux créer des mises en page complexes et belles.',
+    8:  'Animations CSS comprises. Tes pages sont maintenant vivantes et dynamiques.',
+    9:  'Premier mini-site complet. Tu sais construire quelque chose de réel et utilisable.',
+    10: 'Ton portfolio est en ligne. C\'est ta carte de visite professionnelle.',
+    11: 'Site d\'entreprise livrable. Tu peux déjà travailler avec de vrais clients.',
+    12: '🏆 Parcours Web complété ! Tu maîtrises le développement web frontend. Le JS t\'attend.',
+  };
+  document.getElementById('modal-sub').textContent = subtitles[n] || 'Excellent travail, continue !';
+
+  pendingNextLevel = lvl.next;
+  const nextBtn = document.getElementById('modal-next-btn');
+  if (lvl.next) {
+    nextBtn.textContent = 'Niveau ' + lvl.next + ' →';
+    nextBtn.style.display = '';
+  } else {
+    nextBtn.style.display = 'none';
+  }
+
+  document.getElementById('modal').classList.add('show');
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('show');
+  pendingNextLevel = null;
+}
+
+function goToNextLevel() {
+  if (pendingNextLevel) {
+    closeModal();
+    goToLevel(pendingNextLevel);
+  }
+}
+
+// Fermer modal au clic sur l'overlay
+document.getElementById('modal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+/* ══════════════════════════════════════════════
+   CONFETTI
+══════════════════════════════════════════════ */
+function launchConfetti() {
+  const c = document.getElementById('confetti');
+  const colors = ['#FF6B35','#00C896','#7C3AED','#FFD60A','#FF4757','#58A6FF'];
+  for (let i = 0; i < 80; i++) {
+    const p = document.createElement('div');
+    p.className = 'confetti-piece';
+    p.style.cssText = [
+      'left:'              + (Math.random() * 100) + 'vw',
+      'background:'        + colors[Math.floor(Math.random() * colors.length)],
+      'width:'             + (Math.random() * 9 + 5) + 'px',
+      'height:'            + (Math.random() * 9 + 5) + 'px',
+      'animation-duration:'+ (Math.random() * 2 + 1.5) + 's',
+      'animation-delay:'   + (Math.random() * 0.8) + 's',
+    ].join(';');
+    c.appendChild(p);
+    p.addEventListener('animationend', () => p.remove());
+  }
+}
+
+/* ══════════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════════ */
+let toastTimer = null;
+function showToast(icon, title, msg) {
+  clearTimeout(toastTimer);
+  document.getElementById('toast-icon').textContent  = icon;
+  document.getElementById('toast-title').textContent = title;
+  document.getElementById('toast-msg').textContent   = msg;
+  document.getElementById('toast').classList.add('show');
+  toastTimer = setTimeout(() => {
+    document.getElementById('toast').classList.remove('show');
+  }, 3500);
+}
+
+/* ══════════════════════════════════════════════
+   BOUTON RESET (développement — à retirer en prod)
+══════════════════════════════════════════════ */
+function resetProgress() {
+  if (confirm('Remettre à zéro toute la progression ?')) {
+    localStorage.removeItem('devkef_progress');
+    STATE = loadState();
+    render();
+    showToast('🔄', 'Progression réinitialisée', 'Niveau 1 disponible.');
+  }
+}
+
+/* ══════════════════════════════════════════════
+   INIT
+══════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  render();
+  checkReturnFromEditor();
+});
+
+// Exposer pour tests depuis la console ou l'éditeur
+window.devkef = { completeLevel, resetProgress, getState: () => STATE };
+</script>
+</body>
+</html>

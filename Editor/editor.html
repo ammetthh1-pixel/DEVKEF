@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DevKëf — Éditeur · Niveau 1</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+  <!-- CodeMirror -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/xml/xml.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/css/css.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/htmlmixed/htmlmixed.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closetag.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
+
+  <style>
+/* ══════════════════════════════════════════
+   DEVKËF EDITOR — Variables
+══════════════════════════════════════════ */
+:root {
+  --ink:         #0A0E1A;
+  --ink2:        #111827;
+  --ink3:        #1C2333;
+  --surface:     #1A2236;
+  --border:      #1E2D45;
+  --border-light:#243450;
+  --orange:      #FF6B35;
+  --orange-dim:  rgba(255,107,53,.12);
+  --orange-glow: rgba(255,107,53,.25);
+  --green:       #00C896;
+  --green-dim:   rgba(0,200,150,.1);
+  --violet:      #7C3AED;
+  --red:         #FF4757;
+  --red-dim:     rgba(255,71,87,.1);
+  --yellow:      #FFD60A;
+  --text:        #F0F4FF;
+  --muted:       #7A8BAD;
+  --muted2:      #4A5C78;
+  --mono:        'Fira Code', monospace;
+  --display:     'Space Grotesk', sans-serif;
+  --body:        'Inter', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
+body {
+  background: var(--ink);
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── TOPBAR ── */
+.topbar {
+  height: 50px;
+  background: var(--ink2);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  flex-shrink: 0;
+  gap: 12px;
+  z-index: 50;
+}
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.logo-small {
+  font-family: var(--display);
+  font-size: .9rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  text-decoration: none;
+  color: var(--text);
+  flex-shrink: 0;
+}
+.logo-mark-sm {
+  width: 50px; height: 50px;
+  
+}
+.logo-small span { color: var(--orange); }
+.level-pill {
+  font-family: var(--mono);
+  font-size: .68rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 100px;
+  background: var(--orange-dim);
+  color: var(--orange);
+  border: 1px solid rgba(255,107,53,.2);
+}
+.project-name {
+  font-size: .82rem;
+  color: var(--muted);
+}
+.project-name span { color: var(--text); font-weight: 500; }
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.xp-display {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: .72rem;
+  color: var(--orange);
+  background: var(--orange-dim);
+  border: 1px solid rgba(255,107,53,.2);
+  padding: 4px 10px;
+  border-radius: 100px;
+}
+.btn-run {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--green);
+  color: var(--ink);
+  border: none;
+  padding: 7px 16px;
+  border-radius: 6px;
+  font-family: var(--display);
+  font-size: .78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s;
+}
+.btn-run:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 14px rgba(0,200,150,.3);
+}
+.btn-validate {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--orange);
+  color: var(--ink);
+  border: none;
+  padding: 7px 16px;
+  border-radius: 6px;
+  font-family: var(--display);
+  font-size: .78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s;
+}
+.btn-validate:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 14px var(--orange-glow);
+}
+.btn-dash {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: .75rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color .2s, border-color .2s;
+}
+.btn-dash:hover { color: var(--text); border-color: var(--muted2); }
+
+/* ── LAYOUT PRINCIPAL 3 COLONNES ── */
+.editor-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr 1fr;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ══════════════════════════
+   PANNEAU GAUCHE — Instructions
+══════════════════════════ */
+.panel-instructions {
+  background: var(--ink2);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.instr-header {
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: var(--ink2);
+  z-index: 10;
+}
+.instr-level {
+  font-family: var(--mono);
+  font-size: .62rem;
+  color: var(--green);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+.instr-title {
+  font-family: var(--display);
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.instr-xp {
+  font-family: var(--mono);
+  font-size: .68rem;
+  color: var(--orange);
+}
+
+.instr-body { padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+
+.instr-desc {
+  font-size: .82rem;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+/* Objectifs */
+.objectives-title {
+  font-family: var(--display);
+  font-size: .78rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.objectives-title::before {
+  content: '';
+  width: 3px; height: 14px;
+  background: var(--orange);
+  border-radius: 2px;
+}
+.objective {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--ink3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  transition: border-color .25s, background .25s;
+}
+.objective.done {
+  background: rgba(0,200,150,.06);
+  border-color: rgba(0,200,150,.25);
+}
+.objective.failed {
+  background: var(--red-dim);
+  border-color: rgba(255,71,87,.25);
+}
+.obj-status {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: .65rem;
+  margin-top: 1px;
+  transition: all .25s;
+}
+.objective.done  .obj-status { background: var(--green); border-color: var(--green); color: var(--ink); }
+.objective.failed .obj-status { background: var(--red); border-color: var(--red); color: #fff; }
+.obj-text { font-size: .8rem; color: var(--text); line-height: 1.5; }
+.obj-hint { font-size: .72rem; color: var(--muted); margin-top: 3px; font-style: italic; }
+
+/* Astuce */
+.tip-box {
+  background: rgba(124,58,237,.08);
+  border: 1px solid rgba(124,58,237,.2);
+  border-radius: 8px;
+  padding: 12px;
+}
+.tip-label {
+  font-family: var(--mono);
+  font-size: .62rem;
+  color: #A78BFA;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.tip-text { font-size: .78rem; color: var(--muted); line-height: 1.6; }
+.tip-text code {
+  font-family: var(--mono);
+  font-size: .75rem;
+  background: rgba(124,58,237,.15);
+  color: #C4B5FD;
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+/* Résultat de validation */
+.result-box {
+  border-radius: 8px;
+  padding: 14px;
+  display: none;
+  flex-direction: column;
+  gap: 8px;
+}
+.result-box.show { display: flex; }
+.result-box.success {
+  background: rgba(0,200,150,.08);
+  border: 1px solid rgba(0,200,150,.3);
+}
+.result-box.partial {
+  background: rgba(255,214,10,.06);
+  border: 1px solid rgba(255,214,10,.25);
+}
+.result-box.error {
+  background: var(--red-dim);
+  border: 1px solid rgba(255,71,87,.25);
+}
+.result-title {
+  font-family: var(--display);
+  font-size: .85rem;
+  font-weight: 700;
+}
+.result-box.success .result-title { color: var(--green); }
+.result-box.partial .result-title { color: var(--yellow); }
+.result-box.error   .result-title { color: var(--red); }
+.result-msg { font-size: .78rem; color: var(--muted); line-height: 1.55; }
+.result-xp {
+  font-family: var(--mono);
+  font-size: .8rem;
+  color: var(--orange);
+  font-weight: 600;
+}
+
+/* Progression du niveau */
+.progress-section { padding: 16px; border-top: 1px solid var(--border); margin-top: auto; }
+.prog-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: .72rem;
+  color: var(--muted);
+  margin-bottom: 6px;
+  font-family: var(--mono);
+}
+.prog-bar {
+  height: 5px;
+  background: var(--border);
+  border-radius: 100px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+.prog-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--orange), #FF9A6C);
+  border-radius: 100px;
+  width: 0%;
+  transition: width 1s cubic-bezier(.34,1.56,.64,1);
+}
+.prog-next { font-size: .7rem; color: var(--muted2); font-family: var(--mono); }
+.nav-btns {
+  display: flex;
+  gap: 6px;
+  margin-top: 12px;
+}
+.btn-prev, .btn-next {
+  flex: 1;
+  padding: 7px;
+  border-radius: 6px;
+  font-size: .75rem;
+  font-weight: 600;
+  font-family: var(--display);
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  transition: all .2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+.btn-prev:hover { color: var(--text); border-color: var(--muted2); }
+.btn-next {
+  background: var(--orange-dim);
+  border-color: rgba(255,107,53,.3);
+  color: var(--orange);
+}
+.btn-next:hover {
+  background: rgba(255,107,53,.2);
+  border-color: var(--orange);
+}
+.btn-next:disabled { opacity: .35; cursor: not-allowed; }
+
+/* ══════════════════════════
+   PANNEAU CENTRE — Éditeur
+══════════════════════════ */
+.panel-editor {
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.editor-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  background: var(--ink2);
+  flex-shrink: 0;
+}
+.editor-tab {
+  padding: 10px 18px;
+  font-size: .78rem;
+  font-weight: 600;
+  font-family: var(--mono);
+  color: var(--muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  transition: color .18s, border-color .18s;
+  user-select: none;
+}
+.editor-tab:hover { color: var(--text); }
+.editor-tab.active { color: var(--orange); border-bottom-color: var(--orange); }
+.tab-dot { width: 7px; height: 7px; border-radius: 50%; }
+.td-html { background: #F06529; }
+.td-css  { background: #264DE4; }
+
+.editor-area {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+.cm-pane {
+  position: absolute;
+  inset: 0;
+  display: none;
+}
+.cm-pane.active { display: block; }
+
+/* Styles CodeMirror override */
+.CodeMirror {
+  height: 100% !important;
+  font-family: var(--mono) !important;
+  font-size: 13px !important;
+  line-height: 1.7 !important;
+  background: #0D1117 !important;
+}
+.CodeMirror-scroll { overflow-y: auto !important; }
+.CodeMirror-gutters { background: #0A0E1A !important; border-right: 1px solid var(--border) !important; }
+.CodeMirror-linenumber { color: var(--muted2) !important; }
+
+/* Barre de statut éditeur */
+.editor-statusbar {
+  height: 26px;
+  background: var(--ink);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  gap: 16px;
+  flex-shrink: 0;
+}
+.statusbar-item {
+  font-family: var(--mono);
+  font-size: .62rem;
+  color: var(--muted2);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.statusbar-item.live { color: var(--green); }
+.live-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: pulse-live 1.5s ease-in-out infinite;
+}
+@keyframes pulse-live {
+  0%,100%{ opacity: 1; }
+  50%    { opacity: .3; }
+}
+
+/* ══════════════════════════
+   PANNEAU DROITE — Prévisualisation
+══════════════════════════ */
+.panel-preview {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.preview-bar {
+  height: 40px;
+  background: var(--ink2);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.preview-dots { display: flex; gap: 5px; }
+.pd { width: 10px; height: 10px; border-radius: 50%; }
+.pd.r { background: #FF5F57; }
+.pd.y { background: #FEBC2E; }
+.pd.g { background: #28C840; }
+.preview-url {
+  flex: 1;
+  background: var(--ink3);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-family: var(--mono);
+  font-size: .7rem;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.preview-size-btns {
+  display: flex;
+  gap: 4px;
+}
+.size-btn {
+  width: 28px; height: 28px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--muted);
+  transition: all .18s;
+}
+.size-btn:hover, .size-btn.active {
+  background: var(--orange-dim);
+  border-color: rgba(255,107,53,.3);
+  color: var(--orange);
+}
+
+.preview-frame-wrap {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  background: #fff;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+#preview-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  transition: width .3s ease;
+}
+.preview-frame-wrap.mobile { background: var(--ink); padding: 16px; }
+.preview-frame-wrap.mobile #preview-iframe {
+  width: 375px;
+  height: 100%;
+  border-radius: 8px;
+  box-shadow: 0 0 0 1px var(--border), 0 20px 40px rgba(0,0,0,.5);
+}
+
+/* ── TOAST NOTIFICATION ── */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--ink3);
+  border: 1px solid var(--border-light);
+  border-radius: 10px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 280px;
+  max-width: 360px;
+  box-shadow: 0 16px 40px rgba(0,0,0,.4);
+  z-index: 1000;
+  transform: translateY(80px);
+  opacity: 0;
+  transition: transform .35s cubic-bezier(.34,1.56,.64,1), opacity .3s ease;
+}
+.toast { pointer-events: none; }
+.toast.show { transform: translateY(0); opacity: 1; pointer-events: auto; }
+.toast-icon {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+.toast.success .toast-icon { background: var(--green-dim); color: var(--green); }
+.toast.error   .toast-icon { background: var(--red-dim);   color: var(--red); }
+.toast.info    .toast-icon { background: var(--orange-dim); color: var(--orange); }
+.toast-title { font-family: var(--display); font-size: .85rem; font-weight: 700; }
+.toast.success .toast-title { color: var(--green); }
+.toast.error   .toast-title { color: var(--red); }
+.toast.info    .toast-title { color: var(--orange); }
+.toast-msg { font-size: .75rem; color: var(--muted); margin-top: 2px; }
+
+/* ── CONFETTI overlay ── */
+.confetti-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2000;
+}
+.confetti-piece {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  animation: confetti-fall linear forwards;
+}
+@keyframes confetti-fall {
+  0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+/* ── MAQUETTE (référence visuelle) ── */
+.mockup-layer {
+  position: absolute;
+  inset: 0;
+  background: var(--ink2);
+  display: none;
+  flex-direction: column;
+  z-index: 5;
+}
+.mockup-layer.show { display: flex; }
+.mockup-note {
+  font-size: .7rem;
+  color: var(--muted);
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.mockup-note b { color: var(--orange); font-family: var(--display); }
+.mockup-layer iframe { flex: 1; width: 100%; border: 0; background: #fff; }
+.btn-mockup {
+  background: var(--orange-dim);
+  color: var(--orange);
+  border: 1px solid rgba(255,107,53,.3);
+  border-radius: 7px;
+  font-family: var(--display);
+  font-size: .7rem;
+  font-weight: 600;
+  padding: 5px 10px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.btn-mockup.active { background: var(--orange); color: var(--ink); }
+
+/* ── BARRE D'ONGLETS MOBILE ── */
+.mobile-tabs { display: none; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1100px) {
+  .editor-layout { grid-template-columns: 260px 1fr 1fr; }
+}
+@media (max-width: 900px) {
+  html, body { overflow: hidden; }
+  .editor-layout {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    padding-bottom: 58px;
+    height: calc(100dvh - 50px);
+  }
+  .editor-layout > .panel-instructions,
+  .editor-layout > .panel-editor,
+  .editor-layout > .panel-preview {
+    display: none;
+    height: 100%;
+    max-height: none;
+    border-right: 0;
+    overflow-y: auto;
+  }
+  .editor-layout > .panel-instructions.m-active { display: flex; }
+  .editor-layout > .panel-editor.m-active,
+  .editor-layout > .panel-preview.m-active { display: flex; flex-direction: column; }
+
+  .mobile-tabs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 58px;
+    background: var(--ink2);
+    border-top: 1px solid var(--border);
+    z-index: 900;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .m-tab {
+    background: none;
+    border: 0;
+    color: var(--muted);
+    font-family: var(--display);
+    font-size: .68rem;
+    font-weight: 600;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    cursor: pointer;
+  }
+  .m-tab.active { color: var(--orange); }
+  .m-tab .m-badge {
+    font-size: .6rem;
+    background: var(--green-dim);
+    color: var(--green);
+    border-radius: 20px;
+    padding: 1px 6px;
+  }
+  .preview-frame-wrap { position: relative; }
+  .toast { left: 12px; right: 12px; bottom: 70px; min-width: 0; max-width: none; }
+}
+@media (max-width: 600px) {
+  .topbar { padding: 0 10px; gap: 8px; }
+  .project-name { display: none; }
+  .btn-dash { display: none; }
+  .topbar-right { gap: 6px; }
+  .btn-run, .btn-validate { padding: 6px 10px; font-size: .72rem; }
+  .preview-url { display: none; }
+  .level-pill { display: none; }
+  .logo-small { font-size: .8rem; }
+  .xp-display { padding: 4px 7px; font-size: .7rem; }
+  .instr-body { padding-bottom: 12px; }
+  .CodeMirror { font-size: 13px; }
+}
+
+  </style>
+</head>
+<body>
+
+<!-- ══ TOPBAR ══ -->
+<div class="topbar">
+  <div class="topbar-left">
+    <a href="../index.html" class="logo-small">
+      <img src="../image/logo-mark.png" alt="logo" class="logo-mark-sm">
+      Dev<span>Këf</span>
+    </a>
+    <span class="level-pill">Niveau 1</span>
+    <span class="project-name">/ <span>Ma première page</span></span>
+  </div>
+  <div class="topbar-right">
+    <div class="xp-display">
+      ★ <span id="xp-count">0</span> XP
+    </div>
+    <button class="btn-run" onclick="runCode()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      Exécuter
+    </button>
+    <button class="btn-validate" onclick="validateCode()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+      Valider
+    </button>
+    <a href="../dashboard/index.html" class="btn-dash">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      Dashboard
+    </a>
+  </div>
+</div>
+
+<!-- ══ LAYOUT 3 COLONNES ══ -->
+<div class="editor-layout">
+
+  <!-- ── PANNEAU GAUCHE : Instructions ── -->
+  <aside class="panel-instructions">
+    <div class="instr-header">
+      <div class="instr-level">// Monde 1 · Niveau 1</div>
+      <div class="instr-title">Ma première page</div>
+      <div class="instr-xp">★ 80 XP à gagner</div>
+    </div>
+
+    <div class="instr-body">
+      <p class="instr-desc">
+        Bienvenue dans DevKëf ! Ton premier projet : créer une page de présentation personnelle en HTML. Tu vas apprendre les balises essentielles en construisant quelque chose de réel.
+      </p>
+
+      <!-- Objectifs -->
+      <div>
+        <div class="objectives-title">Objectifs à valider</div>
+
+        <div class="objective" id="obj-1">
+          <div class="obj-status" id="obj-1-status">1</div>
+          <div>
+            <div class="obj-text">Ajouter un titre principal avec ton nom</div>
+            <div class="obj-hint">Utilise la balise <code style="font-family:monospace;font-size:.72rem;background:rgba(124,58,237,.15);color:#C4B5FD;padding:1px 5px;border-radius:4px;">&lt;h1&gt;</code></div>
+          </div>
+        </div>
+
+        <div class="objective" id="obj-2">
+          <div class="obj-status" id="obj-2-status">2</div>
+          <div>
+            <div class="obj-text">Écrire un paragraphe de présentation</div>
+            <div class="obj-hint">Utilise la balise <code style="font-family:monospace;font-size:.72rem;background:rgba(124,58,237,.15);color:#C4B5FD;padding:1px 5px;border-radius:4px;">&lt;p&gt;</code></div>
+          </div>
+        </div>
+
+        <div class="objective" id="obj-3">
+          <div class="obj-status" id="obj-3-status">3</div>
+          <div>
+            <div class="obj-text">Ajouter un sous-titre de section</div>
+            <div class="obj-hint">Utilise <code style="font-family:monospace;font-size:.72rem;background:rgba(124,58,237,.15);color:#C4B5FD;padding:1px 5px;border-radius:4px;">&lt;h2&gt;</code> pour "Mes compétences"</div>
+          </div>
+        </div>
+
+        <div class="objective" id="obj-4">
+          <div class="obj-status" id="obj-4-status">4</div>
+          <div>
+            <div class="obj-text">Créer une liste de compétences</div>
+            <div class="obj-hint">Utilise <code style="font-family:monospace;font-size:.72rem;background:rgba(124,58,237,.15);color:#C4B5FD;padding:1px 5px;border-radius:4px;">&lt;ul&gt;</code> avec des <code style="font-family:monospace;font-size:.72rem;background:rgba(124,58,237,.15);color:#C4B5FD;padding:1px 5px;border-radius:4px;">&lt;li&gt;</code></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Astuce -->
+      <div class="tip-box">
+        <div class="tip-label">💡 Astuce</div>
+        <div class="tip-text">
+          La structure de base d'une page HTML commence toujours par <code>&lt;!DOCTYPE html&gt;</code>, puis <code>&lt;html&gt;</code>, <code>&lt;head&gt;</code> et <code>&lt;body&gt;</code>. Tout ce que tu vois à l'écran va dans le <code>&lt;body&gt;</code>.
+        </div>
+      </div>
+
+      <!-- Résultat validation -->
+      <div class="result-box" id="result-box">
+        <div class="result-title" id="result-title"></div>
+        <div class="result-msg" id="result-msg"></div>
+        <div class="result-xp" id="result-xp"></div>
+      </div>
+
+    </div><!-- /instr-body -->
+
+    <!-- Progression -->
+    <div class="progress-section">
+      <div class="prog-label">
+        <span>Progression Niveau 1</span>
+        <span id="prog-pct">0 / 4</span>
+      </div>
+      <div class="prog-bar">
+        <div class="prog-fill" id="prog-fill"></div>
+      </div>
+      <div class="prog-next" id="prog-next">Complete les 4 objectifs pour gagner 80 XP</div>
+      <div class="nav-btns">
+        <button class="btn-prev" onclick="window.location.href='dashboard.html'">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Retour
+        </button>
+        <button class="btn-next" id="btn-next-level" disabled>
+          Niveau 2
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- ── PANNEAU CENTRE : Éditeur ── -->
+  <div class="panel-editor">
+    <div class="editor-tabs">
+      <div class="editor-tab active" onclick="switchTab('html')" id="tab-html">
+        <span class="tab-dot td-html"></span>
+        index.html
+      </div>
+      <div class="editor-tab" onclick="switchTab('css')" id="tab-css">
+        <span class="tab-dot td-css"></span>
+        style.css
+      </div>
+    </div>
+
+    <div class="editor-area">
+      <div class="cm-pane active" id="pane-html">
+        <textarea id="editor-html"></textarea>
+      </div>
+      <div class="cm-pane" id="pane-css">
+        <textarea id="editor-css"></textarea>
+      </div>
+    </div>
+
+    <div class="editor-statusbar">
+      <div class="statusbar-item live">
+        <span class="live-dot"></span>
+        Prévisualisation en direct
+      </div>
+      <div class="statusbar-item" id="status-cursor">Ln 1, Col 1</div>
+      <div class="statusbar-item">HTML · UTF-8</div>
+      <div class="statusbar-item" id="status-chars">0 caractères</div>
+    </div>
+  </div>
+
+  <!-- ── PANNEAU DROITE : Prévisualisation ── -->
+  <div class="panel-preview">
+    <div class="preview-bar">
+      <div class="preview-dots">
+        <span class="pd r"></span>
+        <span class="pd y"></span>
+        <span class="pd g"></span>
+      </div>
+      <div class="preview-url">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        devkëf://preview/niveau-1
+      </div>
+      <div class="preview-size-btns">
+        <button class="size-btn active" onclick="setPreviewSize('desktop')" title="Desktop">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </button>
+        <button class="size-btn" onclick="setPreviewSize('mobile')" title="Mobile">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18" stroke-linecap="round" stroke-width="2.5"/></svg>
+        </button>
+      </div>
+      <button class="btn-mockup" id="btn-mockup" onclick="toggleMockup()">Maquette</button>
+    </div>
+    <div class="preview-frame-wrap" id="preview-wrap">
+      <iframe id="preview-iframe" title="Prévisualisation du code"></iframe>
+      <div class="mockup-layer" id="mockup-layer">
+        <div class="mockup-note"><b>Maquette cible</b> — voilà le résultat à reproduire</div>
+        <iframe id="mockup-iframe" title="Maquette du niveau 1"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ONGLETS MOBILE ══ -->
+  <nav class="mobile-tabs">
+    <button class="m-tab" id="mt-instructions" onclick="setMobilePanel('instructions')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h6"/></svg>
+      Objectifs
+    </button>
+    <button class="m-tab active" id="mt-editor" onclick="setMobilePanel('editor')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      Code
+    </button>
+    <button class="m-tab" id="mt-preview" onclick="setMobilePanel('preview')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18"/></svg>
+      Aperçu
+    </button>
+  </nav>
+
+</div><!-- /editor-layout -->
+
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <div class="toast-icon" id="toast-icon"></div>
+  <div>
+    <div class="toast-title" id="toast-title"></div>
+    <div class="toast-msg" id="toast-msg"></div>
+  </div>
+</div>
+
+<!-- Confetti -->
+<div class="confetti-overlay" id="confetti"></div>
+
+<script>
+/* ══════════════════════════════════════
+   CODE DE DÉPART — Niveau 1
+══════════════════════════════════════ */
+const STARTER_HTML = `<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ma première page</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <!-- Écris ton code ici 👇 -->
+
+  <!-- OBJECTIF 1 : Ajoute ton nom dans un titre h1 -->
+
+
+  <!-- OBJECTIF 2 : Écris un paragraphe de présentation -->
+
+
+  <!-- OBJECTIF 3 : Ajoute un sous-titre h2 "Mes compétences" -->
+
+
+  <!-- OBJECTIF 4 : Crée une liste ul avec 3 compétences -->
+
+
+</body>
+</html>`;
+
+const STARTER_CSS = `/* ── Style de ma première page ── */
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 0 20px;
+  background: #f9f9f9;
+  color: #1a1a2e;
+  line-height: 1.7;
+}
+
+h1 {
+  font-size: 2rem;
+  color: #FF6B35;
+  border-bottom: 3px solid #FF6B35;
+  padding-bottom: 8px;
+}
+
+h2 {
+  font-size: 1.25rem;
+  color: #333;
+  margin-top: 28px;
+}
+
+p {
+  color: #555;
+}
+
+ul {
+  padding-left: 20px;
+}
+
+li {
+  margin: 6px 0;
+  color: #444;
+}`;
+
+/* ══════════════════════════════════════
+   INITIALISATION CODEMIRROR
+══════════════════════════════════════ */
+let editorHTML, editorCSS;
+let liveUpdateTimer = null;
+let completedObjectives = new Set();
+let currentXP = 0;
+
+window.addEventListener('DOMContentLoaded', () => {
+  // Éditeur HTML
+  editorHTML = CodeMirror.fromTextArea(document.getElementById('editor-html'), {
+    mode: 'htmlmixed',
+    theme: 'dracula',
+    lineNumbers: true,
+    matchBrackets: true,
+    autoCloseBrackets: true,
+    autoCloseTags: true,
+    indentUnit: 2,
+    tabSize: 2,
+    indentWithTabs: false,
+    lineWrapping: true,
+    extraKeys: { Tab: cm => cm.execCommand('indentMore') }
+  });
+  editorHTML.setValue(STARTER_HTML);
+
+  // Éditeur CSS
+  editorCSS = CodeMirror.fromTextArea(document.getElementById('editor-css'), {
+    mode: 'css',
+    theme: 'dracula',
+    lineNumbers: true,
+    matchBrackets: true,
+    autoCloseBrackets: true,
+    indentUnit: 2,
+    tabSize: 2,
+    lineWrapping: true
+  });
+  editorCSS.setValue(STARTER_CSS);
+
+  // Prévisualisation live au changement
+  editorHTML.on('change', () => {
+    updateStatusBar();
+    scheduleLiveUpdate();
+  });
+  editorCSS.on('change', scheduleLiveUpdate);
+
+  // Curseur
+  editorHTML.on('cursorActivity', updateStatusBar);
+
+  // Prévisualisation initiale
+  runCode();
+});
+
+function scheduleLiveUpdate() {
+  clearTimeout(liveUpdateTimer);
+  liveUpdateTimer = setTimeout(runCode, 600);
+}
+
+/* ══════════════════════════════════════
+   ONGLETS
+══════════════════════════════════════ */
+function switchTab(tab) {
+  document.querySelectorAll('.editor-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.cm-pane').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  document.getElementById('pane-' + tab).classList.add('active');
+  if (tab === 'html') editorHTML.refresh();
+  else editorCSS.refresh();
+}
+
+/* ══════════════════════════════════════
+   PRÉVISUALISATION
+══════════════════════════════════════ */
+function runCode() {
+  const html = editorHTML.getValue();
+  const css  = editorCSS.getValue();
+
+  // Injecter le CSS dans l'iframe si non référencé
+  const injectCSS = `<style>${css}</style>`;
+  let finalHTML = html;
+  if (!html.includes('<link') && !html.includes('<style')) {
+    finalHTML = html.replace('</head>', injectCSS + '</head>');
+  } else {
+    // Remplacer le lien style.css par le CSS inline
+    finalHTML = html.replace(
+      /<link[^>]*href=["']style\.css["'][^>]*>/,
+      injectCSS
+    );
+  }
+
+  const iframe = document.getElementById('preview-iframe');
+  const doc = iframe.contentDocument || iframe.contentWindow.document;
+  doc.open();
+  doc.write(finalHTML);
+  doc.close();
+}
+
+/* ══════════════════════════════════════
+   VALIDATION
+══════════════════════════════════════ */
+function validateCode() {
+  const html = editorHTML.getValue().toLowerCase();
+  let passed = 0;
+  const results = [];
+
+  // Obj 1 : h1 présent et non vide
+  const h1Match = editorHTML.getValue().match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
+  const obj1 = h1Match && h1Match[1].trim().length > 0 && h1Match[1].trim() !== '';
+  results.push(obj1);
+
+  // Obj 2 : paragraphe présent et non vide
+  const pMatch = editorHTML.getValue().match(/<p[^>]*>([\s\S]*?)<\/p>/i);
+  const obj2 = pMatch && pMatch[1].trim().length > 5;
+  results.push(obj2);
+
+  // Obj 3 : h2 présent
+  const h2Match = editorHTML.getValue().match(/<h2[^>]*>([\s\S]*?)<\/h2>/i);
+  const obj3 = h2Match && h2Match[1].trim().length > 0;
+  results.push(obj3);
+
+  // Obj 4 : ul avec au moins 2 li
+  const liMatches = editorHTML.getValue().match(/<li/gi);
+  const obj4 = html.includes('<ul') && liMatches && liMatches.length >= 2;
+  results.push(obj4);
+
+  // Mettre à jour l'interface
+  results.forEach((ok, i) => {
+    const num = i + 1;
+    const objEl = document.getElementById('obj-' + num);
+    const statusEl = document.getElementById('obj-' + num + '-status');
+    if (ok) {
+      objEl.classList.add('done');
+      objEl.classList.remove('failed');
+      statusEl.textContent = '✓';
+      completedObjectives.add(num);
+      passed++;
+    } else {
+      objEl.classList.add('failed');
+      objEl.classList.remove('done');
+      statusEl.textContent = '✗';
+      completedObjectives.delete(num);
+    }
+  });
+
+  // Mise à jour progression
+  updateProgress(passed);
+
+  // Message résultat
+  showResult(passed, results);
+
+  // XP
+  const xp = Math.round((passed / 4) * 80);
+  currentXP = xp;
+  document.getElementById('xp-count').textContent = xp;
+
+  // Toast
+  if (passed === 4) {
+    sessionStorage.setItem('devkef_just_completed', '1'); // numéro du niveau
+setTimeout(() => window.location.href = '../../parcours/index.html', 2000);
+    showToast('success', '🎉 Niveau 1 validé !', 'Tu as gagné 80 XP. Niveau 2 débloqué !');
+    launchConfetti();
+    document.getElementById('btn-next-level').disabled = false;
+  } else if (passed >= 2) {
+    showToast('info', `${passed}/4 objectifs atteints`, 'Continue — tu y es presque !');
+  } else {
+    showToast('error', `${passed}/4 objectifs`, 'Relis les indications et réessaie.');
+  }
+}
+
+function updateProgress(passed) {
+  const pct = (passed / 4) * 100;
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-pct').textContent = passed + ' / 4';
+
+  if (passed === 4) {
+    document.getElementById('prog-next').textContent = '✓ Niveau 1 complété ! 80 XP gagnés.';
+    document.getElementById('prog-next').style.color = 'var(--green)';
+  } else {
+    const remaining = 4 - passed;
+    document.getElementById('prog-next').textContent =
+      remaining + ' objectif' + (remaining > 1 ? 's' : '') + ' restant' + (remaining > 1 ? 's' : '');
+  }
+}
+
+function showResult(passed, results) {
+  const box    = document.getElementById('result-box');
+  const title  = document.getElementById('result-title');
+  const msg    = document.getElementById('result-msg');
+  const xpEl   = document.getElementById('result-xp');
+
+  box.classList.add('show');
+  box.classList.remove('success', 'partial', 'error');
+
+  const messages = [
+    'Ajoute un titre <h1> avec ton nom ou un titre quelconque.',
+    'Écris un paragraphe <p> d\'au moins quelques mots.',
+    'Ajoute un <h2> pour créer un sous-titre de section.',
+    'Crée une liste <ul> avec au moins 2 éléments <li>.'
+  ];
+
+  const missing = results.map((ok, i) => ok ? null : messages[i]).filter(Boolean);
+
+  if (passed === 4) {
+    box.classList.add('success');
+    title.textContent = '🎉 Parfait ! Niveau complété.';
+    msg.textContent = 'Tu maîtrises les bases HTML. Tu peux passer au Niveau 2.';
+    xpEl.textContent = '★ +80 XP gagnés';
+  } else if (passed >= 2) {
+    box.classList.add('partial');
+    title.textContent = `Bien ! ${passed}/4 objectifs atteints.`;
+    msg.textContent = 'Il te reste : ' + missing[0];
+    xpEl.textContent = `★ +${Math.round((passed/4)*80)} XP (${passed}/4)`;
+  } else {
+    box.classList.add('error');
+    title.textContent = `${passed}/4 objectifs atteints.`;
+    msg.textContent = 'À faire : ' + missing[0];
+    xpEl.textContent = passed > 0 ? `★ +${Math.round((passed/4)*80)} XP` : '';
+  }
+}
+
+/* ══════════════════════════════════════
+   PREVIEW SIZE
+══════════════════════════════════════ */
+function setPreviewSize(size) {
+  const wrap = document.getElementById('preview-wrap');
+  const btns = document.querySelectorAll('.size-btn');
+  btns.forEach(b => b.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+
+  if (size === 'mobile') {
+    wrap.classList.add('mobile');
+  } else {
+    wrap.classList.remove('mobile');
+  }
+}
+
+/* ══════════════════════════════════════
+   STATUS BAR
+══════════════════════════════════════ */
+function updateStatusBar() {
+  const cursor = editorHTML.getCursor();
+  document.getElementById('status-cursor').textContent =
+    `Ln ${cursor.line + 1}, Col ${cursor.ch + 1}`;
+  document.getElementById('status-chars').textContent =
+    editorHTML.getValue().length + ' caractères';
+}
+
+/* ══════════════════════════════════════
+   TOAST
+══════════════════════════════════════ */
+function showToast(type, title, msg) {
+  const toast = document.getElementById('toast');
+  const icons = { success: '✓', error: '✗', info: '★' };
+  toast.className = 'toast ' + type;
+  document.getElementById('toast-icon').textContent = icons[type];
+  document.getElementById('toast-title').textContent = title;
+  document.getElementById('toast-msg').textContent   = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 4000);
+}
+
+/* ══════════════════════════════════════
+   CONFETTI
+══════════════════════════════════════ */
+function launchConfetti() {
+  const container = document.getElementById('confetti');
+  const colors = ['#FF6B35','#00C896','#7C3AED','#FFD60A','#FF4757'];
+  for (let i = 0; i < 60; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.left        = Math.random() * 100 + 'vw';
+    piece.style.background  = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.width       = (Math.random() * 8 + 5) + 'px';
+    piece.style.height      = (Math.random() * 8 + 5) + 'px';
+    piece.style.animationDuration  = (Math.random() * 2 + 1.5) + 's';
+    piece.style.animationDelay     = (Math.random() * 0.8) + 's';
+    container.appendChild(piece);
+    piece.addEventListener('animationend', () => piece.remove());
+  }
+}
+
+/* ══════════════════════════════════════
+   MAQUETTE CIBLE (résultat attendu)
+══════════════════════════════════════ */
+const MOCKUP_HTML = `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<style>${STARTER_CSS}</style></head><body>
+<h1>Mouhamed Ndiaye</h1>
+<p>Salut ! Je suis en formation autodidacte en développement web. Je suis aussi le céateur de ce site, je vous souhaite le bienvenu ici vous apprenez les langages de programmation avec de vrais projets.</p>
+<h2>Mes compétences</h2>
+<ul><li>Développeur full stack</li><li>Designer ui/ux</li><li>Ingénieur en intelligence artificielle</li></ul>
+</body></html>`;
+
+let mockupLoaded = false;
+function toggleMockup() {
+  const layer = document.getElementById('mockup-layer');
+  const btn = document.getElementById('btn-mockup');
+  const show = !layer.classList.contains('show');
+  if (show && !mockupLoaded) {
+    const f = document.getElementById('mockup-iframe');
+    const d = f.contentDocument || f.contentWindow.document;
+    d.open(); d.write(MOCKUP_HTML); d.close();
+    mockupLoaded = true;
+  }
+  layer.classList.toggle('show', show);
+  btn.classList.toggle('active', show);
+  btn.textContent = show ? 'Mon code' : 'Maquette';
+}
+
+/* ══════════════════════════════════════
+   NAVIGATION MOBILE (3 panneaux)
+══════════════════════════════════════ */
+function setMobilePanel(name) {
+  const panels = {
+    instructions: document.querySelector('.panel-instructions'),
+    editor: document.querySelector('.panel-editor'),
+    preview: document.querySelector('.panel-preview')
+  };
+  Object.entries(panels).forEach(([key, el]) => {
+    el.classList.toggle('m-active', key === name);
+    document.getElementById('mt-' + key).classList.toggle('active', key === name);
+  });
+  if (name === 'editor' && typeof editorHTML !== 'undefined' && editorHTML) {
+    setTimeout(() => { editorHTML.refresh(); editorCSS.refresh(); }, 50);
+  }
+  if (name === 'preview') runCode();
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  setMobilePanel('editor');
+  // Sur mobile, après validation, on bascule vers les objectifs
+  const validateBtn = document.querySelector('.btn-validate');
+  if (validateBtn) {
+    validateBtn.addEventListener('click', () => {
+      if (window.matchMedia('(max-width: 900px)').matches) setMobilePanel('instructions');
+    });
+  }
+});
+</script>
+
+</body>
+</html>
