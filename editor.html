@@ -762,8 +762,8 @@ body {
 <!-- ══ TOPBAR ══ -->
 <div class="topbar">
   <div class="topbar-left">
-    <a href="../index.html" class="logo-small">
-      <img src="../image/logo-mark.png" alt="logo" class="logo-mark-sm">
+    <a href="index.html" class="logo-small">
+      <img src="image/logo-mark.png" alt="logo" class="logo-mark-sm">
       Dev<span>Këf</span>
     </a>
     <span class="level-pill">Niveau 1</span>
@@ -781,7 +781,7 @@ body {
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
       Valider
     </button>
-    <a href="../dashboard/index.html" class="btn-dash">
+    <a href="dashboard/index.html" class="btn-dash">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
       Dashboard
     </a>
@@ -1203,11 +1203,10 @@ function validateCode() {
 
   // Toast
   if (passed === 4) {
-    sessionStorage.setItem('devkef_just_completed', '1'); // numéro du niveau
-setTimeout(() => window.location.href = '../../parcours/index.html', 2000);
     showToast('success', '🎉 Niveau 1 validé !', 'Tu as gagné 80 XP. Niveau 2 débloqué !');
     launchConfetti();
-    document.getElementById('btn-next-level').disabled = false;
+    sessionStorage.setItem('devkef_just_completed', '1'); // numéro du niveau
+setTimeout(() => window.location.href = '../level/index.html', 2000);
   } else if (passed >= 2) {
     showToast('info', `${passed}/4 objectifs atteints`, 'Continue — tu y es presque !');
   } else {
