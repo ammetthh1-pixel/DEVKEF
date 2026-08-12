@@ -152,7 +152,11 @@ async function doLogin() {
     showMsg('✓ Connecté ! Redirection…', 'success');
     setTimeout(() => window.location.href = 'dashboard/index.html', 700);
   } catch (e) {
-    showMsg(e.message || 'Connexion impossible.', 'error');
+    let errMsg = e.message || 'Connexion impossible.';
+    if (errMsg.includes('Invalid login credentials')) {
+      errMsg = 'Email ou mot de passe incorrect. Si tu viens de créer un compte, confirme d\'abord ton email en cliquant sur le lien qu\'on t\'a envoyé.';
+    }
+    showMsg(errMsg, 'error');
     btn.disabled = false; btn.textContent = 'Se connecter';
   }
 }
