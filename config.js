@@ -8,5 +8,5 @@
    voir backend/schema.sql)
 ══════════════════════════════════════════════════════════ */
 
-const SUPABASE_URL = 'https://zurgamfwxphjymbkefan.supabase.co/rest/v1/';
+const SUPABASE_URL = 'https://zurgamfwxphjymbkefan.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_GDGMwZFndtdYf7u5Gfu-mg_Rjj8U-D1';
