@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DevKëf — Doc · Ma première page</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="doc-style.css"/>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../index.html" class="logo-small"><img src="../image/logo-mark.png" alt="logo" class="logo-mark-sm">Dev<span>Këf</span></a>
+  <a href="../level/level_1.html" class="btn-back">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Retour au niveau
+  </a>
+</div>
+
+<main class="doc-wrap">
+  <div class="doc-crumb">// Documentation · Développement Web · Niveau 1</div>
+  <h1 class="doc-title">📄 Ma première page</h1>
+  <p class="doc-subtitle">Ce niveau pose les fondations de tout ce que tu vas construire sur DevKëf : comment une page web est structurée, et comment le navigateur "lit" ton code pour l'afficher.</p>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">🎯</span> Pourquoi ce projet ?</div>
+    <p class="doc-p">Avant CSS, avant JavaScript, il y a le HTML : le squelette de toute page web. Sans lui, rien d'autre n'a de sens à apprendre. Ce premier projet t'apprend à voir une page non pas comme un bloc de texte, mais comme une <b>hiérarchie de blocs</b> — un peu comme un document Word structuré avec des titres et des sous-titres, mais lu par une machine.</p>
+    <p class="doc-p">L'objectif n'est pas la perfection visuelle (le CSS s'en occupera plus tard) mais la <b>structure correcte</b> : est-ce que ton titre est vraiment un titre pour le navigateur, ou juste du texte en gros ?</p>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">📚</span> Les notions clés</div>
+
+    <div class="concept">
+      <div class="concept-name">&lt;h1&gt; à &lt;h6&gt; — les titres</div>
+      <div class="concept-def">Ce sont des niveaux de titre, du plus important (<code>h1</code>) au moins important (<code>h6</code>). Une page n'a normalement <b>qu'un seul</b> <code>h1</code> — c'est le titre principal, comme la couverture d'un livre. Les <code>h2</code> sont les sous-parties.</div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-name">&lt;p&gt; — paragraphe</div>
+      <div class="concept-def">Un bloc de texte normal. Le navigateur ajoute automatiquement un espace avant et après chaque paragraphe — pas besoin de le faire toi-même avec des espaces ou des retours à la ligne.</div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-name">&lt;ul&gt; et &lt;li&gt;</div>
+      <div class="concept-def"><code>ul</code> (unordered list) est le conteneur de la liste ; chaque <code>li</code> (list item) est un élément dedans. On ne met jamais de texte directement dans un <code>ul</code> — toujours à l'intérieur d'un <code>li</code>.</div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-name">Balises ouvrantes / fermantes</div>
+      <div class="concept-def">La plupart des balises HTML vont par paire : <code>&lt;h1&gt;texte&lt;/h1&gt;</code>. Celle avec le <code>/</code> ferme l'élément. Oublier la fermeture est l'erreur n°1 des débutants.</div>
+    </div>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">🔍</span> Comment décomposer le problème</div>
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body"><div class="step-title">Regarde la maquette avant de coder</div><div class="step-text">Repère les blocs : un gros titre, un paragraphe de texte, un sous-titre, une liste. Chaque bloc visuel correspond à une balise HTML précise.</div></div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body"><div class="step-title">Un objectif à la fois</div><div class="step-text">Ne cherche pas à tout écrire d'un coup. Ajoute ton <code>h1</code>, clique sur "Valider" pour voir le premier objectif passer au vert, puis passe au suivant.</div></div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body"><div class="step-title">Utilise l'aperçu en direct</div><div class="step-text">L'éditeur affiche le résultat en temps réel. Si quelque chose semble cassé visuellement, c'est souvent une balise mal fermée quelque part au-dessus.</div></div>
+    </div>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">⚠️</span> Pièges fréquents</div>
+    <div class="pitfall">
+      <span class="ic">✗</span>
+      <div><div class="pitfall-title">Oublier de fermer une balise</div><div class="pitfall-text"><code>&lt;h1&gt;Mon nom&lt;/h2&gt;</code> — la fermeture ne correspond pas à l'ouverture. Vérifie toujours que le nom après le <code>/</code> est identique.</div></div>
+    </div>
+    <div class="pitfall">
+      <span class="ic">✗</span>
+      <div><div class="pitfall-title">Liste vide de sens</div><div class="pitfall-text">Une <code>&lt;ul&gt;</code> avec un seul <code>&lt;li&gt;</code> valide techniquement l'objectif ici, mais dans la vraie vie une liste a du sens à partir de 2-3 éléments.</div></div>
+    </div>
+    <div class="pitfall">
+      <span class="ic">✗</span>
+      <div><div class="pitfall-title">Confondre h1 et texte en gras</div><div class="pitfall-text">Un titre n'est pas "du texte gros et gras" — c'est une information de structure. Le style viendra avec le CSS plus tard ; pour l'instant, pense sens, pas apparence.</div></div>
+    </div>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">🚀</span> Pour aller plus loin</div>
+    <div class="resource-list">
+      <a class="resource" href="https://developer.mozilla.org/fr/docs/Web/HTML" target="_blank" rel="noopener">
+        <span class="ic">📘</span><b>MDN — Guide HTML</b><span>Référence officielle, en français</span>
+      </a>
+    </div>
+    <p class="doc-p" style="margin-top:14px">Envie d'aller plus loin après avoir validé ce niveau ? Essaie d'ajouter une deuxième section avec un autre <code>h2</code>, ou une image avec <code>&lt;img&gt;</code> — ce n'est pas demandé, mais c'est du bon entraînement.</p>
+  </section>
+
+  <div class="doc-cta">
+    <p>Prêt à coder ?</p>
+    <a class="btn-doc-cta" href="../editor.html?level=1">
+      Ouvrir l'éditeur
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</main>
+
+</body>
+</html>

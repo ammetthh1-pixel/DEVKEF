@@ -11,12 +11,16 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css"/>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+  <script src="config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="auth.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/xml/xml.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/css/css.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/htmlmixed/htmlmixed.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closetag.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
+  <script src="progress.js"></script>
 
   <style>
 /* ══════════════════════════════════════════
@@ -766,8 +770,8 @@ body {
       <img src="image/logo-mark.png" alt="logo" class="logo-mark-sm">
       Dev<span>Këf</span>
     </a>
-    <span class="level-pill">Niveau 1</span>
-    <span class="project-name">/ <span>Ma première page</span></span>
+    <span class="level-pill" id="level-pill">Niveau 1</span>
+    <span class="project-name">/ <span id="project-title-text">Ma première page</span></span>
   </div>
   <div class="topbar-right">
     <div class="xp-display">
@@ -794,61 +798,33 @@ body {
   <!-- ── PANNEAU GAUCHE : Instructions ── -->
   <aside class="panel-instructions">
     <div class="instr-header">
-      <div class="instr-level">// Monde 1 · Niveau 1</div>
-      <div class="instr-title">Ma première page</div>
-      <div class="instr-xp">★ 80 XP à gagner</div>
+      <div class="instr-level" id="instr-level-label">// Monde 1 · Niveau 1</div>
+      <div class="instr-title" id="instr-title-label">Ma première page</div>
+      <div class="instr-xp" id="instr-xp-label">★ 80 XP à gagner</div>
     </div>
 
     <div class="instr-body">
-      <p class="instr-desc">
+      <p class="instr-desc" id="instr-desc-text">
         Bienvenue dans DevKëf ! Ton premier projet : créer une page de présentation personnelle en HTML. Tu vas apprendre les balises essentielles en construisant quelque chose de réel.
       </p>
 
       <!-- Objectifs -->
       <div>
         <div class="objectives-title">Objectifs à valider</div>
-
-        <div class="objective" id="obj-1">
-          <div class="obj-status" id="obj-1-status">1</div>
-          <div>
-            <div class="obj-text">Ajouter un titre principal avec ton nom</div>
-            <div class="obj-hint">Utilise la balise <code style="font-family:monospace;font-size:.72rem;background:rgba(124,58,237,.15);color:#C4B5FD;padding:1px 5px;border-radius:4px;">&lt;h1&gt;</code></div>
-          </div>
-        </div>
-
-        <div class="objective" id="obj-2">
-          <div class="obj-status" id="obj-2-status">2</div>
-          <div>
-            <div class="obj-text">Écrire un paragraphe de présentation</div>
-            <div class="obj-hint">Utilise la balise <code style="font-family:monospace;font-size:.72rem;background:rgba(124,58,237,.15);color:#C4B5FD;padding:1px 5px;border-radius:4px;">&lt;p&gt;</code></div>
-          </div>
-        </div>
-
-        <div class="objective" id="obj-3">
-          <div class="obj-status" id="obj-3-status">3</div>
-          <div>
-            <div class="obj-text">Ajouter un sous-titre de section</div>
-            <div class="obj-hint">Utilise <code style="font-family:monospace;font-size:.72rem;background:rgba(124,58,237,.15);color:#C4B5FD;padding:1px 5px;border-radius:4px;">&lt;h2&gt;</code> pour "Mes compétences"</div>
-          </div>
-        </div>
-
-        <div class="objective" id="obj-4">
-          <div class="obj-status" id="obj-4-status">4</div>
-          <div>
-            <div class="obj-text">Créer une liste de compétences</div>
-            <div class="obj-hint">Utilise <code style="font-family:monospace;font-size:.72rem;background:rgba(124,58,237,.15);color:#C4B5FD;padding:1px 5px;border-radius:4px;">&lt;ul&gt;</code> avec des <code style="font-family:monospace;font-size:.72rem;background:rgba(124,58,237,.15);color:#C4B5FD;padding:1px 5px;border-radius:4px;">&lt;li&gt;</code></div>
-          </div>
-        </div>
-
+        <div id="objectives-list"></div>
       </div>
 
       <!-- Astuce -->
       <div class="tip-box">
         <div class="tip-label">💡 Astuce</div>
-        <div class="tip-text">
+        <div class="tip-text" id="tip-text-content">
           La structure de base d'une page HTML commence toujours par <code>&lt;!DOCTYPE html&gt;</code>, puis <code>&lt;html&gt;</code>, <code>&lt;head&gt;</code> et <code>&lt;body&gt;</code>. Tout ce que tu vois à l'écran va dans le <code>&lt;body&gt;</code>.
         </div>
       </div>
+
+      <a id="doc-link" href="docs/web-niveau-1.html" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:7px;margin-top:12px;font-family:var(--display);font-size:.78rem;font-weight:600;color:var(--muted);border:1px solid var(--border-light);background:var(--ink3);padding:9px 12px;border-radius:9px">
+        📄 Voir la documentation du niveau
+      </a>
 
       <!-- Résultat validation -->
       <div class="result-box" id="result-box">
@@ -870,12 +846,12 @@ body {
       </div>
       <div class="prog-next" id="prog-next">Complete les 4 objectifs pour gagner 80 XP</div>
       <div class="nav-btns">
-        <button class="btn-prev" onclick="window.location.href='dashboard.html'">
+        <button class="btn-prev" onclick="window.location.href='level/index.html'">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
           Retour
         </button>
         <button class="btn-next" id="btn-next-level" disabled>
-          Niveau 2
+          Niveau suivant
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </button>
       </div>
@@ -926,7 +902,7 @@ body {
       </div>
       <div class="preview-url">
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-        devkëf://preview/niveau-1
+        <span id="preview-url-text">devkëf://preview/niveau-1</span>
       </div>
       <div class="preview-size-btns">
         <button class="size-btn active" onclick="setPreviewSize('desktop')" title="Desktop">
@@ -980,9 +956,29 @@ body {
 
 <script>
 /* ══════════════════════════════════════
-   CODE DE DÉPART — Niveau 1
+   CONFIG DES NIVEAUX — Monde Web
+   (ajouter un niveau = ajouter une entrée ici)
 ══════════════════════════════════════ */
-const STARTER_HTML = `<!DOCTYPE html>
+const TRACK = 'web';
+const LEVELS = {
+  1: {
+    world: '// Monde 1 · Niveau 1',
+    title: 'Ma première page',
+    xpMax: 80,
+    desc: "Bienvenue dans DevKëf ! Ton premier projet : créer une page de présentation personnelle en HTML. Tu vas apprendre les balises essentielles en construisant quelque chose de réel.",
+    tip: "La structure de base d'une page HTML commence toujours par <code>&lt;!DOCTYPE html&gt;</code>, puis <code>&lt;html&gt;</code>, <code>&lt;head&gt;</code> et <code>&lt;body&gt;</code>. Tout ce que tu vois à l'écran va dans le <code>&lt;body&gt;</code>.",
+    nextLevel: 2,
+    objectives: [
+      { label: 'Ajouter un titre principal avec ton nom', hint: 'Utilise la balise <code>&lt;h1&gt;</code>',
+        test: html => { const m = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i); return !!(m && m[1].trim()); } },
+      { label: 'Écrire un paragraphe de présentation', hint: 'Utilise la balise <code>&lt;p&gt;</code>',
+        test: html => { const m = html.match(/<p[^>]*>([\s\S]*?)<\/p>/i); return !!(m && m[1].trim().length > 5); } },
+      { label: 'Ajouter un sous-titre de section', hint: 'Utilise <code>&lt;h2&gt;</code> pour "Mes compétences"',
+        test: html => { const m = html.match(/<h2[^>]*>([\s\S]*?)<\/h2>/i); return !!(m && m[1].trim()); } },
+      { label: 'Créer une liste de compétences', hint: 'Utilise <code>&lt;ul&gt;</code> avec au moins 2 <code>&lt;li&gt;</code>',
+        test: html => { const li = html.match(/<li/gi); return html.toLowerCase().includes('<ul') && li && li.length >= 2; } }
+    ],
+    starterHTML: `<!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8"/>
@@ -1007,9 +1003,8 @@ const STARTER_HTML = `<!DOCTYPE html>
 
 
 </body>
-</html>`;
-
-const STARTER_CSS = `/* ── Style de ma première page ── */
+</html>`,
+    starterCSS: `/* ── Style de ma première page ── */
 
 body {
   font-family: 'Segoe UI', sans-serif;
@@ -1034,18 +1029,98 @@ h2 {
   margin-top: 28px;
 }
 
-p {
-  color: #555;
+p { color: #555; }
+ul { padding-left: 20px; }
+li { margin: 6px 0; color: #444; }`,
+    mockup: css => `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/><style>${css}</style></head><body>
+<h1>Mouhamed Ndiaye</h1>
+<p>Salut ! Je suis en formation autodidacte en développement web. Je suis aussi le créateur de ce site, je vous souhaite la bienvenue ici, vous apprenez les langages de programmation avec de vrais projets.</p>
+<h2>Mes compétences</h2>
+<ul><li>Développeur full stack</li><li>Designer ui/ux</li><li>Ingénieur en intelligence artificielle</li></ul>
+</body></html>`
+  },
+
+  2: {
+    world: '// Monde 1 · Niveau 2',
+    title: 'Texte & liens',
+    xpMax: 100,
+    desc: "Deuxième projet : enrichis une page avec de la mise en forme de texte et un lien cliquable. Tu apprends à structurer un contenu plus riche qu'un simple bloc de texte.",
+    tip: "Un lien s'écrit <code>&lt;a href=\"...\"&gt;texte&lt;/a&gt;</code> — le <code>href</code> est l'adresse de destination. <code>&lt;strong&gt;</code> met en gras (important), <code>&lt;em&gt;</code> met en italique (insistance).",
+    nextLevel: null,
+    objectives: [
+      { label: 'Mettre un mot important en gras', hint: 'Utilise <code>&lt;strong&gt;...&lt;/strong&gt;</code>',
+        test: html => { const m = html.match(/<strong[^>]*>([\s\S]*?)<\/strong>/i); return !!(m && m[1].trim()); } },
+      { label: 'Mettre un mot en italique', hint: 'Utilise <code>&lt;em&gt;...&lt;/em&gt;</code>',
+        test: html => { const m = html.match(/<em[^>]*>([\s\S]*?)<\/em>/i); return !!(m && m[1].trim()); } },
+      { label: 'Ajouter un lien cliquable', hint: 'Utilise <code>&lt;a href="..."&gt;texte&lt;/a&gt;</code>',
+        test: html => { const m = html.match(/<a\s+[^>]*href=["'][^"']+["'][^>]*>([\s\S]*?)<\/a>/i); return !!(m && m[1].trim()); } },
+      { label: 'Écrire au moins deux paragraphes', hint: 'Utilise deux balises <code>&lt;p&gt;</code>',
+        test: html => { const p = html.match(/<p[^>]*>/gi); return !!(p && p.length >= 2); } }
+    ],
+    starterHTML: `<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Texte &amp; liens</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <h1>À propos de moi</h1>
+
+  <!-- OBJECTIF 1 : un mot en gras avec <strong> -->
+
+
+  <!-- OBJECTIF 2 : un mot en italique avec <em> -->
+
+
+  <!-- OBJECTIF 3 : un lien cliquable avec <a href="..."> -->
+
+
+  <!-- OBJECTIF 4 : un deuxième paragraphe <p> -->
+
+
+</body>
+</html>`,
+    starterCSS: `body {
+  font-family: 'Segoe UI', sans-serif;
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 0 20px;
+  background: #f9f9f9;
+  color: #1a1a2e;
+  line-height: 1.7;
 }
 
-ul {
-  padding-left: 20px;
+h1 {
+  font-size: 2rem;
+  color: #FF6B35;
+  border-bottom: 3px solid #FF6B35;
+  padding-bottom: 8px;
 }
 
-li {
-  margin: 6px 0;
-  color: #444;
-}`;
+p { color: #555; }
+a { color: #00C896; font-weight: 600; }
+strong { color: #1a1a2e; }`,
+    mockup: css => `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/><style>${css}</style></head><body>
+<h1>À propos de moi</h1>
+<p>Je suis <strong>étudiant en informatique</strong> et passionné de développement web. J'apprends en <em>construisant de vrais projets</em>, pas en répondant à des quiz.</p>
+<p>Pour en savoir plus sur mon parcours, <a href="#">consulte mon portfolio</a>.</p>
+</body></html>`
+  }
+};
+
+const params = new URLSearchParams(window.location.search);
+const LEVEL_ID = parseInt(params.get('level') || '1', 10);
+if (LEVEL_ID > 1 && typeof dkIsGuest === 'function' && dkIsGuest()) {
+  window.location.href = 'login.html';
+}
+const LEVEL = LEVELS[LEVEL_ID] || LEVELS[1];
+const STARTER_HTML = LEVEL.starterHTML;
+const STARTER_CSS = LEVEL.starterCSS;
 
 /* ══════════════════════════════════════
    INITIALISATION CODEMIRROR
@@ -1054,6 +1129,51 @@ let editorHTML, editorCSS;
 let liveUpdateTimer = null;
 let completedObjectives = new Set();
 let currentXP = 0;
+
+window.addEventListener('DOMContentLoaded', () => {
+  // Remplissage dynamique de la page à partir de la config du niveau
+  document.title = `DevKëf — Éditeur · ${LEVEL.title}`;
+  document.getElementById('level-pill').textContent = 'Niveau ' + LEVEL_ID;
+  document.getElementById('project-title-text').textContent = LEVEL.title;
+  document.getElementById('instr-level-label').textContent = LEVEL.world;
+  document.getElementById('instr-title-label').textContent = LEVEL.title;
+  document.getElementById('instr-xp-label').textContent = '★ ' + LEVEL.xpMax + ' XP à gagner';
+  document.getElementById('instr-desc-text').textContent = LEVEL.desc;
+  document.getElementById('tip-text-content').innerHTML = LEVEL.tip;
+  document.getElementById('doc-link').href = 'docs/web-niveau-' + LEVEL_ID + '.html';
+  document.getElementById('preview-url-text').textContent = 'devkëf://preview/niveau-' + LEVEL_ID;
+  document.getElementById('mockup-iframe').title = 'Maquette du niveau ' + LEVEL_ID;
+
+  const list = document.getElementById('objectives-list');
+  LEVEL.objectives.forEach((obj, i) => {
+    const num = i + 1;
+    const div = document.createElement('div');
+    div.className = 'objective';
+    div.id = 'obj-' + num;
+    div.innerHTML = `<div class="obj-status" id="obj-${num}-status">${num}</div>
+      <div>
+        <div class="obj-text">${obj.label}</div>
+        <div class="obj-hint">${obj.hint}</div>
+      </div>`;
+    list.appendChild(div);
+  });
+
+  // Bouton "Niveau suivant"
+  const nextBtn = document.getElementById('btn-next-level');
+  if (!LEVEL.nextLevel) {
+    nextBtn.textContent = 'Bientôt disponible';
+    nextBtn.disabled = true;
+  }
+
+  // Si ce niveau est déjà validé (sauvegarde), on le signale
+  if (typeof dkIsDone === 'function' && dkIsDone(TRACK, LEVEL_ID)) {
+    showToast('info', '✓ Niveau déjà validé', 'Tu peux le retravailler ou passer au niveau suivant.');
+    if (LEVEL.nextLevel) {
+      nextBtn.disabled = false;
+      nextBtn.onclick = () => window.location.href = 'editor.html?level=' + LEVEL.nextLevel;
+    }
+  }
+});
 
 window.addEventListener('DOMContentLoaded', () => {
   // Éditeur HTML
@@ -1147,29 +1267,11 @@ function runCode() {
    VALIDATION
 ══════════════════════════════════════ */
 function validateCode() {
-  const html = editorHTML.getValue().toLowerCase();
+  const html = editorHTML.getValue();
   let passed = 0;
   const results = [];
 
-  // Obj 1 : h1 présent et non vide
-  const h1Match = editorHTML.getValue().match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
-  const obj1 = h1Match && h1Match[1].trim().length > 0 && h1Match[1].trim() !== '';
-  results.push(obj1);
-
-  // Obj 2 : paragraphe présent et non vide
-  const pMatch = editorHTML.getValue().match(/<p[^>]*>([\s\S]*?)<\/p>/i);
-  const obj2 = pMatch && pMatch[1].trim().length > 5;
-  results.push(obj2);
-
-  // Obj 3 : h2 présent
-  const h2Match = editorHTML.getValue().match(/<h2[^>]*>([\s\S]*?)<\/h2>/i);
-  const obj3 = h2Match && h2Match[1].trim().length > 0;
-  results.push(obj3);
-
-  // Obj 4 : ul avec au moins 2 li
-  const liMatches = editorHTML.getValue().match(/<li/gi);
-  const obj4 = html.includes('<ul') && liMatches && liMatches.length >= 2;
-  results.push(obj4);
+  LEVEL.objectives.forEach(obj => results.push(!!obj.test(html)));
 
   // Mettre à jour l'interface
   results.forEach((ok, i) => {
@@ -1190,46 +1292,54 @@ function validateCode() {
     }
   });
 
+  const total = LEVEL.objectives.length;
+
   // Mise à jour progression
-  updateProgress(passed);
+  updateProgress(passed, total);
 
   // Message résultat
-  showResult(passed, results);
+  showResult(passed, total, results);
 
   // XP
-  const xp = Math.round((passed / 4) * 80);
+  const xp = Math.round((passed / total) * LEVEL.xpMax);
   currentXP = xp;
   document.getElementById('xp-count').textContent = xp;
 
-  // Toast
-  if (passed === 4) {
-    showToast('success', '🎉 Niveau 1 validé !', 'Tu as gagné 80 XP. Niveau 2 débloqué !');
+  // Toast + sauvegarde de la progression
+  if (passed === total) {
+    showToast('success', '🎉 Niveau ' + LEVEL_ID + ' validé !', 'Tu as gagné ' + LEVEL.xpMax + ' XP.' + (LEVEL.nextLevel ? ' Niveau suivant débloqué !' : ''));
     launchConfetti();
-    sessionStorage.setItem('devkef_just_completed', '1'); // numéro du niveau
-setTimeout(() => window.location.href = '../level/index.html', 2000);
-  } else if (passed >= 2) {
-    showToast('info', `${passed}/4 objectifs atteints`, 'Continue — tu y es presque !');
+    if (typeof dkCompleteLevel === 'function') dkCompleteLevel(TRACK, LEVEL_ID, LEVEL.xpMax);
+
+    const nextBtn = document.getElementById('btn-next-level');
+    if (LEVEL.nextLevel) {
+      nextBtn.disabled = false;
+      nextBtn.onclick = () => window.location.href = 'editor.html?level=' + LEVEL.nextLevel;
+    }
+    setTimeout(() => window.location.href = LEVEL.nextLevel ? 'level/index.html' : 'level/index.html', 2000);
+  } else if (passed >= Math.ceil(total / 2)) {
+    showToast('info', `${passed}/${total} objectifs atteints`, 'Continue — tu y es presque !');
   } else {
-    showToast('error', `${passed}/4 objectifs`, 'Relis les indications et réessaie.');
+    showToast('error', `${passed}/${total} objectifs`, 'Relis les indications et réessaie.');
   }
 }
 
-function updateProgress(passed) {
-  const pct = (passed / 4) * 100;
+function updateProgress(passed, total) {
+  const pct = (passed / total) * 100;
   document.getElementById('prog-fill').style.width = pct + '%';
-  document.getElementById('prog-pct').textContent = passed + ' / 4';
+  document.getElementById('prog-pct').textContent = passed + ' / ' + total;
 
-  if (passed === 4) {
-    document.getElementById('prog-next').textContent = '✓ Niveau 1 complété ! 80 XP gagnés.';
+  if (passed === total) {
+    document.getElementById('prog-next').textContent = '✓ Niveau ' + LEVEL_ID + ' complété ! ' + LEVEL.xpMax + ' XP gagnés.';
     document.getElementById('prog-next').style.color = 'var(--green)';
   } else {
-    const remaining = 4 - passed;
+    const remaining = total - passed;
     document.getElementById('prog-next').textContent =
       remaining + ' objectif' + (remaining > 1 ? 's' : '') + ' restant' + (remaining > 1 ? 's' : '');
   }
 }
 
-function showResult(passed, results) {
+function showResult(passed, total, results) {
   const box    = document.getElementById('result-box');
   const title  = document.getElementById('result-title');
   const msg    = document.getElementById('result-msg');
@@ -1238,30 +1348,23 @@ function showResult(passed, results) {
   box.classList.add('show');
   box.classList.remove('success', 'partial', 'error');
 
-  const messages = [
-    'Ajoute un titre <h1> avec ton nom ou un titre quelconque.',
-    'Écris un paragraphe <p> d\'au moins quelques mots.',
-    'Ajoute un <h2> pour créer un sous-titre de section.',
-    'Crée une liste <ul> avec au moins 2 éléments <li>.'
-  ];
+  const missing = results.map((ok, i) => ok ? null : LEVEL.objectives[i].hint.replace(/<[^>]+>/g, '')).filter(Boolean);
 
-  const missing = results.map((ok, i) => ok ? null : messages[i]).filter(Boolean);
-
-  if (passed === 4) {
+  if (passed === total) {
     box.classList.add('success');
     title.textContent = '🎉 Parfait ! Niveau complété.';
-    msg.textContent = 'Tu maîtrises les bases HTML. Tu peux passer au Niveau 2.';
-    xpEl.textContent = '★ +80 XP gagnés';
-  } else if (passed >= 2) {
+    msg.textContent = LEVEL.nextLevel ? 'Tu peux passer au niveau suivant.' : 'Bravo, tu as terminé ce niveau !';
+    xpEl.textContent = '★ +' + LEVEL.xpMax + ' XP gagnés';
+  } else if (passed >= Math.ceil(total / 2)) {
     box.classList.add('partial');
-    title.textContent = `Bien ! ${passed}/4 objectifs atteints.`;
+    title.textContent = `Bien ! ${passed}/${total} objectifs atteints.`;
     msg.textContent = 'Il te reste : ' + missing[0];
-    xpEl.textContent = `★ +${Math.round((passed/4)*80)} XP (${passed}/4)`;
+    xpEl.textContent = `★ +${Math.round((passed/total)*LEVEL.xpMax)} XP (${passed}/${total})`;
   } else {
     box.classList.add('error');
-    title.textContent = `${passed}/4 objectifs atteints.`;
+    title.textContent = `${passed}/${total} objectifs atteints.`;
     msg.textContent = 'À faire : ' + missing[0];
-    xpEl.textContent = passed > 0 ? `★ +${Math.round((passed/4)*80)} XP` : '';
+    xpEl.textContent = passed > 0 ? `★ +${Math.round((passed/total)*LEVEL.xpMax)} XP` : '';
   }
 }
 
@@ -1329,14 +1432,7 @@ function launchConfetti() {
 /* ══════════════════════════════════════
    MAQUETTE CIBLE (résultat attendu)
 ══════════════════════════════════════ */
-const MOCKUP_HTML = `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<style>${STARTER_CSS}</style></head><body>
-<h1>Mouhamed Ndiaye</h1>
-<p>Salut ! Je suis en formation autodidacte en développement web. Je suis aussi le céateur de ce site, je vous souhaite le bienvenu ici vous apprenez les langages de programmation avec de vrais projets.</p>
-<h2>Mes compétences</h2>
-<ul><li>Développeur full stack</li><li>Designer ui/ux</li><li>Ingénieur en intelligence artificielle</li></ul>
-</body></html>`;
+const MOCKUP_HTML = LEVEL.mockup(STARTER_CSS);
 
 let mockupLoaded = false;
 function toggleMockup() {

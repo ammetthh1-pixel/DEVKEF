@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>DevKëf — Parcours Développement Web</title>
+<title>DevKëf — Parcours Python</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
-<script src="../progress.js"></script>
-<script src="../auth.js"></script>
+<script src="../../progress.js"></script>
+<script src="../../auth.js"></script>
 <style>
 :root{
   --ink:#0A0E1A; --ink2:#111827; --ink3:#1C2333; --surface:#1A2236;
@@ -36,19 +36,19 @@ h1.title{font-family:var(--display);font-size:clamp(1.6rem,5vw,2.3rem);font-weig
 .subtitle{color:var(--muted);margin-top:8px;font-size:.95rem;max-width:60ch;line-height:1.65}
 .xp-summary{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap}
 .xp-pill{font-family:var(--display);font-size:.78rem;font-weight:600;padding:6px 13px;border-radius:20px;border:1px solid var(--border);background:var(--ink2);color:var(--muted)}
-.xp-pill b{color:var(--orange)}
+.xp-pill b{color:var(--green)}
 
 .levels{display:flex;flex-direction:column;gap:12px;margin-top:28px}
 .lvl-card{display:flex;align-items:center;gap:16px;background:var(--ink2);border:1px solid var(--border);border-radius:14px;padding:18px 20px;transition:.15s}
 .lvl-card.unlocked{cursor:pointer}
-.lvl-card.unlocked:hover{border-color:var(--orange);transform:translateY(-1px)}
+.lvl-card.unlocked:hover{border-color:var(--green);transform:translateY(-1px)}
 .lvl-card.locked{opacity:.5}
 .lvl-card.guest-locked{cursor:pointer;border-color:rgba(255,107,53,.35)}
 .lvl-card.guest-locked:hover{border-color:var(--orange)}
 .lvl-card.guest-locked .lvl-num{background:var(--orange-dim);border-color:var(--orange);color:var(--orange)}
 .lvl-num{width:44px;height:44px;flex-shrink:0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:600;font-size:.95rem;border:1.5px solid var(--border-light);background:var(--ink);color:var(--muted2)}
 .lvl-card.done .lvl-num{background:var(--green-dim);border-color:var(--green);color:var(--green)}
-.lvl-card.unlocked .lvl-num{background:var(--orange-dim);border-color:var(--orange);color:var(--orange)}
+.lvl-card.unlocked .lvl-num{background:var(--green-dim);border-color:var(--green);color:var(--green)}
 .lvl-body{flex:1;min-width:0}
 .lvl-title{font-family:var(--display);font-weight:700;font-size:1rem;display:flex;align-items:center;gap:8px}
 .lvl-done-tag{font-family:var(--mono);font-size:.65rem;color:var(--green);background:var(--green-dim);border:1px solid rgba(0,200,150,.3);padding:1px 7px;border-radius:20px}
@@ -57,39 +57,35 @@ h1.title{font-family:var(--display);font-size:clamp(1.6rem,5vw,2.3rem);font-weig
 .pill{font-family:var(--display);font-size:.68rem;font-weight:600;padding:3px 9px;border-radius:20px;border:1px solid var(--border);background:var(--ink3);color:var(--muted)}
 .pill.xp{color:var(--yellow);border-color:rgba(255,214,10,.25);background:rgba(255,214,10,.08)}
 .lvl-arrow{flex-shrink:0;color:var(--muted2)}
-.lvl-card.unlocked .lvl-arrow{color:var(--orange)}
+.lvl-card.unlocked .lvl-arrow{color:var(--green)}
 .lock-icon{flex-shrink:0;color:var(--muted2)}
 </style>
 </head>
 <body>
 
 <div class="topbar">
-  <a href="../index.html" class="logo-small"><img src="../image/logo-mark.png" alt="logo" class="logo-mark-sm">Dev<span>Këf</span></a>
-  <a href="../dashboard/index.html" class="btn-back">
+  <a href="../../index.html" class="logo-small"><img src="../../image/logo-mark.png" alt="logo" class="logo-mark-sm">Dev<span>Këf</span></a>
+  <a href="../../dashboard/index.html" class="btn-back">
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
     Dashboard
   </a>
 </div>
 
 <main class="wrap">
-  <div class="crumb">// Monde 1 · Développement web</div>
-  <h1 class="title">Développement Web</h1>
-  <p class="subtitle">Du titre HTML à l'application interactive. Chaque niveau est un projet concret à construire, avec sa propre maquette et ses objectifs.</p>
+  <div class="crumb">// Monde 2 · Python</div>
+  <h1 class="title">🐍 Python</h1>
+  <p class="subtitle">Des bases (dictionnaires, fonctions) jusqu'à la création d'un mini-chatbot. Premier arrêt : faire tourner une vraie calculatrice avec ton propre code.</p>
   <div class="xp-summary" id="xp-summary"></div>
 
   <div class="levels" id="levels-list"></div>
 </main>
 
 <script>
-const TRACK = 'web';
-// levelId : {title, desc, tags, xp, href} — href = null tant que le niveau n'est pas construit
-const WEB_LEVELS = [
-  { id: 1, title: 'Ma première page', desc: 'Structure HTML de base — titres, paragraphes, listes.', tags: ['HTML'], xp: 80, href: 'level_1.html' },
-  { id: 2, title: 'Texte & liens', desc: 'Mise en forme du texte et navigation entre pages.', tags: ['HTML'], xp: 100, href: 'level_2.html' },
-  { id: 3, title: 'CSS & couleurs', desc: 'Habiller une page : couleurs, typographie, espacements.', tags: ['CSS'], xp: 120, href: null },
-  { id: 4, title: 'Flexbox', desc: 'Carte de profil responsive avec Flexbox.', tags: ['CSS'], xp: 150, href: null },
-  { id: 5, title: 'Grid', desc: 'Mise en page avancée avec CSS Grid.', tags: ['CSS'], xp: 150, href: null },
-  { id: 6, title: 'Responsive', desc: 'Adapter un site complet au mobile.', tags: ['CSS', 'JS'], xp: 180, href: null }
+const TRACK = 'python';
+const LEVELS = [
+  { id: 1, title: 'Calculatrice cliquable', desc: 'Écris une fonction Python qui pilote une vraie calculatrice interactive.', tags: ['Python', 'fonctions'], xp: 150, href: 'level_1.html' },
+  { id: 2, title: 'Dictionnaires & listes', desc: 'Manipuler des données structurées — bientôt disponible.', tags: ['Python'], xp: 120, href: null },
+  { id: 3, title: 'Mini-chatbot', desc: 'Construire un agent conversationnel simple — bientôt disponible.', tags: ['Python'], xp: 200, href: null }
 ];
 
 const lockSvg = `<svg class="lock-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`;
@@ -98,15 +94,13 @@ const arrowSvg = `<svg class="lvl-arrow" width="18" height="18" viewBox="0 0 24 
 function render() {
   const list = document.getElementById('levels-list');
   list.innerHTML = '';
-
-  WEB_LEVELS.forEach(lvl => {
+  LEVELS.forEach(lvl => {
     const done = dkIsDone(TRACK, lvl.id);
     const prereqOk = dkIsUnlocked(TRACK, lvl.id) && !!lvl.href;
     const guestBlocked = lvl.id > 1 && dkIsGuest();
     const unlocked = prereqOk && !guestBlocked;
     const guestLocked = prereqOk && guestBlocked && !done;
     const state = done ? 'done' : (unlocked ? 'unlocked' : (guestLocked ? 'guest-locked' : 'locked'));
-
     const tagsHTML = lvl.tags.map(t => `<span class="pill">${t}</span>`).join('') + `<span class="pill xp">★ ${lvl.xp} XP</span>`;
     const badge = done ? '<span class="lvl-done-tag">Complété</span>' : (guestLocked ? '<span class="lvl-done-tag" style="color:var(--orange);background:var(--orange-dim);border-color:rgba(255,107,53,.3)">Compte requis</span>' : '');
     const inner = `
@@ -117,10 +111,9 @@ function render() {
         <div class="lvl-meta">${tagsHTML}</div>
       </div>
       ${unlocked ? arrowSvg : lockSvg}`;
-
     const el = document.createElement((unlocked || guestLocked) ? 'a' : 'div');
     if (unlocked) el.href = lvl.href;
-    if (guestLocked) el.href = '../login.html';
+    if (guestLocked) el.href = '../../login.html';
     el.className = 'lvl-card ' + state;
     el.innerHTML = inner;
     list.appendChild(el);
@@ -130,14 +123,13 @@ function render() {
   const doneCount = dkGetCompletedCount(TRACK);
   document.getElementById('xp-summary').innerHTML = `
     <span class="xp-pill"><b>${xp}</b> XP au total</span>
-    <span class="xp-pill">${doneCount} / ${WEB_LEVELS.length} niveaux complétés</span>`;
+    <span class="xp-pill">${doneCount} / ${LEVELS.length} niveaux complétés</span>`;
 
   if (dkIsGuest()) {
     document.getElementById('xp-summary').innerHTML += `
-      <a href="../login.html" class="xp-pill" style="color:var(--orange);border-color:rgba(255,107,53,.3)">🔒 Mode invité — créer un compte</a>`;
+      <a href="../../login.html" class="xp-pill" style="color:var(--orange);border-color:rgba(255,107,53,.3)">🔒 Mode invité — créer un compte</a>`;
   }
 }
-
 render();
 </script>
 

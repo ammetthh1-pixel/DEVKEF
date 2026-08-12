@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DevKëf — Classement</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css">
+<script src="../config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../auth.js"></script>
+<style>
+.podium{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.9rem;margin-bottom:1.25rem}
+.podium-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.1rem;text-align:center}
+.podium-card.first{border-color:var(--yellow);order:2;transform:translateY(-8px)}
+.podium-card.second{order:1}
+.podium-card.third{order:3}
+.podium-rank{font-family:var(--mono);font-size:.7rem;color:var(--muted);margin-bottom:.4rem}
+.podium-av{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--orange),var(--violet));display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;margin:0 auto .5rem}
+.podium-card.first .podium-av{width:64px;height:64px;font-size:1.1rem;box-shadow:0 0 0 3px var(--yellow)}
+.podium-name{font-family:var(--display);font-weight:600;font-size:.88rem}
+.podium-xp{font-family:var(--mono);font-size:.72rem;color:var(--orange);margin-top:.2rem}
+.full-rank .rank-row{padding:.7rem .3rem}
+.full-rank .rank-pos{width:26px}
+.tabs{display:flex;gap:6px;margin-bottom:1.1rem}
+.tab-btn{font-family:var(--display);font-size:.8rem;font-weight:600;padding:.5rem 1rem;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--muted)}
+.tab-btn.active{background:var(--orange-dim);color:var(--orange);border-color:rgba(255,107,53,.3)}
+@media(max-width:600px){.podium{grid-template-columns:1fr}.podium-card{order:0 !important;transform:none !important}}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <a class="sidebar-logo" href="../index.html">
+    <img src="../image/logo-mark.png" alt="logo" class="logo-mark" />
+    <div class="logo-name">Dev<span>Këf</span></div>
+  </a>
+  <nav class="sidebar-nav">
+    <a class="nav-item" href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</a>
+    <a class="nav-item" href="../level/index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5a2 2 0 0 1 2-2h12v18H6a2 2 0 0 1-2-2Z"/><path d="M8 7h7"/></svg>Parcours</a>
+    <a class="nav-item active" href="classement.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 21h8M12 17v4"/><path d="M6 4h12v5a6 6 0 0 1-12 0V4Z"/></svg>Classement</a>
+    <a class="nav-item" href="profil.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Profil</a>
+  </nav>
+  <div class="sidebar-foot">
+    <div class="avatar" id="sidebar-avatar">T</div>
+    <div>
+      <div class="foot-name" id="sidebar-name">Toi</div>
+      <div class="foot-rank" id="sidebar-rank">Niveau 1</div>
+    </div>
+  </div>
+</aside>
+
+<main class="main">
+  <header class="head">
+    <div>
+      <h1 class="hello">Classement</h1>
+      <p class="sub">Ta position parmi les apprenants DevKëf.</p>
+    </div>
+  </header>
+
+  <div class="tabs">
+    <button class="tab-btn active">Cette semaine</button>
+    <button class="tab-btn">Tous les temps</button>
+  </div>
+  <p id="rank-mode-note" style="font-family:var(--mono);font-size:.72rem;color:var(--muted);margin-bottom:1rem"></p>
+
+  <div class="podium" id="podium"></div>
+
+  <section class="card full-rank">
+    <h3 class="section-title">Classement complet</h3>
+    <div id="full-rank-list"></div>
+  </section>
+</main>
+
+<script src="../progress.js"></script>
+<script>
+(async function initClassement() {
+  await dkSyncPull();
+  const data = dkLoad();
+  const acc = dkGetXPForNextAccountLevel();
+  document.getElementById('sidebar-name').textContent = data.name || 'Toi';
+  document.getElementById('sidebar-avatar').textContent = (data.name || 'Toi').slice(0,2).toUpperCase();
+  document.getElementById('sidebar-rank').textContent = 'Niveau ' + acc.level;
+
+  let all;
+  const real = await dkFetchLeaderboard();
+  if (real && real.length) {
+    all = real.map(p => ({ name: p.username, xp: p.xp, me: !dkIsGuest() && p.username === data.name }));
+    if (dkIsGuest()) all.push({ name: data.name || 'Toi', xp: data.xp, me: true });
+    all.sort((a, b) => b.xp - a.xp);
+    document.getElementById('rank-mode-note').textContent = '✓ Classement réel';
+  } else {
+    // Backend non configuré ou vide → données de démonstration
+    const rivals = [
+      { name: 'Sara M.', xp: 3420 }, { name: 'Youssef B.', xp: 2980 },
+      { name: 'Lina T.', xp: 2110 }, { name: 'Omar D.', xp: 1090 },
+      { name: 'Fatou K.', xp: 860 }, { name: 'Mamadou B.', xp: 640 },
+      { name: 'Aminata D.', xp: 410 }, { name: 'Cheikh S.', xp: 220 }
+    ];
+    all = [...rivals, { name: data.name || 'Toi', xp: data.xp, me: true }].sort((a, b) => b.xp - a.xp);
+    document.getElementById('rank-mode-note').textContent = '⚠ Classement de démonstration (backend non configuré)';
+  }
+
+  const podiumEl = document.getElementById('podium');
+  const top3 = all.slice(0, 3);
+  const order = ['first', 'second', 'third'];
+  podiumEl.innerHTML = top3.map((p, i) => `
+    <div class="podium-card ${order[i]}">
+      <div class="podium-rank">#${i + 1}</div>
+      <div class="podium-av">${p.name.slice(0,2).toUpperCase()}</div>
+      <div class="podium-name">${p.me ? 'Toi' : p.name}</div>
+      <div class="podium-xp">${p.xp.toLocaleString('fr-FR')} XP</div>
+    </div>`).join('');
+
+  document.getElementById('full-rank-list').innerHTML = all.map((p, i) => `
+    <div class="rank-row${p.me ? ' me' : ''}">
+      <span class="rank-pos">${i + 1}</span>
+      <span class="rank-av">${p.name.slice(0,2).toUpperCase()}</span>
+      <span class="rank-name">${p.me ? 'Toi' : p.name}</span>
+      <span class="rank-xp">${p.xp.toLocaleString('fr-FR')} XP</span>
+    </div>`).join('');
+})();
+</script>
+
+</body>
+</html>

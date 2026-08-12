@@ -580,7 +580,19 @@ ul { list-style: none; }
   border: 1px solid rgba(55,118,171,.2);
   color: #7BB8F0;
 }
-
+.calculator{
+  background: var(--ink2);
+   border: 1px solid rgba(55,118,171,.2);
+   border-radius: var(--radius-lg);
+   padding-left:0;
+   font-size: 14px;
+   color: var(--muted);
+   height: 200px;
+}
+.c-name{
+  color: var(--violet);
+  text-transform: uppercase;
+}
 /* ── ÉDITEUR DEMO ── */
 .editor-section { background: var(--ink); }
 .editor-demo {

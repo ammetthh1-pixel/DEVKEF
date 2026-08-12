@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>DevKëf — Niveau 1 · Ma première page</title>
+<title>DevKëf — Niveau 2 · Texte & liens</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
@@ -21,18 +21,13 @@
 body{background:var(--ink);color:var(--text);font-family:var(--body);-webkit-font-smoothing:antialiased}
 a{text-decoration:none;color:inherit}
 
-/* ── TOPBAR ── */
 .topbar{height:56px;background:var(--ink2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 16px;position:sticky;top:0;z-index:50}
 .logo-small{display:flex;align-items:center;gap:8px;font-family:var(--display);font-weight:700;font-size:.95rem}
 .logo-small span{color:var(--orange)}
-.logo-mark-sm{
-  width: 50px;
-  height:50px;
-}
+.logo-mark-sm{width:50px;height:50px}
 .btn-back{display:inline-flex;align-items:center;gap:6px;font-family:var(--display);font-size:.78rem;font-weight:600;color:var(--muted);border:1px solid var(--border);background:var(--ink3);padding:7px 12px;border-radius:8px}
 .btn-back:hover{color:var(--text);border-color:var(--border-light)}
 
-/* ── LAYOUT ── */
 .wrap{max-width:1180px;margin:0 auto;padding:28px 18px 120px}
 .crumb{font-family:var(--mono);font-size:.72rem;color:var(--muted2);margin-bottom:10px}
 h1.title{font-family:var(--display);font-size:clamp(1.6rem,5vw,2.4rem);font-weight:700;letter-spacing:-.02em}
@@ -45,7 +40,6 @@ h1.title{font-family:var(--display);font-size:clamp(1.6rem,5vw,2.4rem);font-weig
 
 .grid{display:grid;grid-template-columns:1.15fr .85fr;gap:22px;margin-top:28px;align-items:start}
 
-/* ── MAQUETTE ── */
 .mockup-card{background:var(--ink2);border:1px solid var(--border);border-radius:16px;overflow:hidden}
 .mockup-head{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--border);background:var(--ink3)}
 .dots{display:flex;gap:5px}
@@ -62,7 +56,6 @@ h1.title{font-family:var(--display);font-size:clamp(1.6rem,5vw,2.4rem);font-weig
 .mockup-foot{padding:10px 14px;border-top:1px solid var(--border);font-size:.75rem;color:var(--muted);display:flex;gap:8px;align-items:center}
 .mockup-foot b{color:var(--orange);font-family:var(--display);font-weight:600}
 
-/* ── PANNEAU BRIEF ── */
 .card{background:var(--ink2);border:1px solid var(--border);border-radius:16px;padding:18px}
 .card + .card{margin-top:16px}
 .card-title{font-family:var(--display);font-size:.95rem;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
@@ -79,13 +72,11 @@ code{font-family:var(--mono);font-size:.72rem;background:rgba(124,58,237,.16);co
 .tip-label{font-family:var(--display);font-size:.75rem;font-weight:700;color:#C4B5FD;margin-bottom:5px}
 .tip-text{font-size:.79rem;color:var(--muted);line-height:1.6}
 
-/* ── CTA ── */
 .cta-row{display:flex;gap:10px;margin-top:18px}
 .btn-start{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:9px;background:var(--orange);color:var(--ink);font-family:var(--display);font-weight:700;font-size:.95rem;padding:14px 20px;border:0;border-radius:12px;cursor:pointer;box-shadow:0 10px 26px rgba(255,107,53,.22)}
 .btn-start:hover{background:#ff7d4d}
 .btn-ghost{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:1px solid var(--border-light);background:var(--ink3);color:var(--text);font-family:var(--display);font-weight:600;font-size:.85rem;padding:14px 16px;border-radius:12px;cursor:pointer}
 
-/* ── BARRE CTA MOBILE ── */
 .sticky-cta{display:none}
 
 @media (max-width:900px){
@@ -106,68 +97,65 @@ code{font-family:var(--mono);font-size:.72rem;background:rgba(124,58,237,.16);co
 <body>
 
 <div class="topbar">
-  <a href="index.html" class="logo-small"><img src="../image/logo-mark.png" alt="logo" class="logo-mark-sm">Dev<span>Këf</span></a>
-  <a href="../dashboard/index.html" class="btn-back">
+  <a href="../index.html" class="logo-small"><img src="../image/logo-mark.png" alt="logo" class="logo-mark-sm">Dev<span>Këf</span></a>
+  <a href="index.html" class="btn-back">
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
     Parcours
   </a>
 </div>
 
 <main class="wrap">
-  <div class="crumb">// Monde 1 · Développement web · Niveau 1</div>
-  <h1 class="title">Ma première page</h1>
-  <p class="subtitle">Reproduis la maquette ci-dessous : une mini page de présentation personnelle. Tu apprends les balises HTML essentielles en construisant quelque chose de réel.</p>
+  <div class="crumb">// Monde 1 · Développement web · Niveau 2</div>
+  <h1 class="title">Texte &amp; liens</h1>
+  <p class="subtitle">Reproduis la maquette : une page "À propos" avec du texte mis en forme et un lien cliquable. Tu enrichis ce que tu as appris au niveau 1.</p>
   <div class="meta-row">
     <span class="pill lang">HTML</span>
     <span class="pill">Débutant</span>
     <span class="pill time">~15 min</span>
-    <span class="pill xp">★ 80 XP</span>
+    <span class="pill xp">★ 100 XP</span>
   </div>
 
   <div class="grid">
-    <!-- MAQUETTE -->
     <section class="mockup-card">
       <div class="mockup-head">
         <div class="dots"><i></i><i></i><i></i></div>
-        <div class="mockup-label">maquette · niveau-1</div>
+        <div class="mockup-label">maquette · niveau-2</div>
         <div class="view-btns">
           <button class="view-btn active" id="v-desk" onclick="setView('desktop')">Desktop</button>
           <button class="view-btn" id="v-mob" onclick="setView('mobile')">Mobile</button>
         </div>
       </div>
       <div class="mockup-stage" id="stage">
-        <iframe id="mockup" title="Maquette du niveau 1"></iframe>
+        <iframe id="mockup" title="Maquette du niveau 2"></iframe>
       </div>
       <div class="mockup-foot"><b>Objectif visuel</b> — ton rendu doit ressembler à ça (le texte, lui, sera le tien).</div>
     </section>
 
-    <!-- BRIEF -->
     <aside>
       <div class="card">
         <div class="card-title"><span class="n">1</span> Objectifs à valider</div>
-        <div class="obj"><div class="num">1</div><div><div class="t">Ajouter un titre principal avec ton nom</div><div class="h">Utilise la balise <code>&lt;h1&gt;</code></div></div></div>
-        <div class="obj"><div class="num">2</div><div><div class="t">Écrire un paragraphe de présentation</div><div class="h">Utilise la balise <code>&lt;p&gt;</code></div></div></div>
-        <div class="obj"><div class="num">3</div><div><div class="t">Ajouter un sous-titre de section</div><div class="h">Utilise <code>&lt;h2&gt;</code> pour « Mes compétences »</div></div></div>
-        <div class="obj"><div class="num">4</div><div><div class="t">Créer une liste de compétences</div><div class="h">Une <code>&lt;ul&gt;</code> avec au moins 2 <code>&lt;li&gt;</code></div></div></div>
+        <div class="obj"><div class="num">1</div><div><div class="t">Mettre un mot important en gras</div><div class="h">Utilise <code>&lt;strong&gt;</code></div></div></div>
+        <div class="obj"><div class="num">2</div><div><div class="t">Mettre un mot en italique</div><div class="h">Utilise <code>&lt;em&gt;</code></div></div></div>
+        <div class="obj"><div class="num">3</div><div><div class="t">Ajouter un lien cliquable</div><div class="h">Utilise <code>&lt;a href="..."&gt;</code></div></div></div>
+        <div class="obj"><div class="num">4</div><div><div class="t">Écrire un deuxième paragraphe</div><div class="h">Deux balises <code>&lt;p&gt;</code> minimum</div></div></div>
       </div>
 
       <div class="card">
         <div class="card-title"><span class="n">2</span> Ce que tu vas apprendre</div>
         <div class="learn">
-          <span class="tag">structure HTML</span>
-          <span class="tag">titres h1 / h2</span>
-          <span class="tag">paragraphes</span>
-          <span class="tag">listes</span>
-          <span class="tag">lire une maquette</span>
+          <span class="tag">mise en forme du texte</span>
+          <span class="tag">liens &lt;a&gt;</span>
+          <span class="tag">strong / em</span>
+          <span class="tag">structurer un contenu</span>
         </div>
         <div class="tip">
           <div class="tip-label">💡 Avant de commencer</div>
-          <div class="tip-text">Le CSS est déjà écrit pour toi dans l'éditeur. Concentre-toi sur le HTML : dès que tu écris une balise, l'aperçu se met à jour tout seul.</div>
+          <div class="tip-text">Un lien peut pointer vers une autre page (<code>portfolio.html</code>) ou rester provisoire avec <code>#</code> le temps que la page cible existe.</div>
         </div>
       </div>
 
       <div class="cta-row">
-        <a class="btn-ghost" href="../docs/web-niveau-1.html">📄 Doc</a>
+        <a class="btn-ghost" href="../docs/web-niveau-2.html">📄 Doc</a>
         <button class="btn-start" onclick="start()">
           Commencer le niveau
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -178,9 +166,9 @@ code{font-family:var(--mono);font-size:.72rem;background:rgba(124,58,237,.16);co
 </main>
 
 <div class="sticky-cta">
-  <a class="btn-ghost" href="../docs/web-niveau-1.html">📄 Doc</a>
+  <a class="btn-ghost" href="../docs/web-niveau-2.html">📄 Doc</a>
   <button class="btn-start" onclick="start()">
-    Commencer · 80 XP
+    Commencer · 100 XP
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
   </button>
 </div>
@@ -188,15 +176,13 @@ code{font-family:var(--mono);font-size:.72rem;background:rgba(124,58,237,.16);co
 <script>
 const MOCKUP_CSS = `body{font-family:'Segoe UI',sans-serif;max-width:700px;margin:40px auto;padding:0 20px;background:#f9f9f9;color:#1a1a2e;line-height:1.7}
 h1{font-size:2rem;color:#FF6B35;border-bottom:3px solid #FF6B35;padding-bottom:8px}
-h2{font-size:1.25rem;color:#333;margin-top:28px}
-p{color:#555}ul{padding-left:20px}li{margin:6px 0;color:#444}`;
+p{color:#555}a{color:#00C896;font-weight:600}strong{color:#1a1a2e}`;
 
 const MOCKUP_HTML = `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/><style>${MOCKUP_CSS}</style></head><body>
-<h1>Mouhamed Ndiaye</h1>
-<p>Salut ! Je suis en formation autodidacte en développement web. Je suis aussi le céateur de ce site, je vous souhaite le bienvenu ici vous apprenez les langages de programmation avec de vrais projets.</p>
-<h2>Mes compétences</h2>
-<ul><li>Développeur full stack</li><li>Designer ui/ux</li><li>Ingénieur en intelligence artificielle</li></ul>
+<h1>À propos de moi</h1>
+<p>Je suis <strong>étudiant en informatique</strong> et passionné de développement web. J'apprends en <em>construisant de vrais projets</em>, pas en répondant à des quiz.</p>
+<p>Pour en savoir plus sur mon parcours, <a href="#">consulte mon portfolio</a>.</p>
 </body></html>`;
 
 (function(){
@@ -211,7 +197,7 @@ function setView(mode){
   document.getElementById('v-mob').classList.toggle('active', mode === 'mobile');
 }
 
-function start(){ window.location.href = '../editor.html'; }
+function start(){ window.location.href = '../editor.html?level=2'; }
 </script>
 </body>
 </html>

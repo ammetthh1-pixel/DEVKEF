@@ -28,6 +28,7 @@
     <a href="#parcours">Parcours</a>
     <a href="#editeur">Éditeur</a>
     <a href="#">Blog</a>
+    <a href="login.html" style="opacity:.85">Se connecter</a>
     <a href="dashboard/index.html" class="nav-cta">Commencer gratuitement</a>
   </nav>
 </header>
@@ -233,12 +234,36 @@
           <span class="domain-tag">Automatisation</span>
           <span class="domain-tag">Backend / Flask</span>
         </div>
-        <a href="#" class="path-link" style="color:var(--green)">
+        <a href="level/python/index.html" class="path-link" style="color:var(--green)">
           Explorer Python
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>
       </div>
-
+      
+      <!-- Python -->
+      <div class="path-card python reveal">
+        <div class="path-header">
+          <div>
+            <div class="path-name c-name">Le langage de la fac</div>
+            <span class="path-c">Langage C</span>
+          </div>
+        </div>
+        <p class="path-desc">Tu écris ton programme en C, la plateforme le compile et l'exécute, puis branche la sortie sur une interface interactive : une calculatrice cliquable pilotée par ton propre code..</p>
+        <pre  class="calculator"><code>
+          <span>def chatbot(message):
+            reponses = {
+               "bonjour": "Salut, comment vas-tu ?",
+               "aide": "Je réponds aux questions simples.",
+          }
+            return reponses.get(message.lower(),
+               "Désolé, je ne comprends pas.")
+          </span>
+        </code></pre>
+        <a href="level/c/index.html" class="path-link" style="color:var(--violet)">
+          Explorer C
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
     </div>
   </div>
 </section>

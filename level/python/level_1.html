@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DevKëf — Python Niveau 1 · Calculatrice cliquable</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+<script src="../../calculator.js"></script>
+<style>
+:root{
+  --ink:#0A0E1A; --ink2:#111827; --ink3:#1C2333; --surface:#1A2236;
+  --border:#1E2D45; --border-light:#243450;
+  --orange:#FF6B35; --orange-dim:rgba(255,107,53,.12);
+  --green:#00C896; --green-dim:rgba(0,200,150,.1);
+  --violet:#7C3AED; --yellow:#FFD60A;
+  --text:#F0F4FF; --muted:#7A8BAD; --muted2:#4A5C78;
+  --mono:'Fira Code',monospace; --display:'Space Grotesk',sans-serif; --body:'Inter',sans-serif;
+}
+*,*::before,*::as{box-sizing:border-box}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--ink);color:var(--text);font-family:var(--body);-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+
+.topbar{height:56px;background:var(--ink2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 16px;position:sticky;top:0;z-index:50}
+.logo-small{display:flex;align-items:center;gap:8px;font-family:var(--display);font-weight:700;font-size:.95rem}
+.logo-small span{color:var(--orange)}
+.logo-mark-sm{width:50px;height:50px}
+.btn-back{display:inline-flex;align-items:center;gap:6px;font-family:var(--display);font-size:.78rem;font-weight:600;color:var(--muted);border:1px solid var(--border);background:var(--ink3);padding:7px 12px;border-radius:8px}
+.btn-back:hover{color:var(--text);border-color:var(--border-light)}
+
+.wrap{max-width:1180px;margin:0 auto;padding:28px 18px 120px}
+.crumb{font-family:var(--mono);font-size:.72rem;color:var(--muted2);margin-bottom:10px}
+h1.title{font-family:var(--display);font-size:clamp(1.6rem,5vw,2.4rem);font-weight:700;letter-spacing:-.02em}
+.subtitle{color:var(--muted);margin-top:8px;font-size:.95rem;max-width:60ch;line-height:1.65}
+.meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.pill{font-family:var(--display);font-size:.72rem;font-weight:600;padding:5px 11px;border-radius:20px;border:1px solid var(--border);background:var(--ink2);color:var(--muted)}
+.pill.xp{color:var(--yellow);border-color:rgba(255,214,10,.25);background:rgba(255,214,10,.08)}
+.pill.lang{color:var(--green);border-color:rgba(0,200,150,.25);background:var(--green-dim)}
+.pill.time{color:var(--orange);border-color:rgba(255,107,53,.25);background:var(--orange-dim)}
+
+.grid{display:grid;grid-template-columns:1.15fr .85fr;gap:22px;margin-top:28px;align-items:start}
+
+.demo-card{background:var(--ink2);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.demo-head{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--border);background:var(--ink3)}
+.dots{display:flex;gap:5px}
+.dots i{width:9px;height:9px;border-radius:50%;display:block}
+.dots i:nth-child(1){background:#FF5F57}.dots i:nth-child(2){background:#FFBD2E}.dots i:nth-child(3){background:#28C840}
+.demo-label{font-family:var(--mono);font-size:.7rem;color:var(--muted2)}
+.demo-stage{padding:40px 20px;display:flex;justify-content:center}
+.demo-foot{padding:10px 14px;border-top:1px solid var(--border);font-size:.75rem;color:var(--muted);display:flex;gap:8px;align-items:center}
+.demo-foot b{color:var(--green);font-family:var(--display);font-weight:600}
+
+.card{background:var(--ink2);border:1px solid var(--border);border-radius:16px;padding:18px}
+.card + .card{margin-top:16px}
+.card-title{font-family:var(--display);font-size:.95rem;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.card-title .n{width:22px;height:22px;border-radius:6px;background:var(--green-dim);color:var(--green);display:grid;place-items:center;font-size:.7rem}
+.obj{display:flex;gap:11px;padding:11px 0;border-bottom:1px solid var(--border)}
+.obj:last-child{border-bottom:0;padding-bottom:0}
+.obj .num{width:22px;height:22px;flex-shrink:0;border-radius:50%;border:1px solid var(--border-light);color:var(--muted);display:grid;place-items:center;font-family:var(--mono);font-size:.7rem}
+.obj .t{font-size:.86rem;font-weight:500;line-height:1.4}
+.obj .h{font-size:.75rem;color:var(--muted);margin-top:3px;line-height:1.5}
+code{font-family:var(--mono);font-size:.72rem;background:rgba(124,58,237,.16);color:#C4B5FD;padding:1px 5px;border-radius:4px}
+.learn{display:flex;flex-wrap:wrap;gap:7px}
+.tag{font-family:var(--mono);font-size:.7rem;color:var(--muted);border:1px solid var(--border);border-radius:6px;padding:4px 8px;background:var(--ink3)}
+.tip{background:rgba(0,200,150,.08);border:1px solid rgba(0,200,150,.25);border-radius:12px;padding:13px 15px;margin-top:16px}
+.tip-label{font-family:var(--display);font-size:.75rem;font-weight:700;color:var(--green);margin-bottom:5px}
+.tip-text{font-size:.79rem;color:var(--muted);line-height:1.6}
+
+.cta-row{display:flex;gap:10px;margin-top:18px}
+.btn-start{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:9px;background:var(--green);color:var(--ink);font-family:var(--display);font-weight:700;font-size:.95rem;padding:14px 20px;border:0;border-radius:12px;cursor:pointer;box-shadow:0 10px 26px rgba(0,200,150,.22)}
+.btn-start:hover{background:#20e0ac}
+.btn-ghost{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:1px solid var(--border-light);background:var(--ink3);color:var(--text);font-family:var(--display);font-weight:600;font-size:.85rem;padding:14px 16px;border-radius:12px;cursor:pointer}
+
+.sticky-cta{display:none}
+@media (max-width:900px){
+  .grid{grid-template-columns:1fr;gap:18px}
+  .cta-row{display:none}
+  .sticky-cta{display:flex;gap:10px;position:fixed;left:0;right:0;bottom:0;padding:12px 14px calc(12px + env(safe-area-inset-bottom));background:rgba(17,24,39,.96);backdrop-filter:blur(10px);border-top:1px solid var(--border);z-index:60}
+  .sticky-cta .btn-start{padding:13px 18px}
+  .wrap{padding-bottom:100px}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../../index.html" class="logo-small"><img src="../../image/logo-mark.png" alt="logo" class="logo-mark-sm">Dev<span>Këf</span></a>
+  <a href="index.html" class="btn-back">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Parcours Python
+  </a>
+</div>
+
+<main class="wrap">
+  <div class="crumb">// Monde 2 · Python · Niveau 1</div>
+  <h1 class="title">Calculatrice cliquable</h1>
+  <p class="subtitle">Jusqu'ici tu as peut-être fait des exercices abstraits. Cette fois, ton code va piloter une vraie application interactive : cette calculatrice, sous tes yeux.</p>
+  <div class="meta-row">
+    <span class="pill lang">Python</span>
+    <span class="pill">Débutant</span>
+    <span class="pill time">~20 min</span>
+    <span class="pill xp">★ 150 XP</span>
+  </div>
+
+  <div class="grid">
+    <section class="demo-card">
+      <div class="demo-head">
+        <div class="dots"><i></i><i></i><i></i></div>
+        <div class="demo-label">aperçu · calculatrice</div>
+      </div>
+      <div class="demo-stage"><div id="calc-demo"></div></div>
+      <div class="demo-foot"><b>Aperçu</b> — dans l'éditeur, c'est <u>ton</u> code Python qui pilotera ces calculs, pas cette démo.</div>
+    </section>
+
+    <aside>
+      <div class="card">
+        <div class="card-title"><span class="n">1</span> Objectifs à valider</div>
+        <div class="obj"><div class="num">1</div><div><div class="t">Gérer l'addition</div><div class="h">3 + 4 doit donner 7</div></div></div>
+        <div class="obj"><div class="num">2</div><div><div class="t">Gérer la soustraction</div><div class="h">10 − 6 doit donner 4</div></div></div>
+        <div class="obj"><div class="num">3</div><div><div class="t">Gérer la multiplication et la division</div><div class="h">6 × 7 = 42 et 20 ÷ 4 = 5</div></div></div>
+        <div class="obj"><div class="num">4</div><div><div class="t">Gérer la division par zéro</div><div class="h">Ton programme ne doit pas planter</div></div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="n">2</span> Ce que tu vas apprendre</div>
+        <div class="learn">
+          <span class="tag">fonctions Python</span>
+          <span class="tag">if / elif / else</span>
+          <span class="tag">gestion d'erreurs</span>
+          <span class="tag">brancher du code à une UI</span>
+        </div>
+        <div class="tip">
+          <div class="tip-label">💡 Avant de commencer</div>
+          <div class="tip-text">Ton code tourne pour de vrai dans le navigateur (Pyodide). Le premier chargement de Python prend quelques secondes — sois patient au démarrage de l'éditeur.</div>
+        </div>
+      </div>
+
+      <div class="cta-row">
+        <a class="btn-ghost" href="../../docs/python-niveau-1.html">📄 Doc</a>
+        <button class="btn-start" onclick="start()">
+          Commencer le niveau
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<div class="sticky-cta">
+  <a class="btn-ghost" href="../../docs/python-niveau-1.html">📄 Doc</a>
+  <button class="btn-start" onclick="start()" style="width:100%">
+    Commencer · 150 XP
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+  </button>
+</div>
+
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+  initCalculator(document.getElementById('calc-demo'), async (a, op, b) => {
+    if (op === '+') return a + b;
+    if (op === '-') return a - b;
+    if (op === '*') return a * b;
+    if (op === '/') return b === 0 ? null : a / b;
+    return null;
+  });
+});
+function start(){ window.location.href = '../../editor-python.html'; }
+</script>
+</body>
+</html>

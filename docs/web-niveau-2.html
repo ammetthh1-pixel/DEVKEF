@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DevKëf — Doc · Texte & liens</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="doc-style.css"/>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../index.html" class="logo-small"><img src="../image/logo-mark.png" alt="logo" class="logo-mark-sm">Dev<span>Këf</span></a>
+  <a href="../level/level_2.html" class="btn-back">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Retour au niveau
+  </a>
+</div>
+
+<main class="doc-wrap">
+  <div class="doc-crumb">// Documentation · Développement Web · Niveau 2</div>
+  <h1 class="doc-title">📄 Texte & liens</h1>
+  <p class="doc-subtitle">Une page web sans lien n'est qu'une île. Ce niveau t'apprend à enrichir du texte et à connecter des pages entre elles — la base du <i>World Wide Web</i>.</p>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">🎯</span> Pourquoi ce projet ?</div>
+    <p class="doc-p">Le "W" de HTML veut dire "HyperText" — un texte qui contient des liens vers d'autres textes. Le lien (<code>&lt;a&gt;</code>) est littéralement l'invention qui a créé le web tel qu'on le connaît.</p>
+    <p class="doc-p">Ce niveau te fait aussi découvrir une idée importante : en HTML, certaines balises portent un <b>sens</b> (important, insistance) plutôt qu'un simple style visuel. C'est ce qu'on appelle le HTML sémantique.</p>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">📚</span> Les notions clés</div>
+
+    <div class="concept">
+      <div class="concept-name">&lt;strong&gt; vs &lt;b&gt;</div>
+      <div class="concept-def"><code>&lt;strong&gt;</code> dit "ce texte est important" (les lecteurs d'écran pour malvoyants le lisent différemment). <code>&lt;b&gt;</code> dit juste "affiche ça en gras", sans signification particulière. On préfère <code>&lt;strong&gt;</code> quand le contenu est vraiment important.</div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-name">&lt;em&gt; vs &lt;i&gt;</div>
+      <div class="concept-def">Même logique : <code>&lt;em&gt;</code> (emphasis) veut dire "on insiste sur ce mot en le disant", <code>&lt;i&gt;</code> est juste visuel (italique sans signification).</div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-name">&lt;a href="..."&gt; — le lien</div>
+      <div class="concept-def">L'attribut <code>href</code> (hypertext reference) indique la destination : une autre page (<code>portfolio.html</code>), un site externe (<code>https://...</code>), ou un espace réservé (<code>#</code>) si la page n'existe pas encore.</div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-name">Chemin relatif vs absolu</div>
+      <div class="concept-def"><code>portfolio.html</code> est un chemin relatif : "la page portfolio, dans le même dossier que moi". <code>https://exemple.com</code> est un chemin absolu : une adresse complète, indépendante d'où on se trouve.</div>
+    </div>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">🔍</span> Comment décomposer le problème</div>
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body"><div class="step-title">Repère les mots qui comptent</div><div class="step-text">Dans ta présentation, quel mot mérite d'être mis en avant (gras) ? Lequel mérite une insistance (italique) ? Ce n'est pas au hasard — ça doit avoir du sens en le relisant.</div></div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body"><div class="step-title">Le lien vit dans une phrase</div><div class="step-text"><code>&lt;a&gt;</code> s'utilise <i>autour</i> d'un morceau de texte à l'intérieur d'un paragraphe — pas tout seul sur sa ligne. Exemple : <code>Regarde &lt;a href="#"&gt;mon travail&lt;/a&gt; ici.</code></div></div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body"><div class="step-title">Deux idées, deux paragraphes</div><div class="step-text">Ne mets pas tout dans un seul <code>&lt;p&gt;</code> géant. Sépare tes idées : une pour te présenter, une pour orienter vers plus d'infos.</div></div>
+    </div>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">⚠️</span> Pièges fréquents</div>
+    <div class="pitfall">
+      <span class="ic">✗</span>
+      <div><div class="pitfall-title">Lien sans href</div><div class="pitfall-text"><code>&lt;a&gt;clique ici&lt;/a&gt;</code> sans <code>href</code> n'est pas un vrai lien cliquable pour le navigateur.</div></div>
+    </div>
+    <div class="pitfall">
+      <span class="ic">✗</span>
+      <div><div class="pitfall-title">Imbriquer dans le mauvais ordre</div><div class="pitfall-text"><code>&lt;strong&gt;&lt;em&gt;texte&lt;/strong&gt;&lt;/em&gt;</code> — les balises se ferment dans l'ordre inverse de l'ouverture : la dernière ouverte doit être la première fermée.</div></div>
+    </div>
+    <div class="pitfall">
+      <span class="ic">✗</span>
+      <div><div class="pitfall-title">Tout mettre en gras</div><div class="pitfall-text">Si tout est <code>&lt;strong&gt;</code>, plus rien ne ressort vraiment. Choisis 1 ou 2 mots clés maximum.</div></div>
+    </div>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">🚀</span> Pour aller plus loin</div>
+    <div class="resource-list">
+      <a class="resource" href="https://developer.mozilla.org/fr/docs/Web/HTML/Element/a" target="_blank" rel="noopener">
+        <span class="ic">📘</span><b>MDN — La balise &lt;a&gt;</b><span>Référence officielle, en français</span>
+      </a>
+    </div>
+    <p class="doc-p" style="margin-top:14px">Pour t'entraîner encore : essaie d'ajouter un lien qui s'ouvre dans un nouvel onglet avec <code>target="_blank"</code> — pratique pour les liens externes.</p>
+  </section>
+
+  <div class="doc-cta">
+    <p>Prêt à coder ?</p>
+    <a class="btn-doc-cta" href="../editor.html?level=2">
+      Ouvrir l'éditeur
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</main>
+
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DevKëf — Doc · Calculatrice Python</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="doc-style.css"/>
+<style>.doc-h2 .ic{color:var(--green)}.concept-name{color:var(--green) !important}</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../index.html" class="logo-small"><img src="../image/logo-mark.png" alt="logo" class="logo-mark-sm">Dev<span>Këf</span></a>
+  <a href="../level/python/level_1.html" class="btn-back">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Retour au niveau
+  </a>
+</div>
+
+<main class="doc-wrap">
+  <div class="doc-crumb">// Documentation · Python · Niveau 1</div>
+  <h1 class="doc-title">🐍 Calculatrice cliquable</h1>
+  <p class="doc-subtitle">Ton premier programme Python qui pilote une vraie interface. Jusqu'ici c'était abstrait — là, tu vas voir ta fonction répondre en direct à des clics.</p>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">🎯</span> Pourquoi ce projet ?</div>
+    <p class="doc-p">Écrire une fonction qui "marche" dans un exercice isolé est une chose. Faire en sorte qu'une application entière <b>dépende</b> de ta fonction pour fonctionner en est une autre. C'est exactement la vie d'un développeur : ton code n'est presque jamais seul, il est appelé par autre chose (ici, la calculatrice) qui lui fait confiance pour répondre correctement.</p>
+    <p class="doc-p">Concrètement, à chaque clic sur "=", DevKëf exécute <i>ton</i> code Python (pour de vrai, via Pyodide) et appelle ta fonction <code>calculer(a, op, b)</code>. Le résultat qu'elle retourne s'affiche directement.</p>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">📚</span> Les notions clés</div>
+
+    <div class="concept">
+      <div class="concept-name">def — définir une fonction</div>
+      <div class="concept-def"><code>def calculer(a, op, b):</code> crée une fonction nommée <code>calculer</code> qui attend 3 valeurs (paramètres). Tout ce qui est indenté en dessous fait partie de la fonction.</div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-name">return, pas print()</div>
+      <div class="concept-def"><code>print()</code> affiche du texte dans une console — invisible ici. <code>return</code> renvoie une valeur à celui qui a appelé la fonction (la calculatrice). C'est <code>return</code> qu'il te faut : sans lui, ta fonction ne "répond" rien.</div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-name">if / elif / else</div>
+      <div class="concept-def">Une chaîne de conditions : <code>if</code> pour le premier cas, <code>elif</code> (contraction de "else if") pour les cas suivants, <code>else</code> pour "dans tous les autres cas". Python les évalue dans l'ordre et s'arrête au premier vrai.</div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-name">L'indentation compte</div>
+      <div class="concept-def">Contrairement à beaucoup de langages, Python n'utilise pas d'accolades <code>{ }</code> pour délimiter un bloc — l'indentation (les espaces au début de ligne) EST la structure. Un mauvais alignement casse le programme.</div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-name">Division par zéro</div>
+      <div class="concept-def">En Python, diviser par zéro lève une erreur (<code>ZeroDivisionError</code>) qui arrête le programme si elle n'est pas gérée. Ton rôle : vérifier <code>b == 0</code> <i>avant</i> de diviser, pas après.</div>
+    </div>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">🔍</span> Comment décomposer le problème</div>
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body"><div class="step-title">Un cas à la fois</div><div class="step-text">Ne pense pas "je dois gérer 4 opérations" — pense "je dois gérer le cas <code>+</code>", teste-le, puis passe au suivant.</div></div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body"><div class="step-title">Compare bien les chaînes</div><div class="step-text"><code>op == '+'</code> compare <code>op</code> à la chaîne <code>'+'</code>. Vérifie que tu utilises bien <code>==</code> (comparaison) et non <code>=</code> (affectation) — erreur classique.</div></div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body"><div class="step-title">Traite le cas limite en dernier</div><div class="step-text">Une fois +, −, × qui marchent, occupe-toi spécifiquement de la division par zéro : c'est souvent l'objectif qui bloque le plus longtemps, et c'est normal.</div></div>
+    </div>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">⚠️</span> Pièges fréquents</div>
+    <div class="pitfall">
+      <span class="ic">✗</span>
+      <div><div class="pitfall-title">Utiliser print au lieu de return</div><div class="pitfall-text">Le résultat n'apparaît jamais sur la calculatrice si tu utilises <code>print(a + b)</code> à la place de <code>return a + b</code>.</div></div>
+    </div>
+    <div class="pitfall">
+      <span class="ic">✗</span>
+      <div><div class="pitfall-title">Indentation incohérente</div><div class="pitfall-text">Mélanger espaces et tabulations, ou mal aligner un <code>elif</code>, casse le programme avec une erreur parfois difficile à repérer. Reste cohérent (l'éditeur utilise 4 espaces par niveau).</div></div>
+    </div>
+    <div class="pitfall">
+      <span class="ic">✗</span>
+      <div><div class="pitfall-title">Oublier un cas → rien n'est retourné</div><div class="pitfall-text">Si aucune condition ne correspond et qu'il n'y a pas de <code>else</code>, ta fonction ne retourne rien (<code>None</code>) — la calculatrice affichera une erreur.</div></div>
+    </div>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">🚀</span> Pour aller plus loin</div>
+    <div class="resource-list">
+      <a class="resource" href="https://docs.python.org/fr/3/tutorial/controlflow.html" target="_blank" rel="noopener">
+        <span class="ic">📘</span><b>Python — Structures de contrôle</b><span>Documentation officielle, en français</span>
+      </a>
+    </div>
+    <p class="doc-p" style="margin-top:14px">Curieux d'une autre approche ? Essaie de remplacer tes <code>if/elif</code> par un dictionnaire d'opérations — c'est une technique très "pythonique" que tu croiseras souvent dans du vrai code.</p>
+  </section>
+
+  <div class="doc-cta">
+    <p>Prêt à coder ?</p>
+    <a class="btn-doc-cta" href="../editor-python.html">
+      Ouvrir l'éditeur
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</main>
+
+</body>
+</html>

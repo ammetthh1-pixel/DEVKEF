@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DevKëf — Profil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css">
+<script src="../config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../auth.js"></script>
+<style>
+.profile-head{display:flex;align-items:center;gap:1.1rem}
+.profile-av{width:74px;height:74px;border-radius:50%;background:linear-gradient(135deg,var(--orange),var(--violet));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.4rem;color:#fff;flex-shrink:0}
+.name-input{font-family:var(--display);font-size:1.15rem;font-weight:700;background:var(--ink);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:.45rem .7rem;width:100%;max-width:260px}
+.name-input:focus{outline:none;border-color:var(--orange)}
+.save-hint{font-size:.72rem;color:var(--muted);margin-top:.35rem;font-family:var(--mono)}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem;margin-top:1.25rem}
+.stat-box{background:var(--ink);border:1px solid var(--border);border-radius:var(--radius);padding:.9rem;text-align:center}
+.stat-box b{display:block;font-family:var(--display);font-size:1.3rem;color:var(--orange)}
+.stat-box span{font-size:.72rem;color:var(--muted)}
+.track-row{margin-bottom:1.1rem}
+.track-row:last-child{margin-bottom:0}
+.track-top{display:flex;justify-content:space-between;font-size:.85rem;margin-bottom:.4rem}
+.track-top b{font-family:var(--display)}
+.track-bar{height:8px;border-radius:100px;background:var(--ink);overflow:hidden}
+.track-bar>i{display:block;height:100%;border-radius:100px}
+.tb-web{background:linear-gradient(90deg,var(--orange),#FF9B6A)}
+.tb-python{background:linear-gradient(90deg,var(--green),#5EE0BC)}
+.tb-c{background:linear-gradient(90deg,var(--violet),#B79CFB)}
+.danger-zone{border:1px solid rgba(255,71,87,.3);background:rgba(255,71,87,.06);border-radius:var(--radius-lg);padding:1.1rem}
+.danger-zone h3{font-family:var(--display);font-size:.9rem;color:#FF4757;margin-bottom:.4rem}
+.danger-zone p{font-size:.8rem;color:var(--muted);margin-bottom:.8rem}
+.btn-danger{background:transparent;border:1px solid #FF4757;color:#FF4757;font-family:var(--display);font-weight:600;font-size:.82rem;padding:.55rem 1rem;border-radius:8px}
+.btn-danger:hover{background:rgba(255,71,87,.1)}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <a class="sidebar-logo" href="../index.html">
+    <img src="../image/logo-mark.png" alt="logo" class="logo-mark" />
+    <div class="logo-name">Dev<span>Këf</span></div>
+  </a>
+  <nav class="sidebar-nav">
+    <a class="nav-item" href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</a>
+    <a class="nav-item" href="../level/index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5a2 2 0 0 1 2-2h12v18H6a2 2 0 0 1-2-2Z"/><path d="M8 7h7"/></svg>Parcours</a>
+    <a class="nav-item" href="classement.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 21h8M12 17v4"/><path d="M6 4h12v5a6 6 0 0 1-12 0V4Z"/></svg>Classement</a>
+    <a class="nav-item active" href="profil.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Profil</a>
+  </nav>
+  <div class="sidebar-foot">
+    <div class="avatar" id="sidebar-avatar">T</div>
+    <div>
+      <div class="foot-name" id="sidebar-name">Toi</div>
+      <div class="foot-rank" id="sidebar-rank">Niveau 1</div>
+    </div>
+  </div>
+  <div id="account-banner" style="padding:10px 14px 14px"></div>
+</aside>
+
+<main class="main">
+  <header class="head">
+    <div>
+      <h1 class="hello">Ton profil</h1>
+      <p class="sub">Ta progression est sauvegardée automatiquement sur cet appareil.</p>
+    </div>
+  </header>
+
+  <section class="card">
+    <div class="profile-head">
+      <div class="profile-av" id="profile-av">T</div>
+      <div>
+        <input class="name-input" id="name-input" maxlength="24" placeholder="Ton prénom"/>
+        <div class="save-hint" id="save-hint">Modifie ton prénom, il est enregistré automatiquement.</div>
+      </div>
+    </div>
+    <div class="stat-row">
+      <div class="stat-box"><b id="stat-xp">0</b><span>XP total</span></div>
+      <div class="stat-box"><b id="stat-level">1</b><span>Niveau de compte</span></div>
+      <div class="stat-box"><b id="stat-streak">1</b><span>Jours d'affilée</span></div>
+    </div>
+  </section>
+
+  <section class="card" style="margin-top:1.25rem">
+    <h3 class="section-title">Progression par parcours</h3>
+    <div class="track-row">
+      <div class="track-top"><b>🌐 Développement Web</b><span id="track-web-label">0 / 6</span></div>
+      <div class="track-bar"><i class="tb-web" id="track-web-bar" style="width:0%"></i></div>
+    </div>
+    <div class="track-row">
+      <div class="track-top"><b>🐍 Python</b><span id="track-python-label">0 / 1</span></div>
+      <div class="track-bar"><i class="tb-python" id="track-python-bar" style="width:0%"></i></div>
+    </div>
+    <div class="track-row">
+      <div class="track-top"><b>⚙️ Langage C</b><span id="track-c-label">0 / 1</span></div>
+      <div class="track-bar"><i class="tb-c" id="track-c-bar" style="width:0%"></i></div>
+    </div>
+  </section>
+
+  <section class="card" style="margin-top:1.25rem">
+    <h3 class="section-title">Récompenses</h3>
+    <div class="badges" id="badges-row"></div>
+  </section>
+
+  <div class="danger-zone" style="margin-top:1.25rem">
+    <h3>Réinitialiser ma progression</h3>
+    <p>Efface tout ton XP et tes niveaux complétés sur cet appareil. Action irréversible.</p>
+    <button class="btn-danger" onclick="resetProgress()">Réinitialiser</button>
+  </div>
+</main>
+
+<script src="../progress.js"></script>
+<script>
+(async function initProfil() {
+  await dkSyncPull();
+  const data = dkLoad();
+  const acc = dkGetXPForNextAccountLevel();
+
+  // Bandeau statut de compte
+  const banner = document.getElementById('account-banner');
+  if (dkIsGuest()) {
+    banner.innerHTML = `<a href="../login.html" style="display:block;text-align:center;font-family:var(--display);font-size:.72rem;font-weight:600;color:var(--orange);border:1px solid rgba(255,107,53,.3);background:var(--orange-dim);padding:8px;border-radius:8px">🔒 Mode invité — créer un compte</a>`;
+  } else {
+    banner.innerHTML = `<button onclick="dkSignOut().then(()=>location.reload())" style="width:100%;font-family:var(--display);font-size:.72rem;font-weight:600;color:var(--muted);border:1px solid var(--border-light);background:var(--ink3);padding:8px;border-radius:8px;cursor:pointer">Se déconnecter</button>`;
+  }
+
+  function paintSidebar(d) {
+    const n = d.name || 'Toi';
+    document.getElementById('sidebar-name').textContent = n;
+    document.getElementById('sidebar-avatar').textContent = n.slice(0,2).toUpperCase();
+    document.getElementById('profile-av').textContent = n.slice(0,2).toUpperCase();
+    document.getElementById('sidebar-rank').textContent = 'Niveau ' + dkGetXPForNextAccountLevel().level;
+  }
+  paintSidebar(data);
+
+  const nameInput = document.getElementById('name-input');
+  nameInput.value = data.name && data.name !== 'Toi' ? data.name : '';
+  nameInput.placeholder = 'Ton prénom';
+  let saveTimer;
+  nameInput.addEventListener('input', () => {
+    clearTimeout(saveTimer);
+    document.getElementById('save-hint').textContent = 'Enregistrement…';
+    saveTimer = setTimeout(() => {
+      const d = dkLoad();
+      d.name = nameInput.value.trim() || 'Toi';
+      dkSave(d); // pousse aussi vers Supabase si connecté (voir progress.js)
+      paintSidebar(d);
+      document.getElementById('save-hint').textContent = '✓ Enregistré' + (dkIsGuest() ? ' (sur cet appareil)' : ' (synchronisé)');
+    }, 500);
+  });
+
+  document.getElementById('stat-xp').textContent = data.xp.toLocaleString('fr-FR');
+  document.getElementById('stat-level').textContent = acc.level;
+  document.getElementById('stat-streak').textContent = data.streak;
+
+  const TRACK_TOTALS = { web: 6, python: 1, c: 1 };
+  Object.entries(TRACK_TOTALS).forEach(([track, total]) => {
+    const done = dkGetCompletedCount(track);
+    document.getElementById('track-' + track + '-label').textContent = done + ' / ' + total;
+    document.getElementById('track-' + track + '-bar').style.width = Math.min(100, (done / total) * 100) + '%';
+  });
+
+  const doneCount = dkGetCompletedCount('web') + dkGetCompletedCount('python') + dkGetCompletedCount('c');
+  const badgeDefs = [
+    { icon: '🚀', got: doneCount >= 1, label: 'Premier projet' },
+    { icon: '🔥', got: data.streak >= 3, label: '3 jours d\'affilée' },
+    { icon: '🎯', got: doneCount >= 2, label: '2 projets complétés' },
+    { icon: '🏆', got: doneCount >= 4, label: '4 projets complétés' },
+    { icon: '💎', got: dkGetXP() >= 500, label: '500 XP atteints' },
+    { icon: '⚡', got: doneCount >= 6, label: 'Tous les projets actuels' }
+  ];
+  document.getElementById('badges-row').innerHTML = badgeDefs.map(b =>
+    `<div class="badge ${b.got ? 'got' : 'locked'}" title="${b.label}">${b.icon}</div>`).join('');
+})();
+
+async function resetProgress() {
+  if (!confirm('Es-tu sûr·e ? Tout ton XP et tes niveaux complétés seront effacés définitivement.')) return;
+  await dkSyncReset(); // nettoie aussi le serveur si connecté
+  dkReset();
+  window.location.reload();
+}
+</script>
+
+</body>
+</html>

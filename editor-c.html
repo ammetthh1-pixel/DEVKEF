@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DevKëf — Éditeur · Calculatrice C</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/clike/clike.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
+<script src="progress.js"></script>
+<script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="auth.js"></script>
+<script src="calculator.js"></script>
+<script src="c-interpreter.js"></script>
+<style>
+:root{
+  --ink:#0A0E1A; --ink2:#111827; --ink3:#1C2333; --surface:#1A2236;
+  --border:#1E2D45; --border-light:#243450;
+  --orange:#FF6B35; --orange-dim:rgba(255,107,53,.12);
+  --green:#00C896; --green-dim:rgba(0,200,150,.1);
+  --violet:#7C3AED; --yellow:#FFD60A;
+  --text:#F0F4FF; --muted:#7A8BAD; --muted2:#4A5C78;
+  --mono:'Fira Code',monospace; --display:'Space Grotesk',sans-serif; --body:'Inter',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--ink);color:var(--text);font-family:var(--body);-webkit-font-smoothing:antialiased;height:100vh;overflow:hidden;display:flex;flex-direction:column}
+a{text-decoration:none;color:inherit}
+code{font-family:var(--mono);font-size:.72rem;background:rgba(124,58,237,.16);color:#C4B5FD;padding:1px 5px;border-radius:4px}
+
+.topbar{height:52px;flex-shrink:0;background:var(--ink2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;padding:0 16px}
+.logo-small{display:flex;align-items:center;gap:8px;font-family:var(--display);font-weight:700;font-size:.9rem}
+.logo-small span{color:var(--orange)}
+.logo-mark-sm{width:30px;height:30px}
+.level-pill{font-family:var(--mono);font-size:.72rem;background:var(--orange-dim);color:var(--orange);padding:3px 10px;border-radius:20px;border:1px solid rgba(255,107,53,.25)}
+.project-name{font-size:.82rem;color:var(--muted)}
+.project-name span{color:var(--text);font-weight:500}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.xp-badge{font-family:var(--display);font-size:.78rem;font-weight:700;color:var(--yellow)}
+.btn-back-top{display:inline-flex;align-items:center;gap:6px;font-family:var(--display);font-size:.75rem;font-weight:600;color:var(--muted);border:1px solid var(--border);background:var(--ink3);padding:6px 11px;border-radius:8px}
+.btn-back-top:hover{color:var(--text)}
+
+.layout{flex:1;min-height:0;display:grid;grid-template-columns:300px 1fr 320px}
+
+.panel-instr{background:var(--ink2);border-right:1px solid var(--border);overflow-y:auto;padding:18px}
+.instr-level{font-family:var(--mono);font-size:.72rem;color:var(--muted2);margin-bottom:6px}
+.instr-title{font-family:var(--display);font-weight:700;font-size:1.15rem}
+.instr-xp{font-family:var(--display);font-size:.78rem;color:var(--yellow);margin:6px 0 14px}
+.instr-desc{font-size:.82rem;color:var(--muted);line-height:1.6;margin-bottom:18px}
+.objectives-title{font-family:var(--display);font-size:.82rem;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.objectives-title::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--orange)}
+.objective{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.objective:last-child{border-bottom:0}
+.obj-status{width:20px;height:20px;flex-shrink:0;border-radius:50%;border:1.5px solid var(--border-light);color:var(--muted);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.68rem}
+.objective.done .obj-status{background:var(--green);border-color:var(--green);color:var(--ink)}
+.objective.failed .obj-status{background:rgba(255,71,87,.15);border-color:#FF4757;color:#FF4757}
+.obj-text{font-size:.82rem;font-weight:500}
+.obj-hint{font-size:.72rem;color:var(--muted);margin-top:3px}
+.tip-box{background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.25);border-radius:12px;padding:13px 15px;margin-top:18px}
+.tip-label{font-family:var(--display);font-size:.75rem;font-weight:700;color:#C4B5FD;margin-bottom:5px}
+.tip-text{font-size:.78rem;color:var(--muted);line-height:1.6}
+.nav-btns{display:flex;gap:8px;margin-top:20px}
+.btn-prev,.btn-next{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:6px;font-family:var(--display);font-weight:600;font-size:.78rem;padding:10px;border-radius:9px;border:1px solid var(--border-light);background:var(--ink3);color:var(--text);cursor:pointer}
+.btn-next{background:var(--orange);border-color:var(--orange);color:var(--ink)}
+.btn-next:disabled{opacity:.4;cursor:not-allowed;background:var(--ink3);color:var(--muted);border-color:var(--border-light)}
+
+.panel-editor{display:flex;flex-direction:column;min-width:0;border-right:1px solid var(--border)}
+.editor-bar{height:42px;flex-shrink:0;background:var(--ink3);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;padding:0 12px}
+.editor-bar-label{font-family:var(--mono);font-size:.72rem;color:var(--muted)}
+.editor-bar-right{margin-left:auto;display:flex;gap:8px}
+.btn-run,.btn-validate{display:inline-flex;align-items:center;gap:6px;font-family:var(--display);font-weight:600;font-size:.75rem;padding:6px 12px;border-radius:7px;border:1px solid var(--border-light);background:var(--ink2);color:var(--text);cursor:pointer}
+.btn-validate{background:var(--orange);border-color:var(--orange);color:var(--ink)}
+.CodeMirror{height:100% !important;font-family:var(--mono) !important;font-size:.85rem !important}
+.editor-pane{flex:1;min-height:0}
+.console{height:130px;flex-shrink:0;background:#0A0E1A;border-top:1px solid var(--border);padding:10px 14px;font-family:var(--mono);font-size:.75rem;color:var(--muted);overflow-y:auto}
+.console .err{color:#FF4757}
+.console .ok{color:var(--green)}
+
+.panel-calc{background:var(--ink2);display:flex;flex-direction:column;align-items:center;padding:20px 16px;overflow-y:auto}
+.panel-calc-label{font-family:var(--mono);font-size:.7rem;color:var(--muted2);margin-bottom:14px;text-align:center}
+
+/* Toast */
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink2);border:1px solid var(--border-light);border-radius:12px;padding:12px 16px;display:flex;gap:10px;align-items:flex-start;opacity:0;pointer-events:none;transition:.25s;z-index:200;max-width:360px;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast-icon{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.75rem;font-weight:700}
+.toast.success .toast-icon{background:var(--green-dim);color:var(--green)}
+.toast.error .toast-icon{background:rgba(255,71,87,.15);color:#FF4757}
+.toast.info .toast-icon{background:var(--orange-dim);color:var(--orange)}
+.toast-title{font-family:var(--display);font-weight:700;font-size:.82rem}
+.toast-msg{font-size:.76rem;color:var(--muted);margin-top:2px}
+
+@media(max-width:900px){
+  .layout{grid-template-columns:1fr;grid-template-rows:auto 1fr auto}
+  .panel-instr{max-height:180px}
+  .panel-calc{max-height:none}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="index.html" class="logo-small"><img src="image/logo-mark.png" alt="logo" class="logo-mark-sm">Dev<span>Këf</span></a>
+  <span class="level-pill">C · Niveau 1</span>
+  <span class="project-name">/ <span>Calculatrice cliquable</span></span>
+  <div class="topbar-right">
+    <span class="xp-badge">★ <span id="xp-count">0</span> XP</span>
+    <a class="btn-back-top" href="level/c/index.html">Retour</a>
+  </div>
+</div>
+
+<div class="layout">
+  <div class="panel-instr">
+    <div class="instr-level">// Monde 3 · Langage C · Niveau 1</div>
+    <div class="instr-title">Calculatrice cliquable</div>
+    <div class="instr-xp">★ 150 XP à gagner</div>
+    <p class="instr-desc">Écris une fonction C qui calcule le résultat d'une opération. Ton code pilote directement la calculatrice à droite : tape une opération, clique sur "=", et c'est <b>ta fonction</b> qui répond.</p>
+
+    <div class="objectives-title">Objectifs à valider</div>
+    <div id="objectives-list"></div>
+
+    <div class="tip-box">
+      <div class="tip-label">💡 Comment ça marche</div>
+      <div class="tip-text">Ce n'est pas un vrai compilateur C — DevKëf utilise un petit interpréteur maison. Tu es libre d'utiliser <code>if/else</code>, <code>switch/case</code>, des boucles (<code>while</code>, <code>for</code>), ou même plusieurs fonctions : choisis la méthode que tu préfères.</div>
+    </div>
+
+    <a href="docs/c-niveau-1.html" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:7px;margin-top:12px;font-family:var(--display);font-size:.78rem;font-weight:600;color:var(--muted);border:1px solid var(--border-light);background:var(--ink3);padding:9px 12px;border-radius:9px">
+      📄 Voir la documentation du niveau
+    </a>
+
+    <div class="nav-btns">
+      <button class="btn-prev" onclick="window.location.href='level/c/index.html'">Retour</button>
+      <button class="btn-next" id="btn-next-level" disabled>Niveau suivant</button>
+    </div>
+  </div>
+
+  <div class="panel-editor">
+    <div class="editor-bar">
+      <span class="editor-bar-label">calculatrice.c</span>
+      <div class="editor-bar-right">
+        <button class="btn-run" onclick="compileOnly()">Compiler</button>
+        <button class="btn-validate" onclick="validateCode()">Valider</button>
+      </div>
+    </div>
+    <div class="editor-pane"><textarea id="editor-c"></textarea></div>
+    <div class="console" id="console">// La sortie de compilation et d'exécution s'affiche ici</div>
+  </div>
+
+  <div class="panel-calc">
+    <div class="panel-calc-label">Calculatrice pilotée par ton code C</div>
+    <div id="calc-container"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast">
+  <div class="toast-icon" id="toast-icon"></div>
+  <div>
+    <div class="toast-title" id="toast-title"></div>
+    <div class="toast-msg" id="toast-msg"></div>
+  </div>
+</div>
+
+<script>
+const TRACK = 'c';
+const LEVEL_ID = 1;
+const XP_MAX = 150;
+
+const OBJECTIVES = [
+  { label: 'Addition', hint: '3 + 4 doit donner 7', test: c => Math.abs(dkcRunCalculer(c, 3, '+', 4) - 7) < 1e-9 },
+  { label: 'Soustraction', hint: '10 − 6 doit donner 4', test: c => Math.abs(dkcRunCalculer(c, 10, '-', 6) - 4) < 1e-9 },
+  { label: 'Multiplication & division', hint: '6 × 7 = 42 et 20 ÷ 4 = 5', test: c => Math.abs(dkcRunCalculer(c, 6, '*', 7) - 42) < 1e-9 && Math.abs(dkcRunCalculer(c, 20, '/', 4) - 5) < 1e-9 },
+  { label: 'Division par zéro gérée', hint: '5 ÷ 0 ne doit pas planter ton programme', test: c => { try { dkcRunCalculer(c, 5, '/', 0); return true; } catch (e) { return false; } } }
+];
+
+const STARTER_C = `#include <stdio.h>
+
+// Cette fonction est appelée à chaque fois que tu cliques sur "="
+// a et b sont les deux nombres, op est l'opérateur ('+','-','*','/')
+// Libre à toi d'utiliser if/else, switch/case, une boucle... comme tu veux.
+int calculer(int a, char op, int b) {
+
+    if (op == '+') {
+        return a + b;
+    } else if (op == '-') {
+        return a - b;
+    } else if (op == '*') {
+        return a * b;
+    } else if (op == '/') {
+        // OBJECTIF : gère le cas où b vaut 0 avant de diviser
+        return a / b;
+    }
+
+    return 0;
+}
+`;
+
+let cmEditor, currentXP = 0;
+
+window.addEventListener('DOMContentLoaded', () => {
+  cmEditor = CodeMirror.fromTextArea(document.getElementById('editor-c'), {
+    mode: 'text/x-csrc',
+    theme: 'dracula',
+    lineNumbers: true,
+    matchBrackets: true,
+    autoCloseBrackets: true,
+    indentUnit: 4,
+    tabSize: 4,
+    lineWrapping: true,
+    extraKeys: { Tab: cm => cm.execCommand('indentMore') }
+  });
+  cmEditor.setValue(STARTER_C);
+
+  const list = document.getElementById('objectives-list');
+  OBJECTIVES.forEach((obj, i) => {
+    const num = i + 1;
+    const div = document.createElement('div');
+    div.className = 'objective';
+    div.id = 'obj-' + num;
+    div.innerHTML = `<div class="obj-status" id="obj-${num}-status">${num}</div>
+      <div><div class="obj-text">${obj.label}</div><div class="obj-hint">${obj.hint}</div></div>`;
+    list.appendChild(div);
+  });
+
+  const calcContainer = document.getElementById('calc-container');
+  initCalculator(calcContainer, async (a, op, b) => dkcRunCalculer(cmEditor.getValue(), a, op, b));
+
+  if (dkIsDone(TRACK, LEVEL_ID)) {
+    showToast('info', '✓ Niveau déjà validé', 'Tu peux le retravailler à tout moment.');
+  }
+});
+
+function logConsole(msg, cls) {
+  const c = document.getElementById('console');
+  c.innerHTML = (cls ? `<span class="${cls}">${msg}</span>` : msg);
+}
+
+function compileOnly() {
+  try {
+    dkcRunCalculer(cmEditor.getValue(), 1, '+', 1); // test rapide de syntaxe
+    logConsole('✓ Compilation réussie — utilise la calculatrice à droite pour tester.', 'ok');
+  } catch (e) {
+    logConsole('✗ Erreur : ' + e.message, 'err');
+  }
+}
+
+function validateCode() {
+  const src = cmEditor.getValue();
+  let passed = 0;
+  const total = OBJECTIVES.length;
+
+  OBJECTIVES.forEach((obj, i) => {
+    const num = i + 1;
+    let ok = false;
+    try { ok = !!obj.test(src); } catch (e) { ok = false; }
+    const el = document.getElementById('obj-' + num);
+    const st = document.getElementById('obj-' + num + '-status');
+    el.classList.toggle('done', ok);
+    el.classList.toggle('failed', !ok);
+    st.textContent = ok ? '✓' : '✗';
+    if (ok) passed++;
+  });
+
+  const xp = Math.round((passed / total) * XP_MAX);
+  currentXP = xp;
+  document.getElementById('xp-count').textContent = xp;
+
+  if (passed === total) {
+    logConsole('✓ Tous les tests passent — bravo !', 'ok');
+    showToast('success', '🎉 Projet validé !', 'Tu as gagné ' + XP_MAX + ' XP.');
+    dkCompleteLevel(TRACK, LEVEL_ID, XP_MAX);
+    document.getElementById('btn-next-level').textContent = 'Bientôt disponible';
+  } else {
+    logConsole(`✗ ${passed}/${total} tests réussis — regarde les objectifs à gauche.`, 'err');
+    showToast(passed > 0 ? 'info' : 'error', `${passed}/${total} objectifs atteints`, 'Continue, tu y es presque !');
+  }
+}
+
+function showToast(type, title, msg) {
+  const toast = document.getElementById('toast');
+  const icons = { success: '✓', error: '✗', info: '★' };
+  toast.className = 'toast ' + type;
+  document.getElementById('toast-icon').textContent = icons[type];
+  document.getElementById('toast-title').textContent = title;
+  document.getElementById('toast-msg').textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 4000);
+}
+</script>
+</body>
+</html>

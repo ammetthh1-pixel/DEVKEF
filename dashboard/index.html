@@ -10,6 +10,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
 
 <link rel="stylesheet" href="style.css">
+<script src="../config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../auth.js"></script>
 </head>
 <body>
 
@@ -20,71 +23,48 @@
   </a>
   <nav class="sidebar-nav">
     <a class="nav-item active" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</a>
-    <a class="nav-item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5a2 2 0 0 1 2-2h12v18H6a2 2 0 0 1-2-2Z"/><path d="M8 7h7"/></svg>Parcours</a>
-    <a class="nav-item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 21h8M12 17v4"/><path d="M6 4h12v5a6 6 0 0 1-12 0V4Z"/></svg>Classement</a>
-    <a class="nav-item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Profil</a>
+    <a class="nav-item" href="../level/index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5a2 2 0 0 1 2-2h12v18H6a2 2 0 0 1-2-2Z"/><path d="M8 7h7"/></svg>Parcours</a>
+    <a class="nav-item" href="classement.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 21h8M12 17v4"/><path d="M6 4h12v5a6 6 0 0 1-12 0V4Z"/></svg>Classement</a>
+    <a class="nav-item" href="profil.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Profil</a>
   </nav>
   <div class="sidebar-foot">
-    <div class="avatar">AK</div>
+    <div class="avatar" id="sidebar-avatar">T</div>
     <div>
-      <div class="foot-name">Amine K.</div>
-      <div class="foot-rank">Niveau 4</div>
+      <div class="foot-name" id="sidebar-name">Toi</div>
+      <div class="foot-rank" id="sidebar-rank">Niveau 1</div>
     </div>
   </div>
+  <div id="account-banner" style="padding:10px 14px 14px"></div>
 </aside>
 
 <main class="main">
   <header class="head">
     <div>
-      <h1 class="hello">Salut <span>Amine</span> 👋</h1>
-      <p class="sub">Tu es à 3 objectifs de terminer ton projet.</p>
+      <h1 class="hello">Salut <span id="hello-name">Toi</span> 👋</h1>
+      <p class="sub" id="sub-text">Chargement de ta progression…</p>
     </div>
-    <div class="streak">🔥 <b>5 jours</b> d'affilée</div>
+    <div class="streak" id="streak-box">🔥 <b id="streak-days">1 jour</b> d'affilée</div>
   </header>
 
   <!-- 1. Progression XP -->
   <section class="card">
     <div class="xp-top">
-      <div class="xp-level">Niveau 4 — <span style="color:var(--muted);font-weight:400">Flexbox &amp; mise en page</span></div>
-      <div class="xp-num"><b>1 240</b> / 1 600 XP</div>
+      <div class="xp-level" id="xp-level-label">Niveau 1</div>
+      <div class="xp-num" id="xp-num-label"><b>0</b> / 400 XP</div>
     </div>
-    <div class="bar"><i style="width:77.5%"></i></div>
+    <div class="bar"><i id="xp-bar-fill" style="width:0%"></i></div>
   </section>
 
   <div class="grid">
     <!-- colonne gauche -->
     <div>
       <!-- 2. Projet en cours -->
-      <section class="card">
-        <span class="proj-tag">Projet en cours</span>
-        <h2 class="proj-title">Carte de profil responsive</h2>
-        <p class="proj-desc">Reproduis la maquette avec Flexbox. 3 objectifs sur 5 validés.</p>
-        <ul class="goals">
-          <li class="ok"><span class="tick"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg></span>Conteneur en <code>display:flex</code></li>
-          <li class="ok"><span class="tick"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg></span>Avatar arrondi de 80px</li>
-          <li class="ok"><span class="tick"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg></span>Titre et sous-titre alignés</li>
-          <li><span class="tick"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg></span>Bouton aligné en bas à droite</li>
-          <li><span class="tick"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg></span>Passage en colonne sous 600px</li>
-        </ul>
-        <a class="btn" href="#">Continuer le projet →</a>
-      </section>
+      <section class="card" id="current-project-card"></section>
 
       <!-- 3. Parcours -->
       <section class="card" style="margin-top:1.25rem">
-        <h3 class="section-title">Ton parcours <a href="#">Voir tout</a></h3>
-        <div class="path">
-          <div class="node done"><div class="dot">✓</div><small>HTML<br>de base</small></div>
-          <div class="link done"></div>
-          <div class="node done"><div class="dot">✓</div><small>Texte<br>&amp; liens</small></div>
-          <div class="link done"></div>
-          <div class="node done"><div class="dot">✓</div><small>CSS<br>couleurs</small></div>
-          <div class="link done"></div>
-          <div class="node current"><div class="dot">4</div><small>Flexbox</small></div>
-          <div class="link"></div>
-          <div class="node"><div class="dot">5</div><small>Grid</small></div>
-          <div class="link"></div>
-          <div class="node"><div class="dot">6</div><small>Responsive</small></div>
-        </div>
+        <h3 class="section-title">Ton parcours <a href="../level/index.html">Voir tout</a></h3>
+        <div class="path" id="path-row"></div>
       </section>
     </div>
 
@@ -92,32 +72,125 @@
     <div>
       <!-- 4. Mini-classement -->
       <section class="card">
-        <h3 class="section-title">Classement <a href="#">Voir tout</a></h3>
-        <div class="rank-row"><span class="rank-pos">1</span><span class="rank-av">SM</span><span class="rank-name">Sara M.</span><span class="rank-xp">3 420</span></div>
-        <div class="rank-row"><span class="rank-pos">2</span><span class="rank-av">YB</span><span class="rank-name">Youssef B.</span><span class="rank-xp">2 980</span></div>
-        <div class="rank-row"><span class="rank-pos">3</span><span class="rank-av">LT</span><span class="rank-name">Lina T.</span><span class="rank-xp">2 110</span></div>
-        <div class="rank-row me"><span class="rank-pos">4</span><span class="rank-av">AK</span><span class="rank-name">Toi</span><span class="rank-xp">1 240</span></div>
-        <div class="rank-row"><span class="rank-pos">5</span><span class="rank-av">OD</span><span class="rank-name">Omar D.</span><span class="rank-xp">1 090</span></div>
+        <h3 class="section-title">Classement <a href="classement.html">Voir tout</a></h3>
+        <div id="mini-rank-list"></div>
       </section>
 
       <!-- 5. Récompenses -->
       <section class="card" style="margin-top:1.25rem">
-        <h3 class="section-title">Récompenses <a href="#">3 / 12</a></h3>
+        <h3 class="section-title">Récompenses <span id="badges-count">0 / 6</span></h3>
         <p style="font-size:.82rem;color:var(--muted)">Débloque des badges en terminant des projets.</p>
-        <div class="badges">
-          <div class="badge got">🚀</div>
-          <div class="badge got">🔥</div>
-          <div class="badge got">🎯</div>
-          <div class="badge locked">🏆</div>
-          <div class="badge locked">💎</div>
-          <div class="badge locked">⚡</div>
-          <div class="badge locked">🧩</div>
-          <div class="badge locked">👑</div>
-        </div>
+        <div class="badges" id="badges-row"></div>
       </section>
     </div>
   </div>
 </main>
+
+<script src="../progress.js"></script>
+<script>
+(async function initDashboard() {
+  await dkSyncPull(); // ne fait rien si non configuré ou non connecté
+
+  const data = dkLoad();
+  dkTouchStreak(data);
+  dkSave(data);
+
+  // Bandeau statut de compte
+  const banner = document.getElementById('account-banner');
+  if (dkIsGuest()) {
+    banner.innerHTML = `<a href="../login.html" style="display:block;text-align:center;font-family:var(--display);font-size:.72rem;font-weight:600;color:var(--orange);border:1px solid rgba(255,107,53,.3);background:var(--orange-dim);padding:8px;border-radius:8px">🔒 Mode invité — créer un compte</a>`;
+  } else {
+    banner.innerHTML = `<button onclick="dkSignOut().then(()=>location.reload())" style="width:100%;font-family:var(--display);font-size:.72rem;font-weight:600;color:var(--muted);border:1px solid var(--border-light);background:var(--ink3);padding:8px;border-radius:8px;cursor:pointer">Se déconnecter</button>`;
+  }
+
+  const acc = dkGetXPForNextAccountLevel();
+  document.getElementById('hello-name').textContent = data.name || 'Toi';
+  document.getElementById('sidebar-name').textContent = data.name || 'Toi';
+  document.getElementById('sidebar-avatar').textContent = (data.name || 'Toi').slice(0, 2).toUpperCase();
+  document.getElementById('sidebar-rank').textContent = 'Niveau ' + acc.level;
+  document.getElementById('streak-days').textContent = data.streak + (data.streak > 1 ? ' jours' : ' jour');
+
+  document.getElementById('xp-level-label').textContent = 'Niveau ' + acc.level;
+  document.getElementById('xp-num-label').innerHTML = '<b>' + acc.current + '</b> / ' + acc.needed + ' XP';
+  document.getElementById('xp-bar-fill').style.width = Math.min(100, (acc.current / acc.needed) * 100) + '%';
+
+  // Projet en cours : premier niveau web débloqué et non complété
+  const WEB_LEVELS = [
+    { id: 1, title: 'Ma première page', href: '../level/level_1.html', xp: 80 },
+    { id: 2, title: 'Texte & liens', href: '../level/level_2.html', xp: 100 }
+  ];
+  const next = WEB_LEVELS.find(l => !dkIsDone('web', l.id));
+  const card = document.getElementById('current-project-card');
+  if (next) {
+    document.getElementById('sub-text').textContent = 'Ton prochain projet t\'attend : ' + next.title + '.';
+    card.innerHTML = `
+      <span class="proj-tag">Projet en cours</span>
+      <h2 class="proj-title">${next.title}</h2>
+      <p class="proj-desc">Niveau ${next.id} du parcours Développement Web · ★ ${next.xp} XP à la clé.</p>
+      <a class="btn" href="${next.href}">Continuer le projet →</a>`;
+  } else {
+    document.getElementById('sub-text').textContent = 'Tu as complété tous les projets web disponibles pour l\'instant 🎉';
+    card.innerHTML = `
+      <span class="proj-tag">Bravo !</span>
+      <h2 class="proj-title">Parcours Web à jour</h2>
+      <p class="proj-desc">De nouveaux niveaux arrivent bientôt. En attendant, explore Python ou le langage C.</p>
+      <a class="btn" href="../index.html#parcours">Explorer d'autres parcours →</a>`;
+  }
+
+  // Chemin des niveaux (aperçu des 2 premiers réels + à venir)
+  const pathLevels = [
+    { label: 'HTML<br>de base', done: dkIsDone('web', 1) },
+    { label: 'Texte<br>&amp; liens', done: dkIsDone('web', 2) },
+    { label: 'CSS<br>couleurs', done: false },
+    { label: 'Flexbox', done: false },
+    { label: 'Grid', done: false },
+    { label: 'Responsive', done: false }
+  ];
+  let currentSet = false;
+  const pathRow = document.getElementById('path-row');
+  pathLevels.forEach((lvl, i) => {
+    const isCurrent = !lvl.done && !currentSet;
+    if (isCurrent) currentSet = true;
+    const node = document.createElement('div');
+    node.className = 'node' + (lvl.done ? ' done' : isCurrent ? ' current' : '');
+    node.innerHTML = `<div class="dot">${lvl.done ? '✓' : i + 1}</div><small>${lvl.label}</small>`;
+    pathRow.appendChild(node);
+    if (i < pathLevels.length - 1) {
+      const link = document.createElement('div');
+      link.className = 'link' + (lvl.done ? ' done' : '');
+      pathRow.appendChild(link);
+    }
+  });
+
+  // Mini-classement (rivaux fictifs + ta vraie XP)
+  const rivals = [
+    { name: 'Sara M.', xp: 3420 }, { name: 'Youssef B.', xp: 2980 },
+    { name: 'Lina T.', xp: 2110 }, { name: 'Omar D.', xp: 1090 }
+  ];
+  const all = [...rivals, { name: data.name || 'Toi', xp: data.xp, me: true }].sort((a, b) => b.xp - a.xp);
+  document.getElementById('mini-rank-list').innerHTML = all.map((p, i) => `
+    <div class="rank-row${p.me ? ' me' : ''}">
+      <span class="rank-pos">${i + 1}</span>
+      <span class="rank-av">${p.name.slice(0,2).toUpperCase()}</span>
+      <span class="rank-name">${p.me ? 'Toi' : p.name}</span>
+      <span class="rank-xp">${p.xp.toLocaleString('fr-FR')}</span>
+    </div>`).join('');
+
+  // Badges simples dérivés de la progression réelle
+  const doneCount = dkGetCompletedCount('web') + dkGetCompletedCount('python') + dkGetCompletedCount('c');
+  const badgeDefs = [
+    { icon: '🚀', got: doneCount >= 1 },
+    { icon: '🔥', got: data.streak >= 3 },
+    { icon: '🎯', got: doneCount >= 2 },
+    { icon: '🏆', got: doneCount >= 4 },
+    { icon: '💎', got: dkGetXP() >= 500 },
+    { icon: '⚡', got: doneCount >= 6 }
+  ];
+  document.getElementById('badges-count').textContent = badgeDefs.filter(b => b.got).length + ' / ' + badgeDefs.length;
+  document.getElementById('badges-row').innerHTML = badgeDefs.map(b =>
+    `<div class="badge ${b.got ? 'got' : 'locked'}">${b.icon}</div>`).join('');
+})();
+</script>
 
 </body>
 </html>

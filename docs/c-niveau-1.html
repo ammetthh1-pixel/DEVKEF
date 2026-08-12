@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DevKëf — Doc · Calculatrice C</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="doc-style.css"/>
+<style>.doc-h2 .ic{color:#C4B5FD}.concept-name{color:#C4B5FD !important}</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../index.html" class="logo-small"><img src="../image/logo-mark.png" alt="logo" class="logo-mark-sm">Dev<span>Këf</span></a>
+  <a href="../level/c/level_1.html" class="btn-back">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Retour au niveau
+  </a>
+</div>
+
+<main class="doc-wrap">
+  <div class="doc-crumb">// Documentation · Langage C · Niveau 1</div>
+  <h1 class="doc-title">⚙️ Calculatrice cliquable</h1>
+  <p class="doc-subtitle">Le même défi qu'en Python, mais avec les règles plus strictes du C. Une bonne occasion de voir concrètement ce que ton cours te montre en théorie.</p>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">🎯</span> Pourquoi ce projet ?</div>
+    <p class="doc-p">Le C t'oblige à être précis : chaque variable a un type, chaque fonction déclare ce qu'elle prend et ce qu'elle retourne. C'est plus rigide que Python, mais c'est aussi ce qui rend le C rapide et proche de la machine — ce n'est pas un hasard si c'est le langage enseigné en fac.</p>
+    <p class="doc-p">Comme en Python, ta fonction <code>calculer(a, op, b)</code> est appelée à chaque clic sur "=". La différence : ici, <code>a</code> et <code>b</code> sont typés <code>int</code>, et <code>op</code> est un <code>char</code> — un seul caractère, entre guillemets simples.</p>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">📚</span> Les notions clés</div>
+
+    <div class="concept">
+      <div class="concept-name">Signature de fonction typée</div>
+      <div class="concept-def"><code>int calculer(int a, char op, int b)</code> : le <code>int</code> avant le nom dit "cette fonction retourne un entier". Chaque paramètre a aussi son type. En C, contrairement à Python, tu dois toujours déclarer les types.</div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-name">char et guillemets simples</div>
+      <div class="concept-def">Un <code>char</code> est un caractère unique, écrit entre guillemets simples : <code>'+'</code>. Attention à ne pas confondre avec les guillemets doubles (<code>"+"</code>), utilisés pour du texte plus long (pas géré par notre interpréteur).</div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-name">switch / case — l'alternative à if/else</div>
+      <div class="concept-def">Quand on compare une seule variable à plusieurs valeurs possibles, <code>switch (op) { case '+': ... }</code> est souvent plus lisible qu'une longue chaîne de <code>if/else if</code>. Pense à mettre <code>break;</code> à la fin de chaque <code>case</code>, sinon l'exécution "tombe" dans le cas suivant (comportement réel du C, volontairement reproduit ici).</div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-name">Accolades obligatoires</div>
+      <div class="concept-def">Chaque bloc de code (fonction, <code>if</code>, boucle) est délimité par <code>{ }</code>. Contrairement à Python, l'indentation est une question de lisibilité, pas une obligation du langage — mais autant garder de bonnes habitudes.</div>
+    </div>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">🔍</span> Comment décomposer le problème</div>
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body"><div class="step-title">Choisis ta structure</div><div class="step-text">If/else if/else ou switch/case : les deux fonctionnent ici. Si tu débutes, le if/else est souvent plus intuitif ; le switch devient utile quand les cas se multiplient.</div></div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body"><div class="step-title">Un opérateur, un return</div><div class="step-text">Chaque branche doit se terminer par un <code>return</code> qui calcule le bon résultat. Sans <code>return</code>, ta fonction ne renvoie rien pour ce cas.</div></div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body"><div class="step-title">Protège la division</div><div class="step-text">Teste <code>b == 0</code> avant de faire <code>a / b</code>. En vrai C, diviser par zéro plante le programme — ici, notre interpréteur lève une erreur propre si tu ne le gères pas.</div></div>
+    </div>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">⚠️</span> Pièges fréquents</div>
+    <div class="pitfall">
+      <span class="ic">✗</span>
+      <div><div class="pitfall-title">Oublier un break dans le switch</div><div class="pitfall-text">Sans <code>break;</code>, l'exécution continue dans le <code>case</code> suivant même s'il ne correspond pas — un piège classique en C.</div></div>
+    </div>
+    <div class="pitfall">
+      <span class="ic">✗</span>
+      <div><div class="pitfall-title">Guillemets simples vs doubles</div><div class="pitfall-text"><code>op == "+"</code> (guillemets doubles) n'est pas la même chose que <code>op == '+'</code> (guillemets simples) en C. Pour un <code>char</code>, utilise toujours les guillemets simples.</div></div>
+    </div>
+    <div class="pitfall">
+      <span class="ic">✗</span>
+      <div><div class="pitfall-title">Point-virgule oublié</div><div class="pitfall-text">Chaque instruction se termine par <code>;</code> en C (pas en Python !). Un point-virgule manquant est l'erreur la plus fréquente pour qui vient d'un autre langage.</div></div>
+    </div>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">🔬</span> Différence avec du vrai C</div>
+    <div class="diff-box">
+      <div class="diff-title">Division entière non tronquée</div>
+      <div class="diff-text">En vrai C, diviser deux <code>int</code> tronque le résultat : <code>7 / 2</code> donne <code>3</code>, pas <code>3.5</code>. Notre mini-interpréteur, pour rester simple, ne fait <b>pas</b> cette troncature — il calcule comme une division normale. Bon à savoir si tu retrouves ce réflexe sur un vrai compilateur.</div>
+    </div>
+    <div class="diff-box">
+      <div class="diff-title">Pas de tableaux, pointeurs, ni printf</div>
+      <div class="diff-text">Ce mini-interpréteur est volontairement limité aux fonctions, variables simples, conditions et boucles — largement suffisant pour cet exercice, mais ce n'est pas un compilateur C complet.</div>
+    </div>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">🚀</span> Pour aller plus loin</div>
+    <div class="resource-list">
+      <a class="resource" href="https://www.learn-c.org/" target="_blank" rel="noopener">
+        <span class="ic">📘</span><b>Learn-C.org</b><span>Cours interactif gratuit</span>
+      </a>
+    </div>
+  </section>
+
+  <div class="doc-cta">
+    <p>Prêt à coder ?</p>
+    <a class="btn-doc-cta" href="../editor-c.html">
+      Ouvrir l'éditeur
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</main>
+
+</body>
+</html>
