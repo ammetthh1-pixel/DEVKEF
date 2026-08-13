@@ -1047,7 +1047,7 @@ li { margin: 6px 0; color: #444; }`,
     xpMax: 100,
     desc: "Deuxième projet : enrichis une page avec de la mise en forme de texte et un lien cliquable. Tu apprends à structurer un contenu plus riche qu'un simple bloc de texte.",
     tip: "Un lien s'écrit <code>&lt;a href=\"...\"&gt;texte&lt;/a&gt;</code> — le <code>href</code> est l'adresse de destination. <code>&lt;strong&gt;</code> met en gras (important), <code>&lt;em&gt;</code> met en italique (insistance).",
-    nextLevel: null,
+    nextLevel: 3,
     objectives: [
       { label: 'Mettre un mot important en gras', hint: 'Utilise <code>&lt;strong&gt;...&lt;/strong&gt;</code>',
         test: html => { const m = html.match(/<strong[^>]*>([\s\S]*?)<\/strong>/i); return !!(m && m[1].trim()); } },
@@ -1110,8 +1110,75 @@ strong { color: #1a1a2e; }`,
 <p>Je suis <strong>étudiant en informatique</strong> et passionné de développement web. J'apprends en <em>construisant de vrais projets</em>, pas en répondant à des quiz.</p>
 <p>Pour en savoir plus sur mon parcours, <a href="#">consulte mon portfolio</a>.</p>
 </body></html>`
+  },
+
+  3: {
+    world: '// Monde 1 · Niveau 3',
+    title: 'CSS & couleurs',
+    xpMax: 120,
+    desc: "Troisième projet : cette fois, tu pars d'une page presque nue et c'est toi qui l'habilles entièrement en CSS — couleur de fond, couleur du titre, police, espacement. C'est le début du design.",
+    tip: "Un sélecteur cible un élément : <code>body { }</code> style toute la page, <code>h1 { }</code> style seulement le titre principal. Chaque propriété se termine par un point-virgule <code>;</code>.",
+    nextLevel: null,
+    objectives: [
+      { label: 'Donner une couleur de fond à la page', hint: 'Dans <code>body { }</code>, ajoute <code>background-color</code>',
+        test: (html, css) => dkCssHasProp(css, 'body', 'background(-color)?') },
+      { label: 'Colorer le titre principal', hint: 'Dans <code>h1 { }</code>, ajoute <code>color</code>',
+        test: (html, css) => dkCssHasProp(css, 'h1', 'color') },
+      { label: 'Changer la police du texte', hint: 'Dans <code>body { }</code>, ajoute <code>font-family</code>',
+        test: (html, css) => dkCssHasProp(css, 'body', 'font-family') },
+      { label: 'Ajouter de l\'espacement autour du contenu', hint: 'Dans <code>body { }</code>, ajoute <code>padding</code> ou <code>margin</code>',
+        test: (html, css) => dkCssHasProp(css, 'body', 'padding') || dkCssHasProp(css, 'body', 'margin') }
+    ],
+    starterHTML: `<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CSS & couleurs</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <h1>Mouhamed Ndiaye</h1>
+  <p>Étudiant en informatique, passionné de développement web et d'intelligence artificielle. J'apprends en construisant de vrais projets.</p>
+  <h2>Ce que je fais</h2>
+  <p>Développement web, exploration de l'IA, et beaucoup de café.</p>
+
+</body>
+</html>`,
+    starterCSS: `/* La page est presque nue pour l'instant — à toi de l'habiller ! */
+
+body {
+  /* OBJECTIF 1 : ajoute background-color */
+  /* OBJECTIF 3 : ajoute font-family */
+  /* OBJECTIF 4 : ajoute padding ou margin */
+}
+
+h1 {
+  /* OBJECTIF 2 : ajoute color */
+}`,
+    mockup: () => `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/><style>
+body{background-color:#FFF8F0;font-family:Georgia,serif;padding:40px;max-width:640px;margin:0 auto;color:#3A2E2E;line-height:1.7}
+h1{color:#7C3AED;font-size:2rem}
+h2{color:#3A2E2E;font-size:1.15rem;margin-top:24px}
+p{color:#5A4A4A}
+</style></head><body>
+<h1>Mouhamed Ndiaye</h1>
+<p>Étudiant en informatique, passionné de développement web et d'intelligence artificielle. J'apprends en construisant de vrais projets.</p>
+<h2>Ce que je fais</h2>
+<p>Développement web, exploration de l'IA, et beaucoup de café.</p>
+</body></html>`
   }
 };
+
+/* Petit utilitaire de test CSS : cherche un sélecteur, vérifie qu'une propriété y est définie */
+function dkCssHasProp(css, selector, propPattern) {
+  const re = new RegExp(selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\s*\\{([^}]*)\\}', 'i');
+  const m = css.match(re);
+  if (!m) return false;
+  return new RegExp('(?:^|;|\\{)\\s*(' + propPattern + ')\\s*:\\s*[^;]+;', 'i').test(m[1]);
+}
 
 const params = new URLSearchParams(window.location.search);
 const LEVEL_ID = parseInt(params.get('level') || '1', 10);
@@ -1268,10 +1335,11 @@ function runCode() {
 ══════════════════════════════════════ */
 function validateCode() {
   const html = editorHTML.getValue();
+  const css = editorCSS.getValue();
   let passed = 0;
   const results = [];
 
-  LEVEL.objectives.forEach(obj => results.push(!!obj.test(html)));
+  LEVEL.objectives.forEach(obj => results.push(!!obj.test(html, css)));
 
   // Mettre à jour l'interface
   results.forEach((ok, i) => {

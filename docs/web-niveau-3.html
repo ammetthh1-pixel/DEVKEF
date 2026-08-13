@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DevKëf — Doc · CSS & couleurs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="doc-style.css"/>
+<style>.doc-h2 .ic{color:#C4B5FD}.concept-name{color:#C4B5FD !important}</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../index.html" class="logo-small"><img src="../image/logo-mark.png" alt="logo" class="logo-mark-sm">Dev<span>Këf</span></a>
+  <a href="../level/level_3.html" class="btn-back">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Retour au niveau
+  </a>
+</div>
+
+<main class="doc-wrap">
+  <div class="doc-crumb">// Documentation · Développement Web · Niveau 3</div>
+  <h1 class="doc-title">📄 CSS & couleurs</h1>
+  <p class="doc-subtitle">Jusqu'ici, le CSS était déjà écrit pour toi. Cette fois tu pars d'une page presque nue — c'est le moment où ta page cesse d'être un simple document pour devenir un design.</p>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">🎯</span> Pourquoi ce projet ?</div>
+    <p class="doc-p">Le HTML dit <i>ce qu'il y a</i> sur la page (un titre, un paragraphe). Le CSS dit <i>à quoi ça ressemble</i> (couleur, police, espace). Ce sont deux langages avec deux rôles différents, et volontairement séparés — c'est ce qui permet de changer complètement l'apparence d'un site sans toucher à son contenu.</p>
+    <p class="doc-p">Ce niveau te fait manipuler les quatre leviers de base qu'un designer ajuste en premier sur n'importe quel site : la couleur de fond, la couleur du texte, la police, et l'espacement.</p>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">📚</span> Les notions clés</div>
+
+    <div class="concept">
+      <div class="concept-name">Le sélecteur</div>
+      <div class="concept-def"><code>body { }</code> ou <code>h1 { }</code> : la partie avant les accolades dit <i>quel(s) élément(s)</i> la règle va styler. <code>body</code> cible toute la page, <code>h1</code> cible uniquement les titres principaux.</div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-name">Propriété : valeur;</div>
+      <div class="concept-def">À l'intérieur des accolades, chaque ligne est une paire <code>propriété: valeur;</code>. Le point-virgule à la fin n'est pas optionnel — l'oublier casse souvent la règle suivante.</div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-name">background-color vs color</div>
+      <div class="concept-def">Piège classique : <code>background-color</code> colore le <i>fond</i>, <code>color</code> colore le <i>texte</i>. Les deux acceptent les mêmes formats de couleur (noms comme <code>coral</code>, ou codes hexadécimaux comme <code>#7C3AED</code>).</div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-name">font-family</div>
+      <div class="concept-def">Définit la police. On donne souvent plusieurs choix séparés par des virgules (<code>Georgia, serif</code>) : le navigateur essaie le premier, et si la police n'est pas installée, passe au suivant. <code>serif</code> à la fin est une police de secours générique.</div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-name">padding vs margin</div>
+      <div class="concept-def"><code>padding</code> est l'espace <i>à l'intérieur</i> de l'élément (entre son contenu et son bord). <code>margin</code> est l'espace <i>à l'extérieur</i> (entre l'élément et ce qui l'entoure). Pour aérer une page entière, les deux fonctionnent ici.</div>
+    </div>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">🔍</span> Comment décomposer le problème</div>
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body"><div class="step-title">Regarde la maquette, pas juste les objectifs</div><div class="step-text">Les objectifs valident des propriétés précises, mais la maquette te montre une ambiance. Essaie de t'en rapprocher, pas juste de cocher les cases.</div></div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body"><div class="step-title">Un bloc, une règle</div><div class="step-text">Le code de départ te donne deux blocs vides — <code>body { }</code> et <code>h1 { }</code> — avec des commentaires indiquant quoi mettre où. Remplis-les un par un.</div></div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body"><div class="step-title">L'aperçu ne ment pas</div><div class="step-text">Si une couleur ne s'applique pas, vérifie d'abord le point-virgule de la ligne au-dessus — une erreur de syntaxe peut faire ignorer toute une règle par le navigateur.</div></div>
+    </div>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">⚠️</span> Pièges fréquents</div>
+    <div class="pitfall">
+      <span class="ic">✗</span>
+      <div><div class="pitfall-title">Deux-points vs point-virgule</div><div class="pitfall-text"><code>color: red;</code> — les deux-points séparent propriété et valeur, le point-virgule termine la ligne. Les inverser ou en oublier un casse la règle.</div></div>
+    </div>
+    <div class="pitfall">
+      <span class="ic">✗</span>
+      <div><div class="pitfall-title">Styler le mauvais sélecteur</div><div class="pitfall-text">Mettre <code>color</code> dans <code>body { }</code> au lieu de <code>h1 { }</code> valide un objectif différent de celui visé — relis bien lequel demande quoi.</div></div>
+    </div>
+    <div class="pitfall">
+      <span class="ic">✗</span>
+      <div><div class="pitfall-title">Couleur mal orthographiée</div><div class="pitfall-text"><code>ble</code> au lieu de <code>blue</code>, ou un <code>#</code> oublié devant un code hexadécimal (<code>7C3AED</code> au lieu de <code>#7C3AED</code>) — le navigateur ignore silencieusement la valeur invalide.</div></div>
+    </div>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">🚀</span> Pour aller plus loin</div>
+    <div class="resource-list">
+      <a class="resource" href="https://developer.mozilla.org/fr/docs/Web/CSS/color_value" target="_blank" rel="noopener">
+        <span class="ic">📘</span><b>MDN — Les valeurs de couleur en CSS</b><span>Référence officielle, en français</span>
+      </a>
+      <a class="resource" href="https://developer.mozilla.org/fr/docs/Learn/CSS" target="_blank" rel="noopener">
+        <span class="ic">📘</span><b>MDN — Apprendre le CSS</b><span>Guide complet pour débutants</span>
+      </a>
+    </div>
+    <p class="doc-p" style="margin-top:14px">Envie d'aller plus loin ? Essaie <code>text-align: center;</code> sur le <code>h1</code>, ou <code>border-radius</code> sur un élément — ce n'est pas demandé, mais ça t'entraînera pour les niveaux suivants (Flexbox, Grid).</p>
+  </section>
+
+  <div class="doc-cta">
+    <p>Prêt à coder ?</p>
+    <a class="btn-doc-cta" href="../editor.html?level=3">
+      Ouvrir l'éditeur
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</main>
+
+</body>
+</html>

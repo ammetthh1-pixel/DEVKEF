@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DevKëf — Niveau 3 · CSS & couleurs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --ink:#0A0E1A; --ink2:#111827; --ink3:#1C2333; --surface:#1A2236;
+  --border:#1E2D45; --border-light:#243450;
+  --orange:#FF6B35; --orange-dim:rgba(255,107,53,.12);
+  --green:#00C896; --green-dim:rgba(0,200,150,.1);
+  --violet:#7C3AED; --violet-dim:rgba(124,58,237,.12); --yellow:#FFD60A;
+  --text:#F0F4FF; --muted:#7A8BAD; --muted2:#4A5C78;
+  --mono:'Fira Code',monospace; --display:'Space Grotesk',sans-serif; --body:'Inter',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--ink);color:var(--text);font-family:var(--body);-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+
+.topbar{height:56px;background:var(--ink2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 16px;position:sticky;top:0;z-index:50}
+.logo-small{display:flex;align-items:center;gap:8px;font-family:var(--display);font-weight:700;font-size:.95rem}
+.logo-small span{color:var(--orange)}
+.logo-mark-sm{width:50px;height:50px}
+.btn-back{display:inline-flex;align-items:center;gap:6px;font-family:var(--display);font-size:.78rem;font-weight:600;color:var(--muted);border:1px solid var(--border);background:var(--ink3);padding:7px 12px;border-radius:8px}
+.btn-back:hover{color:var(--text);border-color:var(--border-light)}
+
+.wrap{max-width:1180px;margin:0 auto;padding:28px 18px 120px}
+.crumb{font-family:var(--mono);font-size:.72rem;color:var(--muted2);margin-bottom:10px}
+h1.title{font-family:var(--display);font-size:clamp(1.6rem,5vw,2.4rem);font-weight:700;letter-spacing:-.02em}
+.subtitle{color:var(--muted);margin-top:8px;font-size:.95rem;max-width:60ch;line-height:1.65}
+.meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.pill{font-family:var(--display);font-size:.72rem;font-weight:600;padding:5px 11px;border-radius:20px;border:1px solid var(--border);background:var(--ink2);color:var(--muted)}
+.pill.xp{color:var(--yellow);border-color:rgba(255,214,10,.25);background:rgba(255,214,10,.08)}
+.pill.lang{color:#C4B5FD;border-color:rgba(124,58,237,.35);background:var(--violet-dim)}
+.pill.time{color:var(--green);border-color:rgba(0,200,150,.25);background:var(--green-dim)}
+
+.grid{display:grid;grid-template-columns:1.15fr .85fr;gap:22px;margin-top:28px;align-items:start}
+
+.mockup-card{background:var(--ink2);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.mockup-head{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--border);background:var(--ink3)}
+.dots{display:flex;gap:5px}
+.dots i{width:9px;height:9px;border-radius:50%;display:block}
+.dots i:nth-child(1){background:#FF5F57}.dots i:nth-child(2){background:#FFBD2E}.dots i:nth-child(3){background:#28C840}
+.mockup-label{font-family:var(--mono);font-size:.7rem;color:var(--muted2)}
+.view-btns{margin-left:auto;display:flex;gap:4px}
+.view-btn{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:7px;padding:4px 9px;font-size:.68rem;font-family:var(--display);font-weight:600;cursor:pointer}
+.view-btn.active{background:var(--violet);border-color:var(--violet);color:#fff}
+.mockup-stage{background:#e9edf5;padding:0;transition:padding .25s ease}
+.mockup-stage.mobile{padding:18px;background:var(--ink)}
+.mockup-stage iframe{width:100%;height:430px;border:0;background:#fff;display:block;transition:max-width .25s ease}
+.mockup-stage.mobile iframe{max-width:340px;margin:0 auto;border-radius:14px;border:1px solid var(--border-light)}
+.mockup-foot{padding:10px 14px;border-top:1px solid var(--border);font-size:.75rem;color:var(--muted);display:flex;gap:8px;align-items:center}
+.mockup-foot b{color:#C4B5FD;font-family:var(--display);font-weight:600}
+
+.card{background:var(--ink2);border:1px solid var(--border);border-radius:16px;padding:18px}
+.card + .card{margin-top:16px}
+.card-title{font-family:var(--display);font-size:.95rem;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.card-title .n{width:22px;height:22px;border-radius:6px;background:var(--violet-dim);color:#C4B5FD;display:grid;place-items:center;font-size:.7rem}
+.obj{display:flex;gap:11px;padding:11px 0;border-bottom:1px solid var(--border)}
+.obj:last-child{border-bottom:0;padding-bottom:0}
+.obj .num{width:22px;height:22px;flex-shrink:0;border-radius:50%;border:1px solid var(--border-light);color:var(--muted);display:grid;place-items:center;font-family:var(--mono);font-size:.7rem}
+.obj .t{font-size:.86rem;font-weight:500;line-height:1.4}
+.obj .h{font-size:.75rem;color:var(--muted);margin-top:3px;line-height:1.5}
+code{font-family:var(--mono);font-size:.72rem;background:rgba(124,58,237,.16);color:#C4B5FD;padding:1px 5px;border-radius:4px}
+.learn{display:flex;flex-wrap:wrap;gap:7px}
+.tag{font-family:var(--mono);font-size:.7rem;color:var(--muted);border:1px solid var(--border);border-radius:6px;padding:4px 8px;background:var(--ink3)}
+.tip{background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.25);border-radius:12px;padding:13px 15px;margin-top:16px}
+.tip-label{font-family:var(--display);font-size:.75rem;font-weight:700;color:#C4B5FD;margin-bottom:5px}
+.tip-text{font-size:.79rem;color:var(--muted);line-height:1.6}
+
+.cta-row{display:flex;gap:10px;margin-top:18px}
+.btn-start{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:9px;background:var(--violet);color:#fff;font-family:var(--display);font-weight:700;font-size:.95rem;padding:14px 20px;border:0;border-radius:12px;cursor:pointer;box-shadow:0 10px 26px rgba(124,58,237,.25)}
+.btn-start:hover{background:#8b4bf0}
+.btn-ghost{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:1px solid var(--border-light);background:var(--ink3);color:var(--text);font-family:var(--display);font-weight:600;font-size:.85rem;padding:14px 16px;border-radius:12px;cursor:pointer}
+
+.sticky-cta{display:none}
+
+@media (max-width:900px){
+  .grid{grid-template-columns:1fr;gap:18px}
+  .mockup-stage iframe{height:340px}
+  .cta-row{display:none}
+  .sticky-cta{display:flex;gap:10px;position:fixed;left:0;right:0;bottom:0;padding:12px 14px calc(12px + env(safe-area-inset-bottom));background:rgba(17,24,39,.96);backdrop-filter:blur(10px);border-top:1px solid var(--border);z-index:60}
+  .sticky-cta .btn-start{padding:13px 18px}
+  .wrap{padding-bottom:100px}
+}
+@media (max-width:600px){
+  .wrap{padding-left:14px;padding-right:14px}
+  .mockup-stage iframe{height:300px}
+  .card{padding:15px}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../index.html" class="logo-small"><img src="../image/logo-mark.png" alt="logo" class="logo-mark-sm">Dev<span>Këf</span></a>
+  <a href="index.html" class="btn-back">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Parcours
+  </a>
+</div>
+
+<main class="wrap">
+  <div class="crumb">// Monde 1 · Développement web · Niveau 3</div>
+  <h1 class="title">CSS &amp; couleurs</h1>
+  <p class="subtitle">Cette fois, la page part presque nue. À toi de l'habiller entièrement : couleur de fond, couleur du titre, police, espacement. C'est le début du design.</p>
+  <div class="meta-row">
+    <span class="pill lang">CSS</span>
+    <span class="pill">Débutant</span>
+    <span class="pill time">~20 min</span>
+    <span class="pill xp">★ 120 XP</span>
+  </div>
+
+  <div class="grid">
+    <section class="mockup-card">
+      <div class="mockup-head">
+        <div class="dots"><i></i><i></i><i></i></div>
+        <div class="mockup-label">maquette · niveau-3</div>
+        <div class="view-btns">
+          <button class="view-btn active" id="v-desk" onclick="setView('desktop')">Desktop</button>
+          <button class="view-btn" id="v-mob" onclick="setView('mobile')">Mobile</button>
+        </div>
+      </div>
+      <div class="mockup-stage" id="stage">
+        <iframe id="mockup" title="Maquette du niveau 3"></iframe>
+      </div>
+      <div class="mockup-foot"><b>Objectif visuel</b> — reproduis cette ambiance (fond crème, titre violet, police avec empattements). Les couleurs exactes sont libres, l'idée est là.</div>
+    </section>
+
+    <aside>
+      <div class="card">
+        <div class="card-title"><span class="n">1</span> Objectifs à valider</div>
+        <div class="obj"><div class="num">1</div><div><div class="t">Donner une couleur de fond à la page</div><div class="h">Dans <code>body { }</code>, ajoute <code>background-color</code></div></div></div>
+        <div class="obj"><div class="num">2</div><div><div class="t">Colorer le titre principal</div><div class="h">Dans <code>h1 { }</code>, ajoute <code>color</code></div></div></div>
+        <div class="obj"><div class="num">3</div><div><div class="t">Changer la police du texte</div><div class="h">Dans <code>body { }</code>, ajoute <code>font-family</code></div></div></div>
+        <div class="obj"><div class="num">4</div><div><div class="t">Ajouter de l'espacement</div><div class="h">Dans <code>body { }</code>, ajoute <code>padding</code> ou <code>margin</code></div></div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="n">2</span> Ce que tu vas apprendre</div>
+        <div class="learn">
+          <span class="tag">sélecteurs CSS</span>
+          <span class="tag">couleurs</span>
+          <span class="tag">typographie</span>
+          <span class="tag">espacement</span>
+        </div>
+        <div class="tip">
+          <div class="tip-label">💡 Avant de commencer</div>
+          <div class="tip-text">Cette fois le CSS n'est <b>pas</b> déjà écrit pour toi — c'est le but du niveau. La structure HTML, elle, reste inchangée.</div>
+        </div>
+      </div>
+
+      <div class="cta-row">
+        <a class="btn-ghost" href="../docs/web-niveau-3.html">📄 Doc</a>
+        <button class="btn-start" onclick="start()">
+          Commencer le niveau
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<div class="sticky-cta">
+  <a class="btn-ghost" href="../docs/web-niveau-3.html">📄 Doc</a>
+  <button class="btn-start" onclick="start()">
+    Commencer · 120 XP
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+  </button>
+</div>
+
+<script>
+const MOCKUP_HTML = `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/><style>
+body{background-color:#FFF8F0;font-family:Georgia,serif;padding:40px;max-width:640px;margin:0 auto;color:#3A2E2E;line-height:1.7}
+h1{color:#7C3AED;font-size:2rem}
+h2{color:#3A2E2E;font-size:1.15rem;margin-top:24px}
+p{color:#5A4A4A}
+</style></head><body>
+<h1>Mouhamed Ndiaye</h1>
+<p>Étudiant en informatique, passionné de développement web et d'intelligence artificielle. J'apprends en construisant de vrais projets.</p>
+<h2>Ce que je fais</h2>
+<p>Développement web, exploration de l'IA, et beaucoup de café.</p>
+</body></html>`;
+
+(function(){
+  const f = document.getElementById('mockup');
+  const d = f.contentDocument || f.contentWindow.document;
+  d.open(); d.write(MOCKUP_HTML); d.close();
+})();
+
+function setView(mode){
+  document.getElementById('stage').classList.toggle('mobile', mode === 'mobile');
+  document.getElementById('v-desk').classList.toggle('active', mode === 'desktop');
+  document.getElementById('v-mob').classList.toggle('active', mode === 'mobile');
+}
+
+function start(){ window.location.href = '../editor.html?level=3'; }
+</script>
+</body>
+</html>
