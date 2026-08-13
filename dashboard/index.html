@@ -10,6 +10,19 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
 
 <link rel="stylesheet" href="style.css">
+<style>
+.track-row{margin-bottom:1.1rem;display:flex;align-items:center;gap:12px}
+.track-row:last-child{margin-bottom:0}
+.track-row a{flex:1;min-width:0}
+.track-top{display:flex;justify-content:space-between;font-size:.85rem;margin-bottom:.4rem}
+.track-top b{font-family:var(--display)}
+.track-bar{height:8px;border-radius:100px;background:var(--ink);overflow:hidden}
+.track-bar>i{display:block;height:100%;border-radius:100px}
+.tb-web{background:linear-gradient(90deg,var(--orange),#FF9B6A)}
+.tb-python{background:linear-gradient(90deg,var(--green),#5EE0BC)}
+.tb-c{background:linear-gradient(90deg,#7C3AED,#B79CFB)}
+.track-lock{font-family:var(--mono);font-size:.68rem;color:var(--orange);white-space:nowrap}
+</style>
 <script src="../config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="../auth.js"></script>
@@ -63,8 +76,8 @@
 
       <!-- 3. Parcours -->
       <section class="card" style="margin-top:1.25rem">
-        <h3 class="section-title">Ton parcours <a href="../level/index.html">Voir tout</a></h3>
-        <div class="path" id="path-row"></div>
+        <h3 class="section-title">Tes parcours <a href="../index.html#parcours">Voir tout</a></h3>
+        <div id="tracks-summary"></div>
       </section>
     </div>
 
@@ -73,8 +86,10 @@
       <!-- 4. Mini-classement -->
       <section class="card">
         <h3 class="section-title">Classement <a href="classement.html">Voir tout</a></h3>
+        <p id="mini-rank-note" style="font-family:var(--mono);font-size:.68rem;color:var(--muted);margin-bottom:.6rem"></p>
         <div id="mini-rank-list"></div>
       </section>
+
 
       <!-- 5. Récompenses -->
       <section class="card" style="margin-top:1.25rem">
@@ -114,60 +129,78 @@
   document.getElementById('xp-num-label').innerHTML = '<b>' + acc.current + '</b> / ' + acc.needed + ' XP';
   document.getElementById('xp-bar-fill').style.width = Math.min(100, (acc.current / acc.needed) * 100) + '%';
 
-  // Projet en cours : premier niveau web débloqué et non complété
-  const WEB_LEVELS = [
-    { id: 1, title: 'Ma première page', href: '../level/level_1.html', xp: 80 },
-    { id: 2, title: 'Texte & liens', href: '../level/level_2.html', xp: 100 }
+  // Projet en cours : premier niveau débloqué et non complété, tous parcours confondus
+  const ALL_LEVELS = [
+    { track: 'web', label: 'Développement Web', id: 1, title: 'Ma première page', href: '../level/level_1.html', xp: 80, icon: '🌐' },
+    { track: 'web', label: 'Développement Web', id: 2, title: 'Texte & liens', href: '../level/level_2.html', xp: 100, icon: '🌐' },
+    { track: 'python', label: 'Python', id: 1, title: 'Calculatrice cliquable', href: '../level/python/level_1.html', xp: 150, icon: '🐍' },
+    { track: 'c', label: 'Langage C', id: 1, title: 'Calculatrice cliquable', href: '../level/c/level_1.html', xp: 150, icon: '⚙️' }
   ];
-  const next = WEB_LEVELS.find(l => !dkIsDone('web', l.id));
+  const playable = l => !dkIsDone(l.track, l.id) && dkIsUnlocked(l.track, l.id) && (l.id === 1 || !dkIsGuest());
+  const guestBlocked = l => !dkIsDone(l.track, l.id) && dkIsUnlocked(l.track, l.id) && l.id > 1 && dkIsGuest();
+
+  const next = ALL_LEVELS.find(playable);
   const card = document.getElementById('current-project-card');
   if (next) {
     document.getElementById('sub-text').textContent = 'Ton prochain projet t\'attend : ' + next.title + '.';
     card.innerHTML = `
       <span class="proj-tag">Projet en cours</span>
-      <h2 class="proj-title">${next.title}</h2>
-      <p class="proj-desc">Niveau ${next.id} du parcours Développement Web · ★ ${next.xp} XP à la clé.</p>
+      <h2 class="proj-title">${next.icon} ${next.title}</h2>
+      <p class="proj-desc">${next.label} · Niveau ${next.id} · ★ ${next.xp} XP à la clé.</p>
       <a class="btn" href="${next.href}">Continuer le projet →</a>`;
+  } else if (dkIsGuest() && ALL_LEVELS.some(guestBlocked)) {
+    document.getElementById('sub-text').textContent = 'Crée un compte pour débloquer la suite.';
+    card.innerHTML = `
+      <span class="proj-tag" style="color:var(--orange);background:var(--orange-dim)">Compte requis</span>
+      <h2 class="proj-title">Tu as fini le niveau gratuit de chaque parcours 🎉</h2>
+      <p class="proj-desc">Crée un compte gratuit pour débloquer la suite et sauvegarder ta progression.</p>
+      <a class="btn" href="../login.html">Créer un compte →</a>`;
   } else {
-    document.getElementById('sub-text').textContent = 'Tu as complété tous les projets web disponibles pour l\'instant 🎉';
+    document.getElementById('sub-text').textContent = 'Tu as complété tous les projets disponibles pour l\'instant 🎉';
     card.innerHTML = `
       <span class="proj-tag">Bravo !</span>
-      <h2 class="proj-title">Parcours Web à jour</h2>
-      <p class="proj-desc">De nouveaux niveaux arrivent bientôt. En attendant, explore Python ou le langage C.</p>
-      <a class="btn" href="../index.html#parcours">Explorer d'autres parcours →</a>`;
+      <h2 class="proj-title">Tout est à jour</h2>
+      <p class="proj-desc">De nouveaux niveaux arrivent bientôt sur les trois parcours.</p>
+      <a class="btn" href="../index.html#parcours">Revoir les parcours →</a>`;
   }
 
-  // Chemin des niveaux (aperçu des 2 premiers réels + à venir)
-  const pathLevels = [
-    { label: 'HTML<br>de base', done: dkIsDone('web', 1) },
-    { label: 'Texte<br>&amp; liens', done: dkIsDone('web', 2) },
-    { label: 'CSS<br>couleurs', done: false },
-    { label: 'Flexbox', done: false },
-    { label: 'Grid', done: false },
-    { label: 'Responsive', done: false }
+  // Résumé des trois parcours
+  const TRACKS = [
+    { key: 'web', icon: '🌐', label: 'Développement Web', total: 6, href: '../level/index.html', cls: 'tb-web' },
+    { key: 'python', icon: '🐍', label: 'Python', total: 1, href: '../level/python/index.html', cls: 'tb-python' },
+    { key: 'c', icon: '⚙️', label: 'Langage C', total: 1, href: '../level/c/index.html', cls: 'tb-c' }
   ];
-  let currentSet = false;
-  const pathRow = document.getElementById('path-row');
-  pathLevels.forEach((lvl, i) => {
-    const isCurrent = !lvl.done && !currentSet;
-    if (isCurrent) currentSet = true;
-    const node = document.createElement('div');
-    node.className = 'node' + (lvl.done ? ' done' : isCurrent ? ' current' : '');
-    node.innerHTML = `<div class="dot">${lvl.done ? '✓' : i + 1}</div><small>${lvl.label}</small>`;
-    pathRow.appendChild(node);
-    if (i < pathLevels.length - 1) {
-      const link = document.createElement('div');
-      link.className = 'link' + (lvl.done ? ' done' : '');
-      pathRow.appendChild(link);
-    }
-  });
+  document.getElementById('tracks-summary').innerHTML = TRACKS.map(t => {
+    const done = dkGetCompletedCount(t.key);
+    const pct = Math.min(100, (done / t.total) * 100);
+    const locked = dkIsGuest() && done >= 1 && done < t.total;
+    return `
+      <div class="track-row">
+        <a href="${t.href}">
+          <div class="track-top"><b>${t.icon} ${t.label}</b><span style="color:var(--muted)">${done} / ${t.total}</span></div>
+          <div class="track-bar"><i class="${t.cls}" style="width:${pct}%"></i></div>
+        </a>
+        ${locked ? '<span class="track-lock">🔒 Compte requis</span>' : ''}
+      </div>`;
+  }).join('');
 
-  // Mini-classement (rivaux fictifs + ta vraie XP)
-  const rivals = [
-    { name: 'Sara M.', xp: 3420 }, { name: 'Youssef B.', xp: 2980 },
-    { name: 'Lina T.', xp: 2110 }, { name: 'Omar D.', xp: 1090 }
-  ];
-  const all = [...rivals, { name: data.name || 'Toi', xp: data.xp, me: true }].sort((a, b) => b.xp - a.xp);
+  // Mini-classement (vraies données Supabase si configuré, sinon démo)
+  let all;
+  const real = await dkFetchLeaderboard();
+  if (real && real.length) {
+    all = real.slice(0, 5).map(p => ({ name: p.username, xp: p.xp, me: !dkIsGuest() && p.username === data.name }));
+    if (dkIsGuest() || !all.some(p => p.me)) all.push({ name: data.name || 'Toi', xp: data.xp, me: true });
+    all.sort((a, b) => b.xp - a.xp);
+    all = all.slice(0, 5);
+    document.getElementById('mini-rank-note').textContent = '✓ Classement réel';
+  } else {
+    const rivals = [
+      { name: 'Sara M.', xp: 3420 }, { name: 'Youssef B.', xp: 2980 },
+      { name: 'Lina T.', xp: 2110 }, { name: 'Omar D.', xp: 1090 }
+    ];
+    all = [...rivals, { name: data.name || 'Toi', xp: data.xp, me: true }].sort((a, b) => b.xp - a.xp);
+    document.getElementById('mini-rank-note').textContent = '⚠ Démonstration (backend non configuré)';
+  }
   document.getElementById('mini-rank-list').innerHTML = all.map((p, i) => `
     <div class="rank-row${p.me ? ' me' : ''}">
       <span class="rank-pos">${i + 1}</span>
