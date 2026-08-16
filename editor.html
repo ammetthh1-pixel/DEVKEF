@@ -1344,8 +1344,19 @@ body{font-family:'Segoe UI',sans-serif;background:#f4f0fa;padding:40px 20px}
     objectives: [
       { label: 'Une media query est définie', hint: 'Ajoute <code>@media (max-width: 768px) { }</code> (768px ou moins)',
         test: (html, css) => dkCssHasMediaQuery(css, 768) },
-      { label: 'La carte passe en colonne sur mobile', hint: 'Dans la media query, redéfinis <code>.profile-card</code> avec <code>flex-direction: column;</code>',
-        test: (html, css) => dkCssHasPropValueInMedia(css, '.profile-card', 'flex-direction', 'column') },
+     {
+  label: 'La carte passe en colonne sur mobile',
+  hint: 'Dans la media query, redéfinis <code>.profile-card</code> avec <code>flex-direction: column;</code> et centre le texte/bouton',
+  test: (html, css) => {
+    const column = dkCssHasPropValueInMedia(css, '.profile-card', 'flex-direction', 'column');
+    const centeredText = dkCssHasPropValueInMedia(css, '.profile-card', 'text-align', 'center')
+      || dkCssHasPropValueInMedia(css, '.info', 'text-align', 'center');
+    const centeredButton = dkCssHasPropValueInMedia(css, '.profile-card button', 'margin', 'auto')
+      || dkCssHasPropValueInMedia(css, 'button', 'margin', 'auto');
+
+    return column && (centeredText || centeredButton);
+  }
+},
       { label: 'La galerie repasse en une seule colonne', hint: 'Dans la media query, redéfinis <code>.gallery</code> avec <code>grid-template-columns: 1fr;</code>',
         test: (html, css) => dkCssHasMediaBlockFor(css, '.gallery') }
     ],
