@@ -1415,6 +1415,10 @@ button{background:#7C3AED;color:#fff;border:0;padding:8px 16px;border-radius:8px
 /* ══════════════════════════════════════
    UTILITAIRES DE TEST CSS
 ══════════════════════════════════════ */
+function stripCssComments(css) {
+  return css.replace(/\/\*[\s\S]*?\*\//g, '');
+}
+
 function dkCssHasProp(css, selector, propPattern) {
   const re = new RegExp(selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\s*\\{([^}]*)\\}', 'i');
   const m = css.match(re);
