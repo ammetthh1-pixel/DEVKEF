@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DevKëf — Doc · Responsive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="doc-style.css"/>
+<style>.doc-h2 .ic{color:#C4B5FD}.concept-name{color:#C4B5FD !important}</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../index.html" class="logo-small"><img src="../image/logo-mark.png" alt="logo" class="logo-mark-sm">Dev<span>Këf</span></a>
+  <a href="../level/level_6.html" class="btn-back">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Retour au niveau
+  </a>
+</div>
+
+<main class="doc-wrap">
+  <div class="doc-crumb">// Documentation · Développement Web · Niveau 6</div>
+  <h1 class="doc-title">📄 Responsive : adapter au mobile</h1>
+  <p class="doc-subtitle">Plus de la moitié du trafic web mondial vient du mobile. Un site qui n'est pas pensé pour les petits écrans en perd une bonne partie sans même s'en rendre compte.</p>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">🎯</span> Pourquoi ce projet ?</div>
+    <p class="doc-p">Ce niveau referme le premier bloc de compétences CSS en les combinant : la carte (Flexbox, niveau 4) et la galerie (Grid, niveau 5) ont chacune leur mise en page "desktop". Ici, tu leur ajoutes une seconde mise en page, "mobile", qui s'active automatiquement sous une certaine largeur d'écran.</p>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">📚</span> Les notions clés</div>
+    <div class="concept">
+      <div class="concept-name">@media (max-width: 768px)</div>
+      <div class="concept-def">Une "media query" : un bloc de règles CSS qui ne s'applique que si une condition est vraie — ici, "l'écran fait 768 pixels de large ou moins". Au-delà, ces règles sont ignorées.</div>
+    </div>
+    <div class="concept">
+      <div class="concept-name">Redéfinir une règle existante</div>
+      <div class="concept-def">Dans la media query, on réécrit <code>.profile-card</code> avec de nouvelles valeurs (ex. <code>flex-direction: column</code>). La règle la plus spécifique/la plus récente dans le fichier l'emporte — pas besoin de tout réécrire, juste ce qui change.</div>
+    </div>
+    <div class="concept">
+      <div class="concept-name">flex-direction: column</div>
+      <div class="concept-def">Change l'axe principal de Flexbox : au lieu d'aligner les enfants en ligne, ils s'empilent en colonne — parfait pour un écran étroit où il n'y a pas la place d'aligner avatar + texte + bouton côte à côte.</div>
+    </div>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">⚠️</span> Pièges fréquents</div>
+    <div class="pitfall">
+      <span class="ic">✗</span>
+      <div><div class="pitfall-title">Media query mal placée</div><div class="pitfall-text">Si elle est écrite avant les règles de base, celles-ci peuvent la "recouvrir" selon l'ordre du fichier. Le plus sûr : la mettre à la fin du CSS.</div></div>
+    </div>
+    <div class="pitfall">
+      <span class="ic">✗</span>
+      <div><div class="pitfall-title">Oublier que 768px est arbitraire</div><div class="pitfall-text">Rien de magique dans ce chiffre — c'est juste un seuil courant proche de la largeur d'une tablette. On pourrait choisir 600px ou 900px selon le design.</div></div>
+    </div>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">🚀</span> Pour aller plus loin</div>
+    <div class="resource-list">
+      <a class="resource" href="https://developer.mozilla.org/fr/docs/Web/CSS/CSS_media_queries/Using_media_queries" target="_blank" rel="noopener">
+        <span class="ic">📘</span><b>MDN — Utiliser les media queries</b><span>Référence officielle, en français</span>
+      </a>
+    </div>
+  </section>
+
+  <div class="doc-cta">
+    <p>Prêt à coder ?</p>
+    <a class="btn-doc-cta" href="../editor.html?level=6">
+      Ouvrir l'éditeur
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</main>
+
+</body>
+</html>

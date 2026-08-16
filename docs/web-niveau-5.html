@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DevKëf — Doc · Grid</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="doc-style.css"/>
+<style>.doc-h2 .ic{color:#C4B5FD}.concept-name{color:#C4B5FD !important}</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../index.html" class="logo-small"><img src="../image/logo-mark.png" alt="logo" class="logo-mark-sm">Dev<span>Këf</span></a>
+  <a href="../level/level_5.html" class="btn-back">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Retour au niveau
+  </a>
+</div>
+
+<main class="doc-wrap">
+  <div class="doc-crumb">// Documentation · Développement Web · Niveau 5</div>
+  <h1 class="doc-title">📄 Grid : galerie photo</h1>
+  <p class="doc-subtitle">Flexbox aligne dans une direction. Grid organise lignes ET colonnes en même temps — le bon outil dès qu'on pense en grille plutôt qu'en ligne.</p>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">🎯</span> Pourquoi ce projet ?</div>
+    <p class="doc-p">Techniquement, on pourrait faire une grille avec Flexbox (en revenant à la ligne), mais ce serait fragile — il faudrait calculer précisément les largeurs pour que tout tombe juste. Grid pense nativement en grille : on dit combien de colonnes on veut, et le navigateur se débrouille pour aligner tout parfaitement.</p>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">📚</span> Les notions clés</div>
+    <div class="concept">
+      <div class="concept-name">display: grid</div>
+      <div class="concept-def">Transforme le conteneur en grille. Sans rien d'autre, tous les enfants s'empilent encore en une seule colonne — c'est <code>grid-template-columns</code> qui définit vraiment la grille.</div>
+    </div>
+    <div class="concept">
+      <div class="concept-name">grid-template-columns: repeat(3, 1fr)</div>
+      <div class="concept-def"><code>repeat(3, 1fr)</code> est un raccourci pour "3 colonnes, chacune 1 fraction de l'espace disponible" — équivalent à écrire <code>1fr 1fr 1fr</code>, mais plus lisible.</div>
+    </div>
+    <div class="concept">
+      <div class="concept-name">aspect-ratio</div>
+      <div class="concept-def">Force un élément à garder un ratio largeur/hauteur donné, quelle que soit sa largeur réelle. <code>aspect-ratio: 1</code> = toujours un carré parfait.</div>
+    </div>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">⚠️</span> Pièges fréquents</div>
+    <div class="pitfall">
+      <span class="ic">✗</span>
+      <div><div class="pitfall-title">Oublier grid-template-columns</div><div class="pitfall-text"><code>display: grid</code> seul ne suffit pas — sans colonnes définies, tout reste sur une seule colonne verticale.</div></div>
+    </div>
+    <div class="pitfall">
+      <span class="ic">✗</span>
+      <div><div class="pitfall-title">Mélanger fr et % sans réfléchir</div><div class="pitfall-text"><code>1fr</code> est presque toujours plus simple que des pourcentages pour des colonnes égales — pas besoin de calculer en tenant compte du <code>gap</code>.</div></div>
+    </div>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">🚀</span> Pour aller plus loin</div>
+    <div class="resource-list">
+      <a class="resource" href="https://developer.mozilla.org/fr/docs/Web/CSS/CSS_grid_layout/Basic_concepts_of_grid_layout" target="_blank" rel="noopener">
+        <span class="ic">📘</span><b>MDN — Notions de base sur Grid</b><span>Référence officielle, en français</span>
+      </a>
+    </div>
+  </section>
+
+  <div class="doc-cta">
+    <p>Prêt à coder ?</p>
+    <a class="btn-doc-cta" href="../editor.html?level=5">
+      Ouvrir l'éditeur
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</main>
+
+</body>
+</html>

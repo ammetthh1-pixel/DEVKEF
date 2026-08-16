@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DevKëf — Doc · Flexbox</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="doc-style.css"/>
+<style>.doc-h2 .ic{color:#C4B5FD}.concept-name{color:#C4B5FD !important}</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../index.html" class="logo-small"><img src="../image/logo-mark.png" alt="logo" class="logo-mark-sm">Dev<span>Këf</span></a>
+  <a href="../level/level_4.html" class="btn-back">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Retour au niveau
+  </a>
+</div>
+
+<main class="doc-wrap">
+  <div class="doc-crumb">// Documentation · Développement Web · Niveau 4</div>
+  <h1 class="doc-title">📄 Flexbox : carte de profil</h1>
+  <p class="doc-subtitle">Jusqu'ici, chaque élément s'empilait tout seul, dans l'ordre du HTML. Flexbox est le premier outil qui te laisse vraiment décider comment les choses s'organisent.</p>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">🎯</span> Pourquoi ce projet ?</div>
+    <p class="doc-p">Sans CSS de mise en page, un `div` prend toute la largeur disponible et le suivant se place en dessous — le comportement "par défaut" du navigateur. Flexbox permet de dire : "aligne ces éléments en ligne, centre-les, espace-les". C'est l'outil le plus utilisé au quotidien pour des mises en page simples (barres de navigation, cartes, listes horizontales).</p>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">📚</span> Les notions clés</div>
+    <div class="concept">
+      <div class="concept-name">display: flex</div>
+      <div class="concept-def">Transforme un conteneur en "flex container" — tous ses enfants directs (pas les petits-enfants) s'alignent automatiquement en ligne, côte à côte.</div>
+    </div>
+    <div class="concept">
+      <div class="concept-name">align-items</div>
+      <div class="concept-def">Aligne les enfants sur l'axe perpendiculaire à la ligne — concrètement, ici, verticalement. <code>center</code> les centre, peu importe leurs tailles différentes.</div>
+    </div>
+    <div class="concept">
+      <div class="concept-name">gap</div>
+      <div class="concept-def">Ajoute un espace régulier entre les enfants, sans avoir à mettre une marge sur chacun individuellement. Beaucoup plus simple que jongler avec des `margin-right` partout.</div>
+    </div>
+    <div class="concept">
+      <div class="concept-name">margin-left: auto sur un seul enfant</div>
+      <div class="concept-def">Astuce classique : dans un conteneur flex, donner une marge automatique à un enfant le pousse au maximum dans cette direction — ici, ça pousse le bouton tout à droite, pendant que les autres restent groupés à gauche.</div>
+    </div>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">⚠️</span> Pièges fréquents</div>
+    <div class="pitfall">
+      <span class="ic">✗</span>
+      <div><div class="pitfall-title">Mettre display:flex sur le mauvais élément</div><div class="pitfall-text">C'est le <i>parent</i> (<code>.profile-card</code>) qui doit être flex, pas les enfants individuellement.</div></div>
+    </div>
+    <div class="pitfall">
+      <span class="ic">✗</span>
+      <div><div class="pitfall-title">Confondre align-items et justify-content</div><div class="pitfall-text"><code>align-items</code> agit verticalement (par défaut), <code>justify-content</code> agit horizontalement — l'inverse de ce qu'on imagine souvent au début.</div></div>
+    </div>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">🚀</span> Pour aller plus loin</div>
+    <div class="resource-list">
+      <a class="resource" href="https://developer.mozilla.org/fr/docs/Web/CSS/CSS_flexible_box_layout/Basic_concepts_of_flexbox" target="_blank" rel="noopener">
+        <span class="ic">📘</span><b>MDN — Notions de base sur Flexbox</b><span>Référence officielle, en français</span>
+      </a>
+    </div>
+  </section>
+
+  <div class="doc-cta">
+    <p>Prêt à coder ?</p>
+    <a class="btn-doc-cta" href="../editor.html?level=4">
+      Ouvrir l'éditeur
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</main>
+
+</body>
+</html>

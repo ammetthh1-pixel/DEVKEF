@@ -1118,7 +1118,7 @@ strong { color: #1a1a2e; }`,
     xpMax: 120,
     desc: "Troisième projet : cette fois, tu pars d'une page presque nue et c'est toi qui l'habilles entièrement en CSS — couleur de fond, couleur du titre, police, espacement. C'est le début du design.",
     tip: "Un sélecteur cible un élément : <code>body { }</code> style toute la page, <code>h1 { }</code> style seulement le titre principal. Chaque propriété se termine par un point-virgule <code>;</code>.",
-    nextLevel: null,
+    nextLevel: 4,
     objectives: [
       { label: 'Donner une couleur de fond à la page', hint: 'Dans <code>body { }</code>, ajoute <code>background-color</code>',
         test: (html, css) => dkCssHasProp(css, 'body', 'background(-color)?') },
@@ -1169,15 +1169,294 @@ p{color:#5A4A4A}
 <h2>Ce que je fais</h2>
 <p>Développement web, exploration de l'IA, et beaucoup de café.</p>
 </body></html>`
-  }
+  },
+
+  4: {
+    world: '// Monde 1 · Niveau 4',
+    title: 'Flexbox : carte de profil',
+    xpMax: 150,
+    desc: "Jusqu'ici le contenu s'empilait tout seul. Ce niveau t'apprend à reprendre le contrôle de la disposition avec Flexbox : une carte de profil avec avatar, texte et bouton alignés proprement sur une ligne.",
+    tip: "<code>display: flex;</code> sur un conteneur aligne ses enfants en ligne par défaut. <code>align-items: center;</code> les centre verticalement, <code>gap</code> espace entre eux, et <code>margin-left: auto;</code> sur un seul enfant le pousse à droite.",
+    nextLevel: 5,
+    objectives: [
+      { label: 'Le conteneur utilise display: flex', hint: 'Dans <code>.profile-card { }</code>, ajoute <code>display: flex;</code>',
+        test: (html, css) => dkCssHasPropValue(css, '.profile-card', 'display', 'flex') },
+      { label: 'Les éléments sont alignés verticalement au centre', hint: 'Ajoute <code>align-items: center;</code>',
+        test: (html, css) => dkCssHasProp(css, '.profile-card', 'align-items') },
+      { label: 'Un espacement est défini entre les éléments', hint: 'Ajoute <code>gap</code> (ex. <code>gap: 16px;</code>)',
+        test: (html, css) => dkCssHasProp(css, '.profile-card', 'gap') },
+      { label: 'Le bouton est poussé à droite', hint: '<code>margin-left: auto;</code> sur le bouton, ou <code>justify-content: space-between;</code> sur le conteneur',
+        test: (html, css) => dkCssHasProp(css, '.profile-card button', 'margin-left') || dkCssHasPropValue(css, '.profile-card', 'justify-content', 'space-between') }
+    ],
+    starterHTML: `<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Flexbox : carte de profil</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <div class="profile-card">
+    <div class="avatar"></div>
+    <div class="info">
+      <h2>Aïda Diop</h2>
+      <p>Développeuse web en formation</p>
+    </div>
+    <button>Suivre</button>
+  </div>
+
+</body>
+</html>`,
+    starterCSS: `body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f4f0fa;
+  padding: 60px 20px;
+}
+
+.profile-card {
+  /* OBJECTIF 1 : display: flex */
+  /* OBJECTIF 2 : align-items: center */
+  /* OBJECTIF 3 : gap */
+  max-width: 420px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.08);
+}
+
+.avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7C3AED, #FF6B35);
+  flex-shrink: 0;
+}
+
+.info h2 { margin: 0; font-size: 1.05rem; }
+.info p { margin: 4px 0 0; color: #777; font-size: .85rem; }
+
+button {
+  background: #7C3AED;
+  color: #fff;
+  border: 0;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  /* OBJECTIF 4 : pousser ce bouton à droite */
+}`,
+    mockup: () => `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/><style>
+body{font-family:'Segoe UI',sans-serif;background:#f4f0fa;padding:60px 20px}
+.profile-card{display:flex;align-items:center;gap:16px;max-width:420px;margin:0 auto;background:#fff;border-radius:16px;padding:20px;box-shadow:0 10px 30px rgba(0,0,0,.08)}
+.avatar{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#7C3AED,#FF6B35);flex-shrink:0}
+.info h2{margin:0;font-size:1.05rem}
+.info p{margin:4px 0 0;color:#777;font-size:.85rem}
+button{background:#7C3AED;color:#fff;border:0;padding:8px 16px;border-radius:8px;cursor:pointer;margin-left:auto}
+</style></head><body>
+<div class="profile-card">
+  <div class="avatar"></div>
+  <div class="info"><h2>Aïda Diop</h2><p>Développeuse web en formation</p></div>
+  <button>Suivre</button>
+</div>
+</body></html>`
+  },
+
+  5: {
+    world: '// Monde 1 · Niveau 5',
+    title: 'Grid : galerie photo',
+    xpMax: 150,
+    desc: "Flexbox gère une dimension à la fois. Grid gère les deux en même temps — l'outil parfait pour une grille régulière comme cette galerie photo à 3 colonnes.",
+    tip: "<code>display: grid;</code> puis <code>grid-template-columns: repeat(3, 1fr);</code> crée 3 colonnes de largeur égale. <code>gap</code> fonctionne aussi bien avec Grid qu'avec Flexbox.",
+    nextLevel: 6,
+    objectives: [
+      { label: 'Le conteneur utilise display: grid', hint: 'Dans <code>.gallery { }</code>, ajoute <code>display: grid;</code>',
+        test: (html, css) => dkCssHasPropValue(css, '.gallery', 'display', 'grid') },
+      { label: 'Les colonnes sont définies', hint: 'Ajoute <code>grid-template-columns</code> (ex. <code>repeat(3, 1fr)</code>)',
+        test: (html, css) => dkCssHasProp(css, '.gallery', 'grid-template-columns') },
+      { label: 'Un espacement est défini entre les cases', hint: 'Ajoute <code>gap</code>',
+        test: (html, css) => dkCssHasProp(css, '.gallery', 'gap') },
+      { label: 'Chaque case garde une hauteur cohérente', hint: 'Dans <code>.item { }</code>, ajoute <code>aspect-ratio: 1;</code> (ou une <code>height</code> fixe)',
+        test: (html, css) => dkCssHasProp(css, '.item', 'aspect-ratio') || dkCssHasProp(css, '.item', 'height') }
+    ],
+    starterHTML: `<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Grid : galerie photo</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <div class="gallery">
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+  </div>
+
+</body>
+</html>`,
+    starterCSS: `body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f4f0fa;
+  padding: 40px 20px;
+}
+
+.gallery {
+  /* OBJECTIF 1 : display: grid */
+  /* OBJECTIF 2 : grid-template-columns */
+  /* OBJECTIF 3 : gap */
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.item {
+  /* OBJECTIF 4 : aspect-ratio ou height */
+  border-radius: 10px;
+  background: linear-gradient(135deg, #7C3AED, #FF6B35);
+}`,
+    mockup: () => `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/><style>
+body{font-family:'Segoe UI',sans-serif;background:#f4f0fa;padding:40px 20px}
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:560px;margin:0 auto}
+.item{aspect-ratio:1;border-radius:10px;background:linear-gradient(135deg,#7C3AED,#FF6B35)}
+</style></head><body>
+<div class="gallery">
+  <div class="item"></div><div class="item"></div><div class="item"></div>
+  <div class="item"></div><div class="item"></div><div class="item"></div>
+</div>
+</body></html>`
+  },
+
+  6: {
+    world: '// Monde 1 · Niveau 6',
+    title: 'Responsive : adapter au mobile',
+    xpMax: 180,
+    desc: "Ce niveau referme le premier bloc de compétences CSS : combiner la carte (niveau 4) et la galerie (niveau 5), et les adapter au mobile avec une media query. Le CSS \"desktop\" est déjà prêt — ton travail se concentre sur l'adaptation.",
+    tip: "<code>@media (max-width: 768px) { }</code> applique les règles à l'intérieur seulement quand l'écran est plus étroit que 768px. À l'intérieur, on peut redéfinir n'importe quelle propriété déjà utilisée ailleurs.",
+    nextLevel: null,
+    objectives: [
+      { label: 'Une media query est définie', hint: 'Ajoute <code>@media (max-width: 768px) { }</code> (768px ou moins)',
+        test: (html, css) => dkCssHasMediaQuery(css, 768) },
+      { label: 'La carte passe en colonne sur mobile', hint: 'Dans la media query, redéfinis <code>.profile-card</code> avec <code>flex-direction: column;</code>',
+        test: (html, css) => dkCssHasPropValueInMedia(css, '.profile-card', 'flex-direction', 'column') },
+      { label: 'La galerie repasse en une seule colonne', hint: 'Dans la media query, redéfinis <code>.gallery</code> avec <code>grid-template-columns: 1fr;</code>',
+        test: (html, css) => dkCssHasMediaBlockFor(css, '.gallery') }
+    ],
+    starterHTML: `<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Responsive</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <div class="profile-card">
+    <div class="avatar"></div>
+    <div class="info">
+      <h2>Aïda Diop</h2>
+      <p>Développeuse web en formation</p>
+    </div>
+    <button>Suivre</button>
+  </div>
+
+  <div class="gallery">
+    <div class="item"></div><div class="item"></div><div class="item"></div>
+    <div class="item"></div><div class="item"></div><div class="item"></div>
+  </div>
+
+</body>
+</html>`,
+    starterCSS: `body { font-family: 'Segoe UI', sans-serif; background: #f4f0fa; padding: 40px 20px; }
+
+.profile-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  max-width: 420px;
+  margin: 0 auto 30px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.08);
+}
+.avatar { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, #7C3AED, #FF6B35); flex-shrink: 0; }
+.info h2 { margin: 0; font-size: 1.05rem; }
+.info p { margin: 4px 0 0; color: #777; font-size: .85rem; }
+button { background: #7C3AED; color: #fff; border: 0; padding: 8px 16px; border-radius: 8px; cursor: pointer; margin-left: auto; }
+
+.gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 560px; margin: 0 auto; }
+.item { aspect-ratio: 1; border-radius: 10px; background: linear-gradient(135deg, #7C3AED, #FF6B35); }
+
+/* OBJECTIF : ajoute ta media query ici */
+`,
+    mockup: () => `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/><style>
+body{font-family:'Segoe UI',sans-serif;background:#f4f0fa;padding:40px 20px;max-width:340px;margin:0 auto}
+.profile-card{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;background:#fff;border-radius:16px;padding:20px;box-shadow:0 10px 30px rgba(0,0,0,.08);margin-bottom:24px}
+.avatar{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#7C3AED,#FF6B35)}
+button{background:#7C3AED;color:#fff;border:0;padding:8px 16px;border-radius:8px}
+.gallery{display:grid;grid-template-columns:1fr;gap:12px}
+.item{aspect-ratio:1;border-radius:10px;background:linear-gradient(135deg,#7C3AED,#FF6B35)}
+</style></head><body>
+<div class="profile-card"><div class="avatar"></div><h2>Aïda Diop</h2><p>Développeuse web</p><button>Suivre</button></div>
+<div class="gallery"><div class="item"></div><div class="item"></div><div class="item"></div></div>
+</body></html>` }
 };
 
-/* Petit utilitaire de test CSS : cherche un sélecteur, vérifie qu'une propriété y est définie */
+/* ══════════════════════════════════════
+   UTILITAIRES DE TEST CSS
+══════════════════════════════════════ */
 function dkCssHasProp(css, selector, propPattern) {
   const re = new RegExp(selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\s*\\{([^}]*)\\}', 'i');
   const m = css.match(re);
   if (!m) return false;
-  return new RegExp('(' + propPattern + ')\\s*:\\s*[^;]+;', 'i').test(m[1]);
+  return new RegExp('(?:^|;|\\{)\\s*(' + propPattern + ')\\s*:\\s*[^;]+;', 'i').test(m[1]);
+}
+function dkCssHasPropValue(css, selector, prop, valuePattern) {
+  const re = new RegExp(selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\s*\\{([^}]*)\\}', 'i');
+  const m = css.match(re);
+  if (!m) return false;
+  return new RegExp(prop + '\\s*:\\s*' + valuePattern + '\\b', 'i').test(m[1]);
+}
+/* Extrait le contenu d'un bloc @media (max-width: Npx ou moins) */
+function dkExtractMediaBlock(css) {
+  const re = /@media[^{]*\(max-width:\s*(\d+)px\)[^{]*\{/gi;
+  let m;
+  while ((m = re.exec(css))) {
+    const start = re.lastIndex;
+    let depth = 1, i = start;
+    while (i < css.length && depth > 0) {
+      if (css[i] === '{') depth++;
+      if (css[i] === '}') depth--;
+      i++;
+    }
+    return { maxWidth: parseInt(m[1], 10), content: css.slice(start, i - 1) };
+  }
+  return null;
+}
+function dkCssHasMediaQuery(css, maxAllowed) {
+  const block = dkExtractMediaBlock(css);
+  return !!block && block.maxWidth <= maxAllowed;
+}
+function dkCssHasPropValueInMedia(css, selector, prop, valuePattern) {
+  const block = dkExtractMediaBlock(css);
+  if (!block) return false;
+  return dkCssHasPropValue(block.content, selector, prop, valuePattern);
+}
+function dkCssHasMediaBlockFor(css, selector) {
+  const block = dkExtractMediaBlock(css);
+  if (!block) return false;
+  const re = new RegExp(selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\s*\\{[^}]*grid-template-columns\\s*:\\s*[^;]+;', 'i');
+  return re.test(block.content);
 }
 
 const params = new URLSearchParams(window.location.search);
