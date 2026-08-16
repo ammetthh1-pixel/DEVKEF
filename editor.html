@@ -1420,14 +1420,17 @@ function stripCssComments(css) {
 }
 
 function dkCssHasProp(css, selector, propPattern) {
+  const cleanCss = stripCssComments(css);
   const re = new RegExp(selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\s*\\{([^}]*)\\}', 'i');
-  const m = css.match(re);
+  const m = cleanCss.match(re);
   if (!m) return false;
-  return new RegExp('(' + propPattern + ')\\s*:\\s*[^;]+;', 'i').test(m[1]);
+  return new RegExp('(?:^|;|\\{)\\s*(' + propPattern + ')\\s*:\\s*[^;]+;', 'i').test(m[1]);
 }
+
 function dkCssHasPropValue(css, selector, prop, valuePattern) {
+  const cleanCss = stripCssComments(css);
   const re = new RegExp(selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\s*\\{([^}]*)\\}', 'i');
-  const m = css.match(re);
+  const m = cleanCss.match(re);
   if (!m) return false;
   return new RegExp(prop + '\\s*:\\s*' + valuePattern + '\\b', 'i').test(m[1]);
 }
