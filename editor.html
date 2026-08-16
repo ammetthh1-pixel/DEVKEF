@@ -1186,7 +1186,7 @@ p{color:#5A4A4A}
       { label: 'Un espacement est défini entre les éléments', hint: 'Ajoute <code>gap</code> (ex. <code>gap: 16px;</code>)',
         test: (html, css) => dkCssHasProp(css, '.profile-card', 'gap') },
       { label: 'Le bouton est poussé à droite', hint: '<code>margin-left: auto;</code> sur le bouton, ou <code>justify-content: space-between;</code> sur le conteneur',
-        test: (html, css) => dkCssHasProp(css, '.profile-card button', 'margin-left') || dkCssHasPropValue(css, '.profile-card', 'justify-content', 'space-between') }
+        test: (html, css) => dkCssHasProp(css, 'button', 'margin-left') || dkCssHasPropValue(css, '.profile-card', 'justify-content', 'space-between') }
     ],
     starterHTML: `<!DOCTYPE html>
 <html lang="fr">
