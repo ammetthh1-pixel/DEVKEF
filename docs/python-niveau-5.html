@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DevKëf — Doc · Récursion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="doc-style.css"/>
+<style>.doc-h2 .ic{color:var(--green)}.concept-name{color:var(--green) !important}</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../index.html" class="logo-small"><img src="../image/logo-mark.png" alt="logo" class="logo-mark-sm">Dev<span>Këf</span></a>
+  <a href="../level/python/level_5.html" class="btn-back">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Retour au niveau
+  </a>
+</div>
+
+<main class="doc-wrap">
+  <div class="doc-crumb">// Documentation · Python · Niveau 5</div>
+  <h1 class="doc-title">🐍 Fonctions avancées & récursion</h1>
+  <p class="doc-subtitle">Le concept qui déroute le plus au premier abord : une fonction qui s'appelle elle-même. Une fois le déclic fait, c'est un outil puissant pour des problèmes qui se décomposent naturellement en sous-problèmes identiques.</p>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">🎯</span> Pourquoi ce projet ?</div>
+    <p class="doc-p">La factorielle de 5 (<code>5! = 5×4×3×2×1</code>) peut se voir comme "5 fois la factorielle de 4". La factorielle de 4, c'est "4 fois la factorielle de 3". Et ainsi de suite, jusqu'à un cas si simple qu'on connaît directement la réponse (<code>factorielle(0) == 1</code>). C'est exactement ce que fait une fonction récursive : elle résout un cas simple directement, et délègue le reste à une version plus petite d'elle-même.</p>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">📚</span> Les notions clés</div>
+    <div class="concept">
+      <div class="concept-name">Le cas de base</div>
+      <div class="concept-def">La condition qui arrête la récursion. Sans lui, la fonction s'appellerait indéfiniment (et Python finirait par lever une erreur de récursion trop profonde). Pour la factorielle : <code>if n == 0: return 1</code>.</div>
+    </div>
+    <div class="concept">
+      <div class="concept-name">Le cas récursif</div>
+      <div class="concept-def">La partie qui s'appelle elle-même, avec un argument plus proche du cas de base. Pour la factorielle : <code>return n * factorielle(n - 1)</code> — chaque appel réduit <code>n</code> de 1, se rapprochant de 0.</div>
+    </div>
+    <div class="concept">
+      <div class="concept-name">La pile d'appels</div>
+      <div class="concept-def">Chaque appel récursif "attend" que le suivant se termine avant de calculer son propre résultat. Pour <code>factorielle(3)</code> : Python empile 3 appels en attente, puis les résout un par un en remontant : <code>1</code>, puis <code>2×1=2</code>, puis <code>3×2=6</code>.</div>
+    </div>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">⚠️</span> Pièges fréquents</div>
+    <div class="pitfall">
+      <span class="ic">✗</span>
+      <div><div class="pitfall-title">Oublier le cas de base</div><div class="pitfall-text">Sans condition d'arrêt, la fonction s'appelle indéfiniment jusqu'à planter — l'erreur la plus commune en découvrant la récursion.</div></div>
+    </div>
+    <div class="pitfall">
+      <span class="ic">✗</span>
+      <div><div class="pitfall-title">L'argument ne se rapproche jamais du cas de base</div><div class="pitfall-text">Si <code>puissance(base, exposant)</code> rappelle avec le même <code>exposant</code> au lieu de <code>exposant - 1</code>, la récursion ne se termine jamais.</div></div>
+    </div>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">🚀</span> Pour aller plus loin</div>
+    <div class="resource-list">
+      <a class="resource" href="https://docs.python.org/fr/3/tutorial/controlflow.html#defining-functions" target="_blank" rel="noopener">
+        <span class="ic">📘</span><b>Python — Définir des fonctions</b><span>Documentation officielle, en français</span>
+      </a>
+    </div>
+    <p class="doc-p" style="margin-top:14px">Curieux d'aller plus loin ? Essaie d'écrire une version récursive de la suite de Fibonacci — ce n'est pas demandé ici, mais c'est l'exercice classique juste après factorielle et puissance.</p>
+  </section>
+
+  <div class="doc-cta">
+    <p>Prêt à coder ?</p>
+    <a class="btn-doc-cta" href="../editor-python.html?level=5">
+      Ouvrir l'éditeur
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</main>
+
+</body>
+</html>

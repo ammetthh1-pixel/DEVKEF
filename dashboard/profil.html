@@ -155,7 +155,7 @@
   document.getElementById('stat-level').textContent = acc.level;
   document.getElementById('stat-streak').textContent = data.streak;
 
-  const TRACK_TOTALS = { web: 6, python: 1, c: 1 };
+  const TRACK_TOTALS = { web: 6, python: 12, c: 3 };
   Object.entries(TRACK_TOTALS).forEach(([track, total]) => {
     const done = dkGetCompletedCount(track);
     document.getElementById('track-' + track + '-label').textContent = done + ' / ' + total;

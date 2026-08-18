@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DevKëf — Doc · Analyseur de texte</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="doc-style.css"/>
+<style>.doc-h2 .ic{color:var(--green)}.concept-name{color:var(--green) !important}</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../index.html" class="logo-small"><img src="../image/logo-mark.png" alt="logo" class="logo-mark-sm">Dev<span>Këf</span></a>
+  <a href="../level/python/level_4.html" class="btn-back">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Retour au niveau
+  </a>
+</div>
+
+<main class="doc-wrap">
+  <div class="doc-crumb">// Documentation · Python · Niveau 4</div>
+  <h1 class="doc-title">🐍 Chaînes de caractères</h1>
+  <p class="doc-subtitle">Compter des mots, retourner un texte, détecter un palindrome — en C, chacune de ces tâches demande de gérer manuellement des tableaux de caractères. En Python, quelques méthodes suffisent.</p>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">🎯</span> Pourquoi ce projet ?</div>
+    <p class="doc-p">Le texte est partout dans la programmation : noms d'utilisateurs, messages, fichiers, contenu web. Python traite les chaînes comme des séquences, avec des méthodes toutes faites pour les tâches courantes — ce niveau en couvre trois parmi les plus utiles.</p>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">📚</span> Les notions clés</div>
+    <div class="concept">
+      <div class="concept-name">texte.split()</div>
+      <div class="concept-def">Découpe une chaîne en liste de mots, en coupant sur les espaces par défaut. <code>"Le chat mange".split()</code> donne <code>["Le", "chat", "mange"]</code>. Le nombre de mots, c'est juste <code>len(...)</code> de cette liste.</div>
+    </div>
+    <div class="concept">
+      <div class="concept-name">texte.lower()</div>
+      <div class="concept-def">Retourne une version tout en minuscules. Utile pour comparer "Radar" et "radar" comme s'ils étaient identiques.</div>
+    </div>
+    <div class="concept">
+      <div class="concept-name">Inverser avec le slicing : texte[::-1]</div>
+      <div class="concept-def">Une des astuces Python les plus connues — <code>[::-1]</code> parcourt la chaîne à l'envers. Pratique pour comparer un mot à son inverse (test de palindrome).</div>
+    </div>
+    <div class="concept">
+      <div class="concept-name">max() avec une clé</div>
+      <div class="concept-def">Pour trouver le mot le plus long : <code>max(mots, key=len)</code> retourne l'élément de la liste qui a la plus grande longueur — plus court qu'une boucle manuelle avec une variable "record".</div>
+    </div>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">⚠️</span> Pièges fréquents</div>
+    <div class="pitfall">
+      <span class="ic">✗</span>
+      <div><div class="pitfall-title">Comparer sans harmoniser la casse</div><div class="pitfall-text"><code>"Radar" == "radar"</code> est <code>False</code> en Python — pense à mettre les deux en minuscules avant de comparer pour un palindrome insensible à la casse.</div></div>
+    </div>
+    <div class="pitfall">
+      <span class="ic">✗</span>
+      <div><div class="pitfall-title">Texte vide</div><div class="pitfall-text"><code>"".split()</code> retourne une liste vide, pas une liste avec un élément vide — <code>compterMots("")</code> doit donc bien donner 0, pas 1.</div></div>
+    </div>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">🚀</span> Pour aller plus loin</div>
+    <div class="resource-list">
+      <a class="resource" href="https://docs.python.org/fr/3/library/stdtypes.html#string-methods" target="_blank" rel="noopener">
+        <span class="ic">📘</span><b>Python — Méthodes de chaînes</b><span>Documentation officielle, en français</span>
+      </a>
+    </div>
+  </section>
+
+  <div class="doc-cta">
+    <p>Prêt à coder ?</p>
+    <a class="btn-doc-cta" href="../editor-python.html?level=4">
+      Ouvrir l'éditeur
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</main>
+
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DevKëf — Doc · Devine le nombre</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="doc-style.css"/>
+<style>.doc-h2 .ic{color:var(--green)}.concept-name{color:var(--green) !important}</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../index.html" class="logo-small"><img src="../image/logo-mark.png" alt="logo" class="logo-mark-sm">Dev<span>Këf</span></a>
+  <a href="../level/python/level_3.html" class="btn-back">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Retour au niveau
+  </a>
+</div>
+
+<main class="doc-wrap">
+  <div class="doc-crumb">// Documentation · Python · Niveau 3</div>
+  <h1 class="doc-title">🐍 Devine le nombre</h1>
+  <p class="doc-subtitle">Ton premier vrai jeu — et une leçon importante sur comment "brancher" de la logique Python à une interface, sans jamais utiliser <code>input()</code>.</p>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">🎯</span> Pourquoi ce projet ?</div>
+    <p class="doc-p">En Python classique, ce jeu s'écrirait avec une boucle <code>while</code> et des appels à <code>input()</code>. Mais DevKëf est une page web — il n'y a pas de terminal pour taper au clavier. La solution : ta fonction ne gère pas la boucle de jeu elle-même. Elle répond juste à <b>une question à la fois</b> : "pour cet essai précis, avec ce nombre d'essais restants, que se passe-t-il ?" C'est l'interface (déjà construite) qui rappelle ta fonction à chaque clic sur "Essayer".</p>
+    <p class="doc-p">Ce principe revient dans plusieurs niveaux suivants (le Pendu, le chatbot) — comprendre pourquoi il est nécessaire ici t'aidera pour la suite.</p>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">📚</span> Les notions clés</div>
+    <div class="concept">
+      <div class="concept-name">Comparer avec &lt; et &gt;</div>
+      <div class="concept-def"><code>if essai &gt; secret:</code> — l'essai est trop grand, il faut redescendre. Attention au sens : c'est facile de les inverser par erreur.</div>
+    </div>
+    <div class="concept">
+      <div class="concept-name">Un seul return par cas</div>
+      <div class="concept-def">La fonction doit couvrir tous les cas possibles (gagné, trop grand, trop petit, perdu) — pense à chaque situation une par une plutôt que d'essayer d'écrire une seule condition complexe.</div>
+    </div>
+    <div class="concept">
+      <div class="concept-name">L'ordre des conditions compte</div>
+      <div class="concept-def">Teste d'abord si l'essai est correct (<code>"gagné"</code>) — sinon, même un essai gagnant sur le dernier essai pourrait être mal classé comme "perdu" si tu testes <code>tentativesRestantes == 1</code> en premier.</div>
+    </div>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">⚠️</span> Pièges fréquents</div>
+    <div class="pitfall">
+      <span class="ic">✗</span>
+      <div><div class="pitfall-title">Vérifier "perdu" avant "gagné"</div><div class="pitfall-text">Si l'ordre des conditions n'est pas le bon, un essai correct sur la dernière tentative pourrait être classé "perdu" à tort.</div></div>
+    </div>
+    <div class="pitfall">
+      <span class="ic">✗</span>
+      <div><div class="pitfall-title">Essayer de gérer la boucle soi-même</div><div class="pitfall-text">Pas besoin (et pas possible) d'écrire <code>while</code> ou <code>input()</code> ici — la fonction répond à un seul essai, DevKëf gère la répétition.</div></div>
+    </div>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">🚀</span> Pour aller plus loin</div>
+    <div class="resource-list">
+      <a class="resource" href="https://docs.python.org/fr/3/tutorial/controlflow.html" target="_blank" rel="noopener">
+        <span class="ic">📘</span><b>Python — Structures de contrôle</b><span>Documentation officielle, en français</span>
+      </a>
+    </div>
+  </section>
+
+  <div class="doc-cta">
+    <p>Prêt à coder ?</p>
+    <a class="btn-doc-cta" href="../editor-python.html?level=3">
+      Ouvrir l'éditeur
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</main>
+
+</body>
+</html>

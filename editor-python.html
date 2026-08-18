@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>DevKëf — Éditeur · Calculatrice Python</title>
+<title>DevKëf — Éditeur Python</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
@@ -25,7 +25,7 @@
   --border:#1E2D45; --border-light:#243450;
   --orange:#FF6B35; --orange-dim:rgba(255,107,53,.12);
   --green:#00C896; --green-dim:rgba(0,200,150,.1);
-  --violet:#7C3AED; --yellow:#FFD60A;
+  --violet:#7C3AED; --yellow:#FFD60A; --red:#FF4757;
   --text:#F0F4FF; --muted:#7A8BAD; --muted2:#4A5C78;
   --mono:'Fira Code',monospace; --display:'Space Grotesk',sans-serif; --body:'Inter',sans-serif;
 }
@@ -84,8 +84,51 @@ code{font-family:var(--mono);font-size:.72rem;background:rgba(124,58,237,.16);co
 .console .err{color:#FF4757}
 .console .ok{color:var(--green)}
 
-.panel-calc{background:var(--ink2);display:flex;flex-direction:column;align-items:center;padding:20px 16px;overflow-y:auto}
-.panel-calc-label{font-family:var(--mono);font-size:.7rem;color:var(--muted2);margin-bottom:14px;text-align:center}
+.panel-app{background:var(--ink2);display:flex;flex-direction:column;align-items:center;padding:20px 16px;overflow-y:auto}
+.panel-app-label{font-family:var(--mono);font-size:.7rem;color:var(--muted2);margin-bottom:14px;text-align:center}
+.panel-app-body{width:100%;max-width:280px}
+
+/* ── Panneau "contacts" (niveau 2) ── */
+.contacts-form{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.contacts-form input{background:var(--ink);border:1px solid var(--border);color:var(--text);padding:9px 11px;border-radius:8px;font-size:.85rem}
+.contacts-form input:focus{outline:none;border-color:var(--green)}
+.contacts-form button{background:var(--green);color:var(--ink);border:0;padding:9px;border-radius:8px;font-family:var(--display);font-weight:700;font-size:.82rem;cursor:pointer}
+.contacts-list{display:flex;flex-direction:column;gap:7px}
+.contact-row{display:flex;justify-content:space-between;align-items:center;background:var(--ink);border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-size:.82rem}
+.contact-del{background:rgba(255,71,87,.12);color:var(--red);border:1px solid rgba(255,71,87,.3);border-radius:6px;width:24px;height:24px;cursor:pointer}
+.contacts-empty{color:var(--muted2);font-size:.8rem;text-align:center;padding:14px 0;font-family:var(--mono)}
+.contacts-status{color:var(--red);font-size:.75rem;margin-top:8px;min-height:16px}
+
+/* ── Panneau "guess" (niveau 3) ── */
+.guess-panel{text-align:center;width:100%}
+.guess-secret-hint{font-size:.8rem;color:var(--muted);margin-bottom:14px;line-height:1.5}
+.guess-attempts{font-family:var(--mono);font-size:.8rem;color:var(--orange);margin-bottom:14px}
+.guess-panel input{width:100%;background:var(--ink);border:1px solid var(--border);color:var(--text);padding:10px;border-radius:8px;font-size:1rem;text-align:center;margin-bottom:10px}
+.guess-panel input:focus{outline:none;border-color:var(--green)}
+#guess-btn{width:100%;background:var(--green);color:var(--ink);border:0;padding:10px;border-radius:8px;font-family:var(--display);font-weight:700;cursor:pointer;margin-bottom:10px}
+#guess-btn:disabled{opacity:.4;cursor:not-allowed}
+.guess-msg{min-height:24px;font-weight:600;margin-bottom:10px}
+.guess-reset{background:transparent;border:1px solid var(--border-light);color:var(--muted);padding:7px 14px;border-radius:8px;font-size:.78rem;cursor:pointer}
+
+/* ── Panneau "textstats" (niveau 4) ── */
+.textstats-panel{width:100%}
+.textstats-panel textarea{width:100%;background:var(--ink);border:1px solid var(--border);color:var(--text);padding:10px;border-radius:8px;font-size:.85rem;font-family:var(--body);resize:vertical;margin-bottom:10px}
+.textstats-panel textarea:focus{outline:none;border-color:var(--green)}
+.textstats-panel button{width:100%;background:var(--green);color:var(--ink);border:0;padding:9px;border-radius:8px;font-family:var(--display);font-weight:700;cursor:pointer;margin-bottom:12px}
+.textstats-results{display:flex;flex-direction:column;gap:7px}
+.ts-row{display:flex;justify-content:space-between;align-items:center;background:var(--ink);border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:.83rem}
+.ts-row b{color:var(--green);font-family:var(--display)}
+.ts-error{color:var(--red);font-size:.8rem}
+
+/* ── Panneau "recursion" (niveau 5) ── */
+.recursion-panel{width:100%;display:flex;flex-direction:column;gap:18px}
+.rec-group label{display:block;font-size:.78rem;color:var(--muted);margin-bottom:6px;font-family:var(--display);font-weight:600}
+.rec-group input{width:100%;background:var(--ink);border:1px solid var(--border);color:var(--text);padding:9px;border-radius:8px;font-size:.9rem;margin-bottom:8px}
+.rec-group input:focus{outline:none;border-color:var(--green)}
+.rec-two-cols{display:flex;gap:8px}
+.rec-two-cols input{flex:1}
+.rec-group button{width:100%;background:var(--green);color:var(--ink);border:0;padding:9px;border-radius:8px;font-family:var(--display);font-weight:700;cursor:pointer;margin-bottom:8px}
+.rec-result{text-align:center;font-family:var(--mono);font-size:.95rem;color:var(--text);background:var(--ink);border:1px solid var(--border);border-radius:8px;padding:10px}
 
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink2);border:1px solid var(--border-light);border-radius:12px;padding:12px 16px;display:flex;gap:10px;align-items:flex-start;opacity:0;pointer-events:none;transition:.25s;z-index:200;max-width:360px;box-shadow:0 10px 30px rgba(0,0,0,.4)}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
@@ -99,7 +142,7 @@ code{font-family:var(--mono);font-size:.72rem;background:rgba(124,58,237,.16);co
 @media(max-width:900px){
   .layout{grid-template-columns:1fr;grid-template-rows:auto 1fr auto}
   .panel-instr{max-height:180px}
-  .panel-calc{max-height:none}
+  .panel-app{max-height:none}
 }
 </style>
 </head>
@@ -107,8 +150,8 @@ code{font-family:var(--mono);font-size:.72rem;background:rgba(124,58,237,.16);co
 
 <div class="topbar">
   <a href="index.html" class="logo-small"><img src="image/logo-mark.png" alt="logo" class="logo-mark-sm">Dev<span>Këf</span></a>
-  <span class="level-pill">Python · Niveau 1</span>
-  <span class="project-name">/ <span>Calculatrice cliquable</span></span>
+  <span class="level-pill" id="level-pill">Python · Niveau 1</span>
+  <span class="project-name">/ <span id="project-title-text">Calculatrice cliquable</span></span>
   <div class="topbar-right">
     <span class="pyodide-status" id="pyodide-status">Chargement de Python…</span>
     <span class="xp-badge">★ <span id="xp-count">0</span> XP</span>
@@ -118,20 +161,20 @@ code{font-family:var(--mono);font-size:.72rem;background:rgba(124,58,237,.16);co
 
 <div class="layout">
   <div class="panel-instr">
-    <div class="instr-level">// Monde 2 · Python · Niveau 1</div>
-    <div class="instr-title">Calculatrice cliquable</div>
-    <div class="instr-xp">★ 150 XP à gagner</div>
-    <p class="instr-desc">Écris une fonction Python qui calcule le résultat d'une opération. Ton code pilote directement la calculatrice à droite : tape une opération, clique sur "=", et c'est <b>ta fonction</b> qui répond — exécutée pour de vrai, dans ton navigateur.</p>
+    <div class="instr-level" id="instr-level-label">// Monde 2 · Python · Niveau 1</div>
+    <div class="instr-title" id="instr-title-label">Calculatrice cliquable</div>
+    <div class="instr-xp" id="instr-xp-label">★ 150 XP à gagner</div>
+    <p class="instr-desc" id="instr-desc-text"></p>
 
     <div class="objectives-title">Objectifs à valider</div>
     <div id="objectives-list"></div>
 
     <div class="tip-box">
       <div class="tip-label">💡 Comment ça marche</div>
-      <div class="tip-text">DevKëf exécute du <b>vrai Python</b> dans ta page via Pyodide (Python compilé en WebAssembly). Pas de simulation : c'est ton code qui tourne.</div>
+      <div class="tip-text" id="tip-text-content"></div>
     </div>
 
-    <a href="docs/python-niveau-1.html" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:7px;margin-top:12px;font-family:var(--display);font-size:.78rem;font-weight:600;color:var(--muted);border:1px solid var(--border-light);background:var(--ink3);padding:9px 12px;border-radius:9px">
+    <a href="#" id="doc-link" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:7px;margin-top:12px;font-family:var(--display);font-size:.78rem;font-weight:600;color:var(--muted);border:1px solid var(--border-light);background:var(--ink3);padding:9px 12px;border-radius:9px">
       📄 Voir la documentation du niveau
     </a>
 
@@ -143,7 +186,7 @@ code{font-family:var(--mono);font-size:.72rem;background:rgba(124,58,237,.16);co
 
   <div class="panel-editor">
     <div class="editor-bar">
-      <span class="editor-bar-label">calculatrice.py</span>
+      <span class="editor-bar-label" id="editor-filename">code.py</span>
       <div class="editor-bar-right">
         <button class="btn-run" id="btn-run" onclick="runOnly()" disabled>Exécuter</button>
         <button class="btn-validate" id="btn-validate" onclick="validateCode()" disabled>Valider</button>
@@ -153,9 +196,9 @@ code{font-family:var(--mono);font-size:.72rem;background:rgba(124,58,237,.16);co
     <div class="console" id="console">// La sortie s'affiche ici</div>
   </div>
 
-  <div class="panel-calc">
-    <div class="panel-calc-label">Calculatrice pilotée par ton code Python</div>
-    <div id="calc-container"></div>
+  <div class="panel-app">
+    <div class="panel-app-label" id="panel-app-label">Pilotée par ton code Python</div>
+    <div class="panel-app-body" id="app-container"></div>
   </div>
 </div>
 
@@ -169,10 +212,19 @@ code{font-family:var(--mono);font-size:.72rem;background:rgba(124,58,237,.16);co
 
 <script>
 const TRACK = 'python';
-const LEVEL_ID = 1;
-const XP_MAX = 150;
 
-const STARTER_PY = `# Cette fonction est appelée à chaque fois que tu cliques sur "="
+/* ══════════════════════════════════════
+   CONFIG DES NIVEAUX — Python
+══════════════════════════════════════ */
+const LEVELS = {
+  1: {
+    title: 'Calculatrice cliquable',
+    xpMax: 150,
+    desc: "Écris une fonction Python qui calcule le résultat d'une opération. Ton code pilote directement la calculatrice à droite : tape une opération, clique sur \"=\", et c'est ta fonction qui répond — exécutée pour de vrai, dans ton navigateur.",
+    tip: "DevKëf exécute du <b>vrai Python</b> dans ta page via Pyodide (Python compilé en WebAssembly). Pas de simulation : c'est ton code qui tourne.",
+    panel: 'calculator',
+    nextLevel: 2,
+    starter: `# Cette fonction est appelée à chaque fois que tu cliques sur "="
 # a et b sont deux nombres, op est une chaîne : '+', '-', '*' ou '/'
 def calculer(a, op, b):
     if op == '+':
@@ -185,19 +237,356 @@ def calculer(a, op, b):
         # OBJECTIF : gère le cas où b vaut 0 avant de diviser
         return a / b
     return 0
-`;
+`,
+    objectives: [
+      { label: 'Addition', hint: '3 + 4 doit donner 7',
+        run: async () => Math.abs((await callPy('calculer', 3, '+', 4)) - 7) < 1e-9 },
+      { label: 'Soustraction', hint: '10 − 6 doit donner 4',
+        run: async () => Math.abs((await callPy('calculer', 10, '-', 6)) - 4) < 1e-9 },
+      { label: 'Multiplication & division', hint: '6 × 7 = 42 et 20 ÷ 4 = 5',
+        run: async () => Math.abs((await callPy('calculer', 6, '*', 7)) - 42) < 1e-9 && Math.abs((await callPy('calculer', 20, '/', 4)) - 5) < 1e-9 },
+      { label: 'Division par zéro gérée', hint: '5 ÷ 0 ne doit pas planter ton programme',
+        run: async () => { try { await callPy('calculer', 5, '/', 0); return true; } catch (e) { return false; } } }
+    ]
+  },
+
+  2: {
+    title: 'Listes & dictionnaires : carnet de contacts',
+    xpMax: 130,
+    desc: "Un contact, c'est plusieurs informations liées (nom, téléphone) — parfait pour un dictionnaire. Un carnet, c'est une liste de ces dictionnaires. Tes fonctions gèrent le carnet affiché à droite.",
+    tip: "Chaque fonction reçoit le carnet actuel et retourne le <b>nouveau</b> carnet (ou l'info demandée) — elle ne modifie rien \"en douce\", elle retourne toujours le résultat avec <code>return</code>.",
+    panel: 'contacts',
+    nextLevel: 3,
+    starter: `# carnet est une liste de dictionnaires : [{"nom": "...", "telephone": "..."}, ...]
+
+def ajouterContact(carnet, nom, telephone):
+    # OBJECTIF 1 : retourne un NOUVEAU carnet avec ce contact ajouté
+    return carnet
+
+def rechercherContact(carnet, nom):
+    # OBJECTIF 2 : retourne le téléphone du contact, ou None si absent
+    return None
+
+def supprimerContact(carnet, nom):
+    # OBJECTIF 3 : retourne un NOUVEAU carnet sans ce contact
+    return carnet
+`,
+    objectives: [
+      { label: 'Ajouter un contact', hint: 'ajoute une entrée au carnet',
+        run: async () => {
+          const r = await callPy('ajouterContact', [], 'Awa', '771234567');
+          return Array.isArray(r) && r.length === 1 && r[0].nom === 'Awa' && r[0].telephone === '771234567';
+        } },
+      { label: 'Rechercher un contact', hint: 'trouve le bon téléphone, ou None si absent',
+        run: async () => {
+          const carnet = [{nom:'Awa', telephone:'111'}, {nom:'Modou', telephone:'222'}];
+          const found = await callPy('rechercherContact', carnet, 'Modou');
+          const notFound = await callPy('rechercherContact', carnet, 'Inconnu');
+          return found === '222' && (notFound === null || notFound === undefined);
+        } },
+      { label: 'Supprimer un contact', hint: 'retire la bonne entrée, garde les autres', 
+        run: async () => {
+          const carnet = [{nom:'A', telephone:'1'}, {nom:'B', telephone:'2'}, {nom:'C', telephone:'3'}];
+          const r = await callPy('supprimerContact', carnet, 'B');
+          return Array.isArray(r) && r.length === 2 && r.some(c=>c.nom==='A') && r.some(c=>c.nom==='C') && !r.some(c=>c.nom==='B');
+        } },
+      { label: 'Séquence complète', hint: 'ajouter 3 contacts puis en supprimer 1 laisse les 2 autres intacts',
+        run: async () => {
+          let carnet = [];
+          carnet = await callPy('ajouterContact', carnet, 'A', '1');
+          carnet = await callPy('ajouterContact', carnet, 'B', '2');
+          carnet = await callPy('ajouterContact', carnet, 'C', '3');
+          carnet = await callPy('supprimerContact', carnet, 'B');
+          return carnet.length === 2 && await callPy('rechercherContact', carnet, 'A') === '1' && await callPy('rechercherContact', carnet, 'C') === '3';
+        } }
+    ]
+  },
+
+  3: {
+    title: 'Boucles : devine le nombre',
+    xpMax: 120,
+    desc: "Un nombre secret entre 1 et 100, 7 tentatives. Ta fonction ne joue pas le jeu elle-même — elle répond juste \"trop grand\", \"trop petit\", \"gagné\" ou \"perdu\" pour un essai donné. C'est l'interface à droite qui gère la partie.",
+    tip: "Pas de boucle <code>while</code> à écrire ici : ta fonction est appelée une fois par essai, avec le nombre de tentatives qu'il reste.",
+    panel: 'guess',
+    nextLevel: 4,
+    starter: `def verifierEssai(secret, essai, tentativesRestantes):
+    # Retourne : "gagné", "trop grand", "trop petit", ou "perdu"
+    # OBJECTIF 1 : essai correct -> "gagné"
+    # OBJECTIF 2 : essai trop grand / trop petit -> le bon message
+    # OBJECTIF 3 : dernier essai (tentativesRestantes == 1) sans succès -> "perdu"
+    return "trop petit"
+`,
+    objectives: [
+      { label: 'Essai correct', hint: 'retourne "gagné", peu importe le secret',
+        run: async () => (await callPy('verifierEssai', 50, 50, 7)) === 'gagné' && (await callPy('verifierEssai', 23, 23, 3)) === 'gagné' },
+      { label: 'Trop grand / trop petit', hint: 'les deux sens sont détectés correctement',
+        run: async () => (await callPy('verifierEssai', 50, 70, 7)) === 'trop grand' && (await callPy('verifierEssai', 50, 20, 7)) === 'trop petit' },
+      { label: 'Dernier essai raté', hint: 'tentativesRestantes == 1 sans succès -> "perdu"',
+        run: async () => (await callPy('verifierEssai', 50, 70, 1)) === 'perdu' }
+    ]
+  },
+
+  4: {
+    title: 'Chaînes de caractères : analyseur de texte',
+    xpMax: 130,
+    desc: "Les méthodes de texte de Python (.split(), .lower(), l'inversion par slicing) rendent la manipulation de chaînes nettement plus rapide qu'en C. Écris trois petites fonctions d'analyse de texte.",
+    tip: "<code>texte.split()</code> découpe un texte en liste de mots (par les espaces). <code>texte.lower()</code> met tout en minuscules — pratique pour ignorer la casse dans une comparaison.",
+    panel: 'textstats',
+    nextLevel: 5,
+    starter: `def compterMots(texte):
+    # OBJECTIF 1 : retourne le nombre de mots dans le texte
+    return 0
+
+def estPalindrome(texte):
+    # OBJECTIF 2 : retourne True si le texte est un palindrome (insensible à la casse)
+    return False
+
+def motLePlusLong(texte):
+    # OBJECTIF 3 : retourne le mot le plus long du texte
+    return ""
+`,
+    objectives: [
+      { label: 'Compter les mots', hint: '"Le chat mange rapidement" → 4, texte vide → 0',
+        run: async () => (await callPy('compterMots', 'Le chat mange rapidement')) === 4 && (await callPy('compterMots', '')) === 0 && (await callPy('compterMots', 'Salut')) === 1 },
+      { label: 'Détecter un palindrome', hint: 'insensible à la casse (ex. "Radar")',
+        run: async () => (await callPy('estPalindrome', 'radar')) === true && (await callPy('estPalindrome', 'Radar')) === true && (await callPy('estPalindrome', 'Python')) === false },
+      { label: 'Trouver le mot le plus long', hint: 'motLePlusLong(texte)',
+        run: async () => (await callPy('motLePlusLong', 'Le chat mange rapidement')) === 'rapidement' && (await callPy('motLePlusLong', 'Salut')) === 'Salut' }
+    ]
+  },
+
+  5: {
+    title: 'Fonctions avancées & récursion : calculatrice scientifique',
+    xpMax: 140,
+    desc: "Une fonction qui s'appelle elle-même — déroutant au premier abord, mais une porte d'entrée vers une façon de penser très différente de la boucle. Deux classiques : factorielle et puissance, tous deux en version récursive.",
+    tip: "Une fonction récursive a toujours deux parties : un <b>cas de base</b> qui arrête la récursion (ex. <code>factorielle(0) == 1</code>), et un <b>cas récursif</b> qui s'appelle elle-même avec une valeur plus petite.",
+    panel: 'recursion',
+    nextLevel: null,
+    starter: `def factorielle(n):
+    # OBJECTIF 1 : version RÉCURSIVE — la fonction doit s'appeler elle-même
+    # Cas de base : factorielle(0) == 1
+    return 1
+
+def puissance(base, exposant):
+    # OBJECTIF 2 : version RÉCURSIVE
+    # Cas de base : n'importe quel nombre à la puissance 0 vaut 1
+    return 1
+`,
+    objectives: [
+      { label: 'Factorielle correcte', hint: 'factorielle(5) = 120, factorielle(0) = 1',
+        run: async () => (await callPy('factorielle', 5)) === 120 && (await callPy('factorielle', 0)) === 1 && (await callPy('factorielle', 3)) === 6 },
+      { label: 'Puissance correcte', hint: 'puissance(2,10) = 1024, exposant 0 → 1',
+        run: async () => (await callPy('puissance', 2, 10)) === 1024 && (await callPy('puissance', 5, 0)) === 1 && (await callPy('puissance', 3, 3)) === 27 },
+      { label: 'Les deux fonctions sont récursives', hint: 'chaque fonction doit s\u2019appeler elle-même dans son corps',
+        run: async () => pySourceCallsItself(cmEditor.getValue(), 'factorielle') && pySourceCallsItself(cmEditor.getValue(), 'puissance') }
+    ]
+  }
+};
+
+/* Vérification structurelle : la fonction s'appelle-t-elle elle-même dans son propre corps ? */
+function pySourceCallsItself(source, fnName) {
+  const re = new RegExp('def\\s+' + fnName + '\\s*\\([^)]*\\)\\s*:([\\s\\S]*?)(?=\\ndef\\s|$)');
+  const m = source.match(re);
+  if (!m) return false;
+  const callRe = new RegExp(fnName + '\\s*\\(');
+  return callRe.test(m[1]);
+}
+
+const params = new URLSearchParams(window.location.search);
+const LEVEL_ID = parseInt(params.get('level') || '1', 10);
+const LEVEL = LEVELS[LEVEL_ID] || LEVELS[1];
 
 let cmEditor, pyodideInstance = null, currentXP = 0;
 
-async function callCalculer(a, op, b) {
+async function callPy(fnName, ...args) {
   if (!pyodideInstance) throw new Error('Python est encore en cours de chargement…');
   pyodideInstance.runPython(cmEditor.getValue());
-  const fn = pyodideInstance.globals.get('calculer');
-  const result = fn(a, op, b);
+  const fn = pyodideInstance.globals.get(fnName);
+  if (!fn) throw new Error(`Fonction "${fnName}" introuvable. Vérifie son nom.`);
+  const convertedArgs = args.map(a => (a !== null && typeof a === 'object') ? pyodideInstance.toPy(a) : a);
+  let result = fn(...convertedArgs);
+  if (result && typeof result.toJs === 'function') {
+    const js = result.toJs({ dict_converter: Object.fromEntries });
+    result.destroy();
+    return js;
+  }
   return (result === undefined) ? null : result;
 }
 
+/* ══════════════════════════════════════
+   PANNEAUX D'APPLICATION (un par type de niveau)
+══════════════════════════════════════ */
+function initContactsPanel(container) {
+  container.innerHTML = `
+    <div class="contacts-form">
+      <input id="cf-nom" placeholder="Nom"/>
+      <input id="cf-tel" placeholder="Téléphone"/>
+      <button id="cf-add">Ajouter</button>
+    </div>
+    <div id="contacts-list" class="contacts-list"></div>
+    <div id="contacts-status" class="contacts-status"></div>`;
+  let carnet = [];
+  const listEl = container.querySelector('#contacts-list');
+  const statusEl = container.querySelector('#contacts-status');
+
+  function render() {
+    listEl.innerHTML = carnet.length ? carnet.map((c, i) => `
+      <div class="contact-row">
+        <span>${c.nom} — ${c.telephone}</span>
+        <button data-i="${i}" class="contact-del">✕</button>
+      </div>`).join('') : '<div class="contacts-empty">Carnet vide</div>';
+    listEl.querySelectorAll('.contact-del').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const nom = carnet[+btn.dataset.i].nom;
+        try { carnet = await callPy('supprimerContact', carnet, nom); statusEl.textContent = ''; }
+        catch (e) { statusEl.textContent = 'Erreur : ' + e.message; }
+        render();
+      });
+    });
+  }
+
+  container.querySelector('#cf-add').addEventListener('click', async () => {
+    const nomEl = container.querySelector('#cf-nom'), telEl = container.querySelector('#cf-tel');
+    const nom = nomEl.value.trim(), tel = telEl.value.trim();
+    if (!nom || !tel) return;
+    try { carnet = await callPy('ajouterContact', carnet, nom, tel); nomEl.value = ''; telEl.value = ''; statusEl.textContent = ''; }
+    catch (e) { statusEl.textContent = 'Erreur : ' + e.message; }
+    render();
+  });
+
+  render();
+}
+
+function initGuessPanel(container) {
+  container.innerHTML = `
+    <div class="guess-panel">
+      <div class="guess-secret-hint">Nombre secret entre 1 et 100. 7 essais.</div>
+      <div class="guess-attempts" id="guess-attempts">7 essais restants</div>
+      <input id="guess-input" type="number" min="1" max="100" placeholder="Ton essai"/>
+      <button id="guess-btn">Essayer</button>
+      <div id="guess-msg" class="guess-msg"></div>
+      <button id="guess-reset" class="guess-reset">🔄 Nouvelle partie</button>
+    </div>`;
+  let secret, remaining;
+  const attemptsEl = container.querySelector('#guess-attempts');
+  const msgEl = container.querySelector('#guess-msg');
+  const inputEl = container.querySelector('#guess-input');
+  const btnEl = container.querySelector('#guess-btn');
+
+  function newGame() {
+    secret = 1 + Math.floor(Math.random() * 100);
+    remaining = 7;
+    attemptsEl.textContent = remaining + ' essais restants';
+    msgEl.textContent = '';
+    msgEl.style.color = '';
+    inputEl.disabled = false; btnEl.disabled = false;
+    inputEl.value = '';
+  }
+
+  btnEl.addEventListener('click', async () => {
+    const val = parseInt(inputEl.value, 10);
+    if (isNaN(val)) return;
+    let result;
+    try { result = await callPy('verifierEssai', secret, val, remaining); }
+    catch (e) { msgEl.textContent = 'Erreur : ' + e.message; msgEl.style.color = 'var(--red)'; return; }
+    remaining--;
+    attemptsEl.textContent = Math.max(remaining, 0) + ' essais restants';
+    const msgs = { 'gagné': '🎉 Gagné !', 'trop grand': '📉 Trop grand', 'trop petit': '📈 Trop petit', 'perdu': '💀 Perdu — c\u2019était ' + secret };
+    msgEl.textContent = msgs[result] || ('Réponse inattendue : "' + result + '"');
+    msgEl.style.color = result === 'gagné' ? 'var(--green)' : (result === 'perdu' ? 'var(--red)' : 'var(--text)');
+    if (result === 'gagné' || result === 'perdu' || remaining <= 0) { inputEl.disabled = true; btnEl.disabled = true; }
+  });
+  container.querySelector('#guess-reset').addEventListener('click', newGame);
+  newGame();
+}
+
+function initTextStatsPanel(container) {
+  container.innerHTML = `
+    <div class="textstats-panel">
+      <textarea id="ts-input" rows="3" placeholder="Écris un texte...">Le chat mange rapidement</textarea>
+      <button id="ts-run">Analyser</button>
+      <div id="ts-results" class="textstats-results"></div>
+    </div>`;
+  async function run() {
+    const texte = container.querySelector('#ts-input').value;
+    const resEl = container.querySelector('#ts-results');
+    try {
+      const mots = await callPy('compterMots', texte);
+      const palin = await callPy('estPalindrome', texte);
+      const long = await callPy('motLePlusLong', texte);
+      resEl.innerHTML = `
+        <div class="ts-row"><span>Mots</span><b>${mots}</b></div>
+        <div class="ts-row"><span>Palindrome ?</span><b>${palin ? 'Oui' : 'Non'}</b></div>
+        <div class="ts-row"><span>Mot le plus long</span><b>${long}</b></div>`;
+    } catch (e) { resEl.innerHTML = `<div class="ts-error">Erreur : ${e.message}</div>`; }
+  }
+  container.querySelector('#ts-run').addEventListener('click', run);
+  run();
+}
+
+function initRecursionPanel(container) {
+  container.innerHTML = `
+    <div class="recursion-panel">
+      <div class="rec-group">
+        <label>Factorielle de</label>
+        <input id="rec-fact-n" type="number" value="5" min="0" max="15"/>
+        <button id="rec-fact-btn">Calculer</button>
+        <div id="rec-fact-result" class="rec-result">—</div>
+      </div>
+      <div class="rec-group">
+        <label>base ^ exposant</label>
+        <div class="rec-two-cols">
+          <input id="rec-pow-base" type="number" value="2"/>
+          <input id="rec-pow-exp" type="number" value="10"/>
+        </div>
+        <button id="rec-pow-btn">Calculer</button>
+        <div id="rec-pow-result" class="rec-result">—</div>
+      </div>
+    </div>`;
+  container.querySelector('#rec-fact-btn').addEventListener('click', async () => {
+    const n = parseInt(container.querySelector('#rec-fact-n').value, 10);
+    const resEl = container.querySelector('#rec-fact-result');
+    try { resEl.textContent = n + '! = ' + (await callPy('factorielle', n)); resEl.style.color = ''; }
+    catch (e) { resEl.textContent = 'Erreur : ' + e.message; resEl.style.color = 'var(--red)'; }
+  });
+  container.querySelector('#rec-pow-btn').addEventListener('click', async () => {
+    const base = parseInt(container.querySelector('#rec-pow-base').value, 10);
+    const exp = parseInt(container.querySelector('#rec-pow-exp').value, 10);
+    const resEl = container.querySelector('#rec-pow-result');
+    try { resEl.textContent = base + '^' + exp + ' = ' + (await callPy('puissance', base, exp)); resEl.style.color = ''; }
+    catch (e) { resEl.textContent = 'Erreur : ' + e.message; resEl.style.color = 'var(--red)'; }
+  });
+}
+
+function initPanel() {
+  const container = document.getElementById('app-container');
+  const labels = { calculator: 'Pilotée par ton code Python', contacts: 'Carnet piloté par ton code', guess: 'Le jeu appelle ta fonction à chaque essai', textstats: 'Analyse pilotée par tes fonctions', recursion: 'Chaque calcul appelle ta fonction récursive' };
+  document.getElementById('panel-app-label').textContent = labels[LEVEL.panel] || '';
+  if (LEVEL.panel === 'calculator') {
+    initCalculator(container, async (a, op, b) => await callPy('calculer', a, op, b));
+  } else if (LEVEL.panel === 'contacts') {
+    initContactsPanel(container);
+  } else if (LEVEL.panel === 'guess') {
+    initGuessPanel(container);
+  } else if (LEVEL.panel === 'textstats') {
+    initTextStatsPanel(container);
+  } else if (LEVEL.panel === 'recursion') {
+    initRecursionPanel(container);
+  }
+}
+
 window.addEventListener('DOMContentLoaded', async () => {
+  document.title = `DevKëf — Éditeur · ${LEVEL.title}`;
+  document.getElementById('level-pill').textContent = 'Python · Niveau ' + LEVEL_ID;
+  document.getElementById('project-title-text').textContent = LEVEL.title;
+  document.getElementById('instr-level-label').textContent = '// Monde 2 · Python · Niveau ' + LEVEL_ID;
+  document.getElementById('instr-title-label').textContent = LEVEL.title;
+  document.getElementById('instr-xp-label').textContent = '★ ' + LEVEL.xpMax + ' XP à gagner';
+  document.getElementById('instr-desc-text').textContent = LEVEL.desc;
+  document.getElementById('tip-text-content').innerHTML = LEVEL.tip;
+  document.getElementById('doc-link').href = 'docs/python-niveau-' + LEVEL_ID + '.html';
+  document.getElementById('editor-filename').textContent = 'niveau' + LEVEL_ID + '.py';
+
   cmEditor = CodeMirror.fromTextArea(document.getElementById('editor-py'), {
     mode: 'python',
     theme: 'dracula',
@@ -209,11 +598,10 @@ window.addEventListener('DOMContentLoaded', async () => {
     lineWrapping: true,
     extraKeys: { Tab: cm => cm.execCommand('indentMore') }
   });
-  cmEditor.setValue(STARTER_PY);
+  cmEditor.setValue(LEVEL.starter);
 
   const list = document.getElementById('objectives-list');
-  const OBJECTIVES = getObjectives();
-  OBJECTIVES.forEach((obj, i) => {
+  LEVEL.objectives.forEach((obj, i) => {
     const num = i + 1;
     const div = document.createElement('div');
     div.className = 'objective';
@@ -223,8 +611,8 @@ window.addEventListener('DOMContentLoaded', async () => {
     list.appendChild(div);
   });
 
-  const calcContainer = document.getElementById('calc-container');
-  initCalculator(calcContainer, async (a, op, b) => await callCalculer(a, op, b));
+  const nextBtn = document.getElementById('btn-next-level');
+  if (!LEVEL.nextLevel) { nextBtn.textContent = 'Bientôt disponible'; }
 
   logConsole('Chargement de Python (Pyodide)… ça peut prendre quelques secondes la première fois.');
   try {
@@ -232,7 +620,8 @@ window.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('pyodide-status').textContent = '✓ Python prêt';
     document.getElementById('btn-run').disabled = false;
     document.getElementById('btn-validate').disabled = false;
-    logConsole('✓ Python est prêt. Utilise la calculatrice à droite.', 'ok');
+    logConsole('✓ Python est prêt.', 'ok');
+    initPanel();
   } catch (e) {
     document.getElementById('pyodide-status').textContent = '✗ Échec du chargement';
     logConsole('✗ Impossible de charger Python : ' + e.message, 'err');
@@ -240,21 +629,12 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   if (dkIsDone(TRACK, LEVEL_ID)) {
     showToast('info', '✓ Niveau déjà validé', 'Tu peux le retravailler à tout moment.');
+    if (LEVEL.nextLevel) {
+      nextBtn.disabled = false;
+      nextBtn.onclick = () => window.location.href = 'editor-python.html?level=' + LEVEL.nextLevel;
+    }
   }
 });
-
-function getObjectives() {
-  return [
-    { label: 'Addition', hint: '3 + 4 doit donner 7',
-      run: async () => Math.abs((await callCalculer(3, '+', 4)) - 7) < 1e-9 },
-    { label: 'Soustraction', hint: '10 − 6 doit donner 4',
-      run: async () => Math.abs((await callCalculer(10, '-', 6)) - 4) < 1e-9 },
-    { label: 'Multiplication & division', hint: '6 × 7 = 42 et 20 ÷ 4 = 5',
-      run: async () => Math.abs((await callCalculer(6, '*', 7)) - 42) < 1e-9 && Math.abs((await callCalculer(20, '/', 4)) - 5) < 1e-9 },
-    { label: 'Division par zéro gérée', hint: '5 ÷ 0 ne doit pas planter ton programme',
-      run: async () => { try { await callCalculer(5, '/', 0); return true; } catch (e) { return false; } } }
-  ];
-}
 
 function logConsole(msg, cls) {
   document.getElementById('console').innerHTML = cls ? `<span class="${cls}">${msg}</span>` : msg;
@@ -263,7 +643,7 @@ function logConsole(msg, cls) {
 async function runOnly() {
   try {
     pyodideInstance.runPython(cmEditor.getValue());
-    logConsole('✓ Code exécuté sans erreur — utilise la calculatrice à droite pour tester.', 'ok');
+    logConsole('✓ Code exécuté sans erreur.', 'ok');
   } catch (e) {
     logConsole('✗ Erreur Python : ' + e.message, 'err');
   }
@@ -271,14 +651,13 @@ async function runOnly() {
 
 async function validateCode() {
   if (!pyodideInstance) { showToast('error', 'Python n\u2019est pas prêt', 'Patiente quelques secondes puis réessaie.'); return; }
-  const OBJECTIVES = getObjectives();
   let passed = 0;
-  const total = OBJECTIVES.length;
+  const total = LEVEL.objectives.length;
 
-  for (let i = 0; i < OBJECTIVES.length; i++) {
+  for (let i = 0; i < total; i++) {
     const num = i + 1;
     let ok = false;
-    try { ok = !!(await OBJECTIVES[i].run()); } catch (e) { ok = false; }
+    try { ok = !!(await LEVEL.objectives[i].run()); } catch (e) { ok = false; }
     const el = document.getElementById('obj-' + num);
     const st = document.getElementById('obj-' + num + '-status');
     el.classList.toggle('done', ok);
@@ -287,15 +666,19 @@ async function validateCode() {
     if (ok) passed++;
   }
 
-  const xp = Math.round((passed / total) * XP_MAX);
+  const xp = Math.round((passed / total) * LEVEL.xpMax);
   currentXP = xp;
   document.getElementById('xp-count').textContent = xp;
 
   if (passed === total) {
     logConsole('✓ Tous les tests passent — bravo !', 'ok');
-    showToast('success', '🎉 Projet validé !', 'Tu as gagné ' + XP_MAX + ' XP.');
-    dkCompleteLevel(TRACK, LEVEL_ID, XP_MAX);
-    document.getElementById('btn-next-level').textContent = 'Bientôt disponible';
+    showToast('success', '🎉 Niveau ' + LEVEL_ID + ' validé !', 'Tu as gagné ' + LEVEL.xpMax + ' XP.');
+    dkCompleteLevel(TRACK, LEVEL_ID, LEVEL.xpMax);
+    const nextBtn = document.getElementById('btn-next-level');
+    if (LEVEL.nextLevel) {
+      nextBtn.disabled = false;
+      nextBtn.onclick = () => window.location.href = 'editor-python.html?level=' + LEVEL.nextLevel;
+    }
   } else {
     logConsole(`✗ ${passed}/${total} tests réussis — regarde les objectifs à gauche.`, 'err');
     showToast(passed > 0 ? 'info' : 'error', `${passed}/${total} objectifs atteints`, 'Continue, tu y es presque !');
