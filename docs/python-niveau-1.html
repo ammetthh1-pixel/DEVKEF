@@ -32,6 +32,44 @@
   </section>
 
   <section class="doc-section">
+    <div class="doc-h2"><span class="ic">🧩</span> Le contrat de ta fonction</div>
+    <p class="doc-p">Tu dois écrire toute la logique située sous cette ligne :</p>
+    <pre><code>def calculer(a, op, b):</code></pre>
+    <div class="concept">
+      <div class="concept-name">Les paramètres</div>
+      <div class="concept-def"><code>a</code> est le premier nombre, <code>op</code> contient <code>'+'</code>, <code>'-'</code>, <code>'*'</code> ou <code>'/'</code>, et <code>b</code> est le deuxième nombre.</div>
+    </div>
+    <div class="concept">
+      <div class="concept-name">Les réponses attendues</div>
+      <div class="concept-def">Retourne le résultat de l'opération avec <code>return</code>. Pour une division par zéro, teste <code>b == 0</code> avant de diviser et retourne obligatoirement <code>None</code> : cela signifie qu'il n'existe pas de résultat numérique valide.</div>
+    </div>
+    <pre><code>elif op == '/':
+    if b == 0:
+        return None
+    return a / b</code></pre>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">🔌</span> Comment DevKëf utilise ton code</div>
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body"><div class="step-title">Tu cliques sur les touches</div><div class="step-text">L'interface construit une opération, par exemple <code>3 + 4</code>, puis mémorise <code>a</code>, <code>op</code> et <code>b</code>.</div></div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body"><div class="step-title">La calculatrice appelle Python</div><div class="step-text">Avec Pyodide, DevKëf exécute ton code dans le navigateur et appelle <code>calculer(a, op, b)</code>. Tu n'as pas besoin d'appeler toi-même la fonction.</div></div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body"><div class="step-title">L'interface affiche le retour</div><div class="step-text">La valeur renvoyée par <code>return</code> devient le résultat affiché. Si Python renvoie <code>None</code>, DevKëf affiche une erreur contrôlée pour signaler que la division est impossible.</div></div>
+    </div>
+    <div class="diff-box">
+      <div class="diff-title">DevKëf et un éditeur classique</div>
+      <div class="diff-text">Dans un éditeur classique, tu appelles souvent ta fonction toi-même et tu observes <code>print()</code>. Dans DevKëf, une application appelle ta fonction et utilise sa valeur de retour. Tu écris la logique Python ; l'interface prend en charge les clics et l'affichage.</div>
+    </div>
+  </section>
+
+  <section class="doc-section">
     <div class="doc-h2"><span class="ic">📚</span> Les notions clés</div>
 
     <div class="concept">
@@ -56,7 +94,7 @@
 
     <div class="concept">
       <div class="concept-name">Division par zéro</div>
-      <div class="concept-def">En Python, diviser par zéro lève une erreur (<code>ZeroDivisionError</code>) qui arrête le programme si elle n'est pas gérée. Ton rôle : vérifier <code>b == 0</code> <i>avant</i> de diviser, pas après.</div>
+      <div class="concept-def">En Python, diviser par zéro lève une erreur (<code>ZeroDivisionError</code>) qui arrête le programme si elle n'est pas gérée. Ton rôle : vérifier <code>b == 0</code> <i>avant</i> de diviser et retourner <code>None</code>. DevKëf transforme cette réponse en message d'erreur dans la calculatrice.</div>
     </div>
   </section>
 
@@ -72,7 +110,7 @@
     </div>
     <div class="step">
       <div class="step-num">3</div>
-      <div class="step-body"><div class="step-title">Traite le cas limite en dernier</div><div class="step-text">Une fois +, −, × qui marchent, occupe-toi spécifiquement de la division par zéro : c'est souvent l'objectif qui bloque le plus longtemps, et c'est normal.</div></div>
+      <div class="step-body"><div class="step-title">Traite le cas limite en dernier</div><div class="step-text">Une fois +, −, × qui marchent, occupe-toi spécifiquement de la division par zéro. Retourne <code>None</code> au lieu de laisser Python provoquer une erreur.</div></div>
     </div>
   </section>
 
@@ -88,7 +126,7 @@
     </div>
     <div class="pitfall">
       <span class="ic">✗</span>
-      <div><div class="pitfall-title">Oublier un cas → rien n'est retourné</div><div class="pitfall-text">Si aucune condition ne correspond et qu'il n'y a pas de <code>else</code>, ta fonction ne retourne rien (<code>None</code>) — la calculatrice affichera une erreur.</div></div>
+      <div><div class="pitfall-title">Confondre None et zéro</div><div class="pitfall-text"><code>0</code> est un résultat numérique, tandis que <code>None</code> signifie qu'il n'y a pas de résultat valide. Pour <code>5 ÷ 0</code>, retourne <code>None</code>, pas <code>0</code>.</div></div>
     </div>
   </section>
 

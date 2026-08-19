@@ -232,16 +232,7 @@ const LEVELS = {
     starter: `# Cette fonction est appelée à chaque fois que tu cliques sur "="
 # a et b sont deux nombres, op est une chaîne : '+', '-', '*' ou '/'
 def calculer(a, op, b):
-    if op == '+':
-        return a + b
-    elif op == '-':
-        return a - b
-    elif op == '*':
-        return a * b
-    elif op == '/':
-        # OBJECTIF : gère le cas où b vaut 0 avant de diviser
-        return a / b
-    return 0
+
 `,
     objectives: [
       { label: 'Addition', hint: '3 + 4 doit donner 7',
@@ -250,8 +241,15 @@ def calculer(a, op, b):
         run: async () => Math.abs((await callPy('calculer', 10, '-', 6)) - 4) < 1e-9 },
       { label: 'Multiplication & division', hint: '6 × 7 = 42 et 20 ÷ 4 = 5',
         run: async () => Math.abs((await callPy('calculer', 6, '*', 7)) - 42) < 1e-9 && Math.abs((await callPy('calculer', 20, '/', 4)) - 5) < 1e-9 },
-      { label: 'Division par zéro gérée', hint: '5 ÷ 0 ne doit pas planter ton programme',
-        run: async () => { try { await callPy('calculer', 5, '/', 0); return true; } catch (e) { return false; } } }
+      { label: 'Division par zéro gérée', hint: '5 ÷ 0 doit retourner None sans provoquer d’erreur',
+        run: async () => {
+          try {
+            const result = await callPy('calculer', 5, '/', 0);
+            return result === null || result === undefined;
+          } catch (e) {
+            return false;
+          }
+        } }
     ]
   },
 
