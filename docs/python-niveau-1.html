@@ -61,7 +61,7 @@
     </div>
     <div class="step">
       <div class="step-num">3</div>
-      <div class="step-body"><div class="step-title">L'interface affiche le retour</div><div class="step-text">La valeur renvoyée par <code>return</code> devient le résultat affiché. Si Python renvoie <code>None</code>, DevKëf affiche une erreur contrôlée pour signaler que la division est impossible.</div></div>
+      <div class="step-body"><div class="step-title">L'interface affiche le retour</div><div class="step-text">La valeur renvoyée par <code>return</code> devient le résultat affiché. Si Python renvoie <code>None</code> pour <code>b == 0</code> avec l'opérateur <code>/</code>, DevKëf affiche que la division est impossible. Si une autre opération ne retourne rien, l'interface indique que cette opération n'est pas encore gérée.</div></div>
     </div>
     <div class="diff-box">
       <div class="diff-title">DevKëf et un éditeur classique</div>
@@ -94,7 +94,7 @@
 
     <div class="concept">
       <div class="concept-name">Division par zéro</div>
-      <div class="concept-def">En Python, diviser par zéro lève une erreur (<code>ZeroDivisionError</code>) qui arrête le programme si elle n'est pas gérée. Ton rôle : vérifier <code>b == 0</code> <i>avant</i> de diviser et retourner <code>None</code>. DevKëf transforme cette réponse en message d'erreur dans la calculatrice.</div>
+      <div class="concept-def">En Python, diviser par zéro lève une erreur (<code>ZeroDivisionError</code>) qui arrête le programme si elle n'est pas gérée. Ton rôle : vérifier <code>b == 0</code> <i>avant</i> de diviser et retourner <code>None</code>. DevKëf reconnaît cette réponse uniquement lorsqu'il s'agit de l'opérateur <code>/</code> avec un deuxième nombre égal à zéro.</div>
     </div>
   </section>
 

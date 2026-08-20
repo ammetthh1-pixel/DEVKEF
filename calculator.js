@@ -84,12 +84,15 @@ function initCalculator(container, computeFn) {
     setStatus('Exécution de ton code…');
     try {
       const result = await computeFn(a, op, b);
-      if (result === null) {
+      if (result === null && op === '/' && b === 0) {
         current = 'Impossible';
         setStatus('Division par zéro : aucun résultat.', 'err');
       } else if (result === undefined || Number.isNaN(result)) {
         current = 'Erreur';
         setStatus('Ton code n\u2019a rien retourné pour ce cas.', 'err');
+      } else if (result === null) {
+        current = 'Erreur';
+        setStatus('Ton code ne retourne aucun résultat pour cette opération.', 'err');
       } else {
         current = String(result);
         setStatus('✓ Calculé par ton code', 'ok');

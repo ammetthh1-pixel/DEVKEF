@@ -97,6 +97,10 @@ code{font-family:var(--mono);font-size:.72rem;background:rgba(124,58,237,.16);co
 .contacts-search input{flex:1;min-width:0;background:var(--ink);border:1px solid var(--border);color:var(--text);padding:9px 11px;border-radius:8px;font-size:.85rem}
 .contacts-search input:focus{outline:none;border-color:var(--orange)}
 .contacts-search button{background:var(--orange);color:var(--ink);border:0;padding:9px 11px;border-radius:8px;font-family:var(--display);font-weight:700;font-size:.82rem;cursor:pointer}
+.contacts-delete{display:flex;gap:8px;margin-bottom:14px}
+.contacts-delete input{flex:1;min-width:0;background:var(--ink);border:1px solid var(--border);color:var(--text);padding:9px 11px;border-radius:8px;font-size:.85rem}
+.contacts-delete input:focus{outline:none;border-color:var(--red)}
+.contacts-delete button{background:var(--red);color:var(--text);border:0;padding:9px 11px;border-radius:8px;font-family:var(--display);font-weight:700;font-size:.82rem;cursor:pointer}
 .contacts-list{display:flex;flex-direction:column;gap:7px}
 .contact-row{display:flex;justify-content:space-between;align-items:center;background:var(--ink);border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-size:.82rem}
 .contact-del{background:rgba(255,71,87,.12);color:var(--red);border:1px solid rgba(255,71,87,.3);border-radius:6px;width:24px;height:24px;cursor:pointer}
@@ -245,7 +249,7 @@ def calculer(a, op, b):
         run: async () => {
           try {
             const result = await callPy('calculer', 5, '/', 0);
-            return result === null || result === undefined;
+            return (result === null || result === undefined) && pySourceHandlesZeroDivision(cmEditor.getValue());
           } catch (e) {
             return false;
           }
@@ -271,7 +275,8 @@ def rechercherContact(carnet, nom):
     return None
 
 def supprimerContact(carnet, nom):
-    # OBJECTIF 3 : retourne un NOUVEAU carnet sans ce contact
+  # OBJECTIF 3 : supprime le PREMIER contact portant ce nom
+  # Si le nom est absent, retourne le carnet sans le modifier
     return carnet
 `,
     objectives: [
@@ -287,11 +292,16 @@ def supprimerContact(carnet, nom):
           const notFound = await callPy('rechercherContact', carnet, 'Inconnu');
           return found === '222' && (notFound === null || notFound === undefined);
         } },
-      { label: 'Supprimer un contact', hint: 'retire la bonne entrée, garde les autres', 
+      { label: 'Supprimer un contact', hint: 'retire le premier contact correspondant', 
         run: async () => {
           const carnet = [{nom:'A', telephone:'1'}, {nom:'B', telephone:'2'}, {nom:'C', telephone:'3'}];
           const r = await callPy('supprimerContact', carnet, 'B');
-          return Array.isArray(r) && r.length === 2 && r.some(c=>c.nom==='A') && r.some(c=>c.nom==='C') && !r.some(c=>c.nom==='B');
+          const absent = await callPy('supprimerContact', carnet, 'Inconnu');
+          const doublons = [{nom:'A', telephone:'1'}, {nom:'A', telephone:'2'}];
+          const firstDuplicate = await callPy('supprimerContact', doublons, 'A');
+          return Array.isArray(r) && r.length === 2 && r.some(c=>c.nom==='A') && r.some(c=>c.nom==='C') && !r.some(c=>c.nom==='B')
+            && Array.isArray(absent) && absent.length === 3
+            && Array.isArray(firstDuplicate) && firstDuplicate.length === 1 && firstDuplicate[0].telephone === '2';
         } },
       { label: 'Séquence complète', hint: 'ajouter 3 contacts puis en supprimer 1 laisse les 2 autres intacts',
         run: async () => {
@@ -395,6 +405,12 @@ function pySourceCallsItself(source, fnName) {
   return callRe.test(m[1]);
 }
 
+function pySourceHandlesZeroDivision(source) {
+  const match = source.match(/def\s+calculer\s*\([^)]*\)\s*:([\s\S]*?)(?=\ndef\s|$)/);
+  if (!match) return false;
+  return /b\s*==\s*0[\s\S]*?return\s+None/.test(match[1]);
+}
+
 const params = new URLSearchParams(window.location.search);
 const LEVEL_ID = parseInt(params.get('level') || '1', 10);
 const LEVEL = LEVELS[LEVEL_ID] || LEVELS[1];
@@ -431,6 +447,11 @@ function initContactsPanel(container) {
       <button id="cf-search-btn">Chercher</button>
     </div>
     <div id="contacts-search-status" class="contacts-search-status"></div>
+    <div class="contacts-delete">
+      <input id="cf-delete" placeholder="Nom à supprimer"/>
+      <button id="cf-delete-btn">Supprimer</button>
+    </div>
+    <div id="contacts-delete-status" class="contacts-status"></div>
     <div id="contacts-list" class="contacts-list"></div>
     <div id="contacts-status" class="contacts-status"></div>`;
   let carnet = [];
@@ -438,6 +459,8 @@ function initContactsPanel(container) {
   const statusEl = container.querySelector('#contacts-status');
   const searchEl = container.querySelector('#cf-search');
   const searchStatusEl = container.querySelector('#contacts-search-status');
+  const deleteEl = container.querySelector('#cf-delete');
+  const deleteStatusEl = container.querySelector('#contacts-delete-status');
 
   function render() {
     listEl.innerHTML = carnet.length ? carnet.map((c, i) => `
@@ -478,6 +501,27 @@ function initContactsPanel(container) {
       statusEl.textContent = '';
     } catch (e) {
       searchStatusEl.textContent = 'Erreur : ' + e.message;
+    }
+  });
+
+  container.querySelector('#cf-delete-btn').addEventListener('click', async () => {
+    const nom = deleteEl.value.trim();
+    if (!nom) {
+      deleteStatusEl.textContent = 'Saisis un nom à supprimer.';
+      return;
+    }
+    try {
+      const avant = carnet.length;
+      const resultat = await callPy('supprimerContact', carnet, nom);
+      carnet = resultat;
+      deleteStatusEl.textContent = carnet.length < avant
+        ? `Le premier contact « ${nom} » a été supprimé.`
+        : `Aucun contact trouvé pour « ${nom} ».`;
+      deleteEl.value = '';
+      statusEl.textContent = '';
+      render();
+    } catch (e) {
+      deleteStatusEl.textContent = 'Erreur : ' + e.message;
     }
   });
 

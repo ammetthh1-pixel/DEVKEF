@@ -48,7 +48,7 @@ h1.title{font-family:var(--display);font-size:clamp(1.6rem,5vw,2.4rem);font-weig
 .dots i{width:9px;height:9px;border-radius:50%;display:block}
 .dots i:nth-child(1){background:#FF5F57}.dots i:nth-child(2){background:#FFBD2E}.dots i:nth-child(3){background:#28C840}
 .demo-label{font-family:var(--mono);font-size:.7rem;color:var(--muted2)}
-.demo-stage{padding:40px 20px;display:flex;justify-content:center}
+.demo-stage{padding:40px 20px;display:flex;justify-content:center; }
 .demo-foot{padding:10px 14px;border-top:1px solid var(--border);font-size:.75rem;color:var(--muted);display:flex;gap:8px;align-items:center}
 .demo-foot b{color:var(--green);font-family:var(--display);font-weight:600}
 
@@ -111,7 +111,7 @@ code{font-family:var(--mono);font-size:.72rem;background:rgba(124,58,237,.16);co
         <div class="demo-label">aperçu · carnet de contacts</div>
       </div>
       <div class="demo-stage"><div id="calc-demo"></div></div>
-      <div class="demo-foot"><b>Aperçu</b> — dans l'éditeur, c'est <u>ton</u> code Python qui gèrera l'ajout et la suppression, pas cette démo.</div>
+      <div class="demo-foot"><b>Aperçu</b> — dans l'éditeur, c'est<u>ton</u> code Python qui gèrera l'ajout, la recherche et la suppression.</div>
     </section>
 
     <aside>
@@ -133,7 +133,7 @@ code{font-family:var(--mono);font-size:.72rem;background:rgba(124,58,237,.16);co
         </div>
         <div class="tip">
           <div class="tip-label">💡 Avant de commencer</div>
-          <div class="tip-text">Chaque fonction retourne un <b>nouveau</b> carnet plutôt que de modifier l'ancien en douce — plus facile à tester, et une bonne habitude à prendre tôt.</div>
+          <div class="tip-text">Chaque fonction doit retourner le carnet ou l'information attendue. Tu peux modifier le carnet ou construire une nouvelle liste : la méthode est libre, le résultat compte.</div>
         </div>
       </div>
 
@@ -160,7 +160,7 @@ code{font-family:var(--mono);font-size:.72rem;background:rgba(124,58,237,.16);co
 window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('calc-demo').innerHTML = `
     <div style="width:100%;max-width:280px;background:#161d2e;border:1px solid #243450;border-radius:16px;padding:18px;font-family:'Space Grotesk',sans-serif">
-      <div style="display:flex;gap:8px;margin-bottom:10px">
+      <div style="display:flex;gap:8px;margin-bottom:10px; flex-direction: column;">
         <input placeholder="Nom" disabled style="flex:1;background:#0A0E1A;border:1px solid #243450;color:#7A8BAD;padding:8px;border-radius:8px;font-size:.82rem"/>
         <input placeholder="Tél." disabled style="flex:1;background:#0A0E1A;border:1px solid #243450;color:#7A8BAD;padding:8px;border-radius:8px;font-size:.82rem"/>
       </div>

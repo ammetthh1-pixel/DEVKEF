@@ -37,8 +37,8 @@
       <div class="concept-def"><code>{"nom": "Awa", "telephone": "77..."}</code> — accès à une valeur avec <code>contact["nom"]</code>, comme un tableau mais avec des clés-texte au lieu de positions numériques.</div>
     </div>
     <div class="concept">
-      <div class="concept-name">Créer une liste sans modifier l'originale</div>
-      <div class="concept-def"><code>nouvelle_liste = ancienne_liste + [nouveau_element]</code> crée une <b>nouvelle</b> liste plutôt que de modifier l'ancienne avec <code>.append()</code>. C'est ce qui est demandé ici — voir la note sur les fonctions pures ci-dessous.</div>
+      <div class="concept-name">Modifier ou reconstruire une liste</div>
+      <div class="concept-def">Pour ajouter ou supprimer, tu peux modifier <code>carnet</code> avec <code>.append()</code>, <code>.remove()</code> ou <code>.pop()</code>, puis le retourner. Tu peux aussi créer une nouvelle liste avec <code>+</code>, une copie ou une boucle. DevKëf valide le résultat et laisse ces méthodes à ton choix.</div>
     </div>
     <div class="concept">
       <div class="concept-name">Parcourir avec for</div>
@@ -51,15 +51,48 @@
   </section>
 
   <section class="doc-section">
+    <div class="doc-h2"><span class="ic">🔎</span> Le comportement de la recherche</div>
+    <p class="doc-p">Quand tu saisis un nom dans l'interface et que tu cliques sur <b>Chercher</b>, DevKëf appelle <code>rechercherContact(carnet, nom)</code>. Ta fonction doit parcourir le carnet et retourner le téléphone du contact trouvé.</p>
+    <div class="concept">
+      <div class="concept-name">Si plusieurs contacts portent le même nom</div>
+      <div class="concept-def">La recherche retourne le téléphone du <b>premier contact correspondant</b> dans la liste. Elle s'arrête dès qu'elle trouve ce premier contact.</div>
+    </div>
+    <div class="concept">
+      <div class="concept-name">Si le nom n'existe pas</div>
+      <div class="concept-def">La fonction doit retourner <code>None</code>. L'interface affiche alors : <code>Aucun contact trouvé pour « nom ».</code></div>
+    </div>
+    <pre><code>def rechercherContact(carnet, nom):
+    for contact in carnet:
+        if contact["nom"] == nom:
+            return contact["telephone"]
+    return None</code></pre>
+  </section>
+
+  <section class="doc-section">
     <div class="doc-h2"><span class="ic">⚠️</span> Pièges fréquents</div>
     <div class="pitfall">
       <span class="ic">✗</span>
-      <div><div class="pitfall-title">Modifier la liste au lieu d'en créer une nouvelle</div><div class="pitfall-text">DevKëf attend un <code>return</code> avec la nouvelle liste, pas une modification silencieuse avec <code>.append()</code> sans rien retourner.</div></div>
+      <div><div class="pitfall-title">Modifier la liste sans la retourner</div><div class="pitfall-text">Tu peux utiliser <code>.append()</code>, <code>.remove()</code> ou <code>.pop()</code>, mais ta fonction doit toujours retourner le carnet final avec <code>return carnet</code>.</div></div>
     </div>
     <div class="pitfall">
       <span class="ic">✗</span>
       <div><div class="pitfall-title">Oublier de retourner None explicitement</div><div class="pitfall-text">Si aucun contact ne correspond dans la boucle et qu'il n'y a pas de <code>return None</code> à la fin, la fonction retourne <code>None</code> par défaut de toute façon en Python — mais mieux vaut l'écrire explicitement pour que ce soit clair en le relisant.</div></div>
     </div>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">🗑️</span> Supprimer un contact</div>
+    <p class="doc-p">Tu peux supprimer un contact de deux façons dans l'interface : saisir son nom puis cliquer sur <b>Supprimer</b>, ou cliquer sur la croix de sa ligne. Les deux actions appellent <code>supprimerContact(carnet, nom)</code>.</p>
+    <div class="concept">
+      <div class="concept-name">Le contrat de suppression</div>
+      <div class="concept-def">La fonction supprime uniquement le <b>premier contact correspondant</b>. Si le nom n'existe pas, elle retourne le carnet inchangé. Tu peux utiliser la méthode de ton choix, notamment <code>remove()</code>, <code>pop()</code>, une copie ou une nouvelle liste.</div>
+    </div>
+    <pre><code>def supprimerContact(carnet, nom):
+    for contact in carnet:
+        if contact["nom"] == nom:
+            carnet.remove(contact)
+            break
+    return carnet</code></pre>
   </section>
 
   <section class="doc-section">
