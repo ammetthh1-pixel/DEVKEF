@@ -330,12 +330,12 @@ def supprimerContact(carnet, nom):
     return "trop petit"
 `,
     objectives: [
-      { label: 'Essai correct', hint: 'retourne "gagné", peu importe le secret',
-        run: async () => (await callPy('verifierEssai', 50, 50, 7)) === 'gagné' && (await callPy('verifierEssai', 23, 23, 3)) === 'gagné' },
+      { label: 'Essai correct', hint: 'retourne "gagné", même au dernier essai',
+        run: async () => (await callPy('verifierEssai', 50, 50, 7)) === 'gagné' && (await callPy('verifierEssai', 23, 23, 3)) === 'gagné' && (await callPy('verifierEssai', 50, 50, 1)) === 'gagné' },
       { label: 'Trop grand / trop petit', hint: 'les deux sens sont détectés correctement',
         run: async () => (await callPy('verifierEssai', 50, 70, 7)) === 'trop grand' && (await callPy('verifierEssai', 50, 20, 7)) === 'trop petit' },
       { label: 'Dernier essai raté', hint: 'tentativesRestantes == 1 sans succès -> "perdu"',
-        run: async () => (await callPy('verifierEssai', 50, 70, 1)) === 'perdu' }
+        run: async () => (await callPy('verifierEssai', 50, 70, 1)) === 'perdu' && (await callPy('verifierEssai', 50, 20, 1)) === 'perdu' }
     ]
   },
 
@@ -555,17 +555,28 @@ function initGuessPanel(container) {
   }
 
   btnEl.addEventListener('click', async () => {
-    const val = parseInt(inputEl.value, 10);
-    if (isNaN(val)) return;
+    const val = Number(inputEl.value);
+    if (!Number.isInteger(val) || val < 1 || val > 100) {
+      msgEl.textContent = 'Choisis un nombre entre 1 et 100.';
+      msgEl.style.color = 'var(--orange)';
+      return;
+    }
+    btnEl.disabled = true;
     let result;
     try { result = await callPy('verifierEssai', secret, val, remaining); }
-    catch (e) { msgEl.textContent = 'Erreur : ' + e.message; msgEl.style.color = 'var(--red)'; return; }
+    catch (e) {
+      msgEl.textContent = 'Erreur : ' + e.message;
+      msgEl.style.color = 'var(--red)';
+      btnEl.disabled = false;
+      return;
+    }
     remaining--;
     attemptsEl.textContent = Math.max(remaining, 0) + ' essais restants';
     const msgs = { 'gagné': '🎉 Gagné !', 'trop grand': '📉 Trop grand', 'trop petit': '📈 Trop petit', 'perdu': '💀 Perdu — c\u2019était ' + secret };
     msgEl.textContent = msgs[result] || ('Réponse inattendue : "' + result + '"');
     msgEl.style.color = result === 'gagné' ? 'var(--green)' : (result === 'perdu' ? 'var(--red)' : 'var(--text)');
     if (result === 'gagné' || result === 'perdu' || remaining <= 0) { inputEl.disabled = true; btnEl.disabled = true; }
+    else { btnEl.disabled = false; }
   });
   container.querySelector('#guess-reset').addEventListener('click', newGame);
   newGame();

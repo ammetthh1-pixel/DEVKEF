@@ -27,8 +27,51 @@
 
   <section class="doc-section">
     <div class="doc-h2"><span class="ic">🎯</span> Pourquoi ce projet ?</div>
-    <p class="doc-p">En Python classique, ce jeu s'écrirait avec une boucle <code>while</code> et des appels à <code>input()</code>. Mais DevKëf est une page web — il n'y a pas de terminal pour taper au clavier. La solution : ta fonction ne gère pas la boucle de jeu elle-même. Elle répond juste à <b>une question à la fois</b> : "pour cet essai précis, avec ce nombre d'essais restants, que se passe-t-il ?" C'est l'interface (déjà construite) qui rappelle ta fonction à chaque clic sur "Essayer".</p>
+    <p class="doc-p">En Python classique, ce jeu s'écrirait avec une boucle <code>while</code> et des appels à <code>input()</code>. Voici l'idée complète :</p>
+    <pre><code>import random
+
+secret = random.randint(1, 100)
+tentatives = 7
+
+while tentatives &gt; 0:
+    essai = int(input("Devine le nombre : "))
+
+    if essai == secret:
+        print("gagné")
+        break
+    elif essai &gt; secret:
+        print("trop grand")
+    else:
+        print("trop petit")
+
+    tentatives -= 1</code></pre>
+    <p class="doc-p">Dans DevKëf, l'interface remplace la saisie avec <code>input()</code>, le compteur et la boucle. Elle possède le secret, récupère le nombre dans le champ, appelle ta fonction à chaque clic sur <b>Essayer</b>, puis met à jour le nombre de tentatives et l'affichage.</p>
+    <p class="doc-p">Ta fonction ne gère donc pas la boucle de jeu elle-même. Elle répond juste à <b>une question à la fois</b> : "pour cet essai précis, avec ce nombre d'essais restants, que se passe-t-il ?"</p>
     <p class="doc-p">Ce principe revient dans plusieurs niveaux suivants (le Pendu, le chatbot) — comprendre pourquoi il est nécessaire ici t'aidera pour la suite.</p>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">🔌</span> Le contrat de DevKëf</div>
+    <p class="doc-p">Écris la fonction appelée par l'interface :</p>
+    <pre><code>def verifierEssai(secret, essai, tentativesRestantes):
+    if essai == secret:
+        return "gagné"
+    elif tentativesRestantes == 1:
+        return "perdu"
+    elif essai &gt; secret:
+        return "trop grand"
+    else:
+        return "trop petit"</code></pre>
+    <p class="doc-p">Les retours doivent respecter exactement le contrat suivant : <code>"gagné"</code>, <code>"trop grand"</code>, <code>"trop petit"</code> ou <code>"perdu"</code>. L'interface utilise ces valeurs pour afficher le bon message et savoir quand arrêter la partie.</p>
+    <div class="diff-box">
+      <div class="diff-title">Pourquoi tester gagné avant perdu ?</div>
+      <div class="diff-text">Avec <code>tentativesRestantes == 1</code>, il s'agit du dernier essai. Mais si <code>essai == secret</code> en même temps, le joueur a gagné. La condition de victoire doit donc être testée en premier.</div>
+    </div>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-h2"><span class="ic">🎚️</span> Les valeurs acceptées</div>
+    <p class="doc-p">Le champ de l'interface accepte uniquement un nombre entier entre 1 et 100. Si tu saisis une valeur hors intervalle, DevKëf affiche <code>Choisis un nombre entre 1 et 100.</code> et ne consomme pas de tentative. Une valeur valide est ensuite transmise à <code>verifierEssai</code>.</p>
   </section>
 
   <section class="doc-section">
@@ -55,7 +98,7 @@
     </div>
     <div class="pitfall">
       <span class="ic">✗</span>
-      <div><div class="pitfall-title">Essayer de gérer la boucle soi-même</div><div class="pitfall-text">Pas besoin (et pas possible) d'écrire <code>while</code> ou <code>input()</code> ici — la fonction répond à un seul essai, DevKëf gère la répétition.</div></div>
+      <div><div class="pitfall-title">Essayer de gérer la boucle dans l'éditeur</div><div class="pitfall-text">La boucle complète avec <code>while</code> et <code>input()</code> est présentée pour comparaison. Dans l'éditeur DevKëf, n'en écris pas une deuxième : l'interface gère déjà la répétition et appelle ta fonction à chaque essai.</div></div>
     </div>
   </section>
 
